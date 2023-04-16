@@ -1,5 +1,15 @@
+const jwt = require('jsonwebtoken');
+
 const utils = require('../users');
 const getter = require('../../getter');
+
+const maxAge = 60 * 60 * 1000;
+
+const createToken = (id) => {
+    return jwt.sign({id}, process.env.JWT_SECRET, {
+        expiresIn: maxAge
+    });
+}
 
 const login = async (req, res) => {
     try {
@@ -21,6 +31,8 @@ const login = async (req, res) => {
             return;
         }
         
+        const token = createToken(connexion._id);
+        res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge});
         await utils.updateConnected(connexion._id);
         res.status(200).json({status : 200, message: "OK : User logged in", connexion:connexion});
 

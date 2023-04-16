@@ -1,4 +1,6 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
+
 const user = require("./user/routes.js");
 const friend = require("./friend/routes.js");
 
