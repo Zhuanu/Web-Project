@@ -1,9 +1,13 @@
 # Ignorer les fichiers systèmes Mac
-.DS_store
+*/.DS_store
 
 # Ignorer le répertoire node_modules
-./client/node_modules
-./server/node_modules
+Client/node_modules
+Server/node_modules
 
 # Ignorer les fichiers liés aux clés d'API
 .env
+
+# Ignorer les fichiers de configuration json
+Client/*.json
+Server/*.json
