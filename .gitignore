@@ -11,3 +11,5 @@ Server/node_modules
 # Ignorer les fichiers de configuration json
 Client/*.json
 Server/*.json
+
+Client/*.pack
