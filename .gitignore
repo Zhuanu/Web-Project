@@ -1,5 +1,5 @@
 # Ignorer les fichiers systèmes Mac
-*/.DS_store
+.DS_store
 
 # Ignorer le répertoire node_modules
 Client/node_modules

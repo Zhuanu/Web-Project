@@ -96,6 +96,18 @@ async function updateConnected(connexion_id) {
     }
 }
 
+async function addRefreshToken(refreshToken, connexionId) {
+    await connexion.findOneAndUpdate({_id:connexionId}, {$set: {refreshToken: refreshToken}});
+}
+
+async function getRefreshToken(refreshToken) {
+    return await connexion.findOne({refreshToken: refreshToken});
+}
+
+async function removeRefreshToken(connexionId) {
+    await connexion.findOneAndUpdate({_id:connexionId}, {$set: {refreshToken: ""}});
+}
+
 
 module.exports = {
     createUser,
@@ -103,5 +115,8 @@ module.exports = {
     authentification,
     deleteUser,
     nbUsers,
-    updateConnected
+    updateConnected,
+    addRefreshToken,
+    getRefreshToken,
+    removeRefreshToken
 };
