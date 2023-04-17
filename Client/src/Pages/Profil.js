@@ -1,0 +1,12 @@
+// même chose que Home.js
+import React from 'react';
+
+const Profil = () => {
+    return (
+        <div>   
+            <h1>Profil</h1>
+        </div>
+    )
+};
+
+export default Profil;

@@ -13,3 +13,6 @@ Client/*.json
 Server/*.json
 
 Client/*.pack
+Client/node_modules/.cache/.eslintcache
+
+node_modules
