@@ -13,3 +13,5 @@ Client/*.json
 Server/*.json
 
 Client/*.pack
+
+node_modules
