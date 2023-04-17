@@ -26,7 +26,6 @@ const refresh = async (req, res) => {
         const accessToken = generateAccessToken(connexion);
         res.json({status:"200", message:"Token found", accessToken: accessToken});
     });
-    return accessToken;
 }
 
 const login = async (req, res, next) => {
@@ -55,8 +54,8 @@ const login = async (req, res, next) => {
         // console.log(connexion)
         res.cookie('accessToken', accessToken, {httpOnly: true, maxAge: maxAge});
         await utils.updateConnected(connexion._id);
-        // res.status(200).json({status : 200, message: "OK : User logged in", accessToken:accessToken, refreshToken:refreshToken});
-        next();
+        res.status(200).json({status : 200, message: "OK : User logged in", accessToken:accessToken, refreshToken:refreshToken});
+        // next();
 
     } catch (err) {
         console.error(err);
