@@ -1,16 +1,11 @@
 const bcrypt = require('bcrypt');
 
-
 const { MongoClient, ObjectId } = require('mongodb');
 const uri = "mongodb://localhost:27017";
 const client = new MongoClient(uri);
 
-
 const database = client.db("ProjetWeb");
 const users = database.collection("Users");
-const connexion = database.collection("Connexion");
-const profil = database.collection("Profil");
-
 
 async function createUser(info) {
     try {
@@ -18,13 +13,25 @@ async function createUser(info) {
         
         const mdp = await bcrypt.hash(password, 10);
 
-        const docConnexion = { password:mdp, login:login, connected:false };
-        const docProfils = { pseudo:pseudo, followers:[], following:[], posts:[] , picture:"" };
+        const docUsers = { 
+            email: email, 
+            dateNaissance: dateNaissance, 
+            profil: {
+                pseudo: pseudo, 
+                followers: [], 
+                following: [], 
+                posts: [], 
+                picture: ""
+            },
+            connexion: {
+                password: mdp, 
+                login: login, 
+                connected: false,
+                refreshToken: ""
+            },
+            privateMess: []
+        };
 
-        const result1 = await connexion.insertOne(docConnexion);
-        const result2 = await profil.insertOne(docProfils);
-
-        const docUsers = { email:email, dateNaissance:dateNaissance, profil:result2.insertedId, privateMess:[], connexion:result1.insertedId };
         const result = await users.insertOne(docUsers);
 
     } catch(err) {
@@ -32,14 +39,13 @@ async function createUser(info) {
     }
 }
 
-
 async function authentification(info) {
     try {
         const {login, password} = info;
-        found = await connexion.findOne({ login:login });
+        const found = await users.findOne({ "connexion.login": login });
         let foundConnexion = "";
         if (found) {
-            foundConnexion = await bcrypt.compare(password, found.password);
+            foundConnexion = await bcrypt.compare(password, found.connexion.password);
         }
         return foundConnexion;
 
@@ -48,33 +54,26 @@ async function authentification(info) {
     }
 }
 
-
-async function isUserExist(info){
+async function isUserExist(email){
     try {
-        const { email, login } = info;
         const foundUser = await users.findOne({ email: email });
-        const foundConnexion = await connexion.findOne({ login: login });
-        return foundUser || foundConnexion;
+        return foundUser;
 
     } catch (err) {
         console.error(err);
     }
 }
 
-
 async function deleteUser(userid) { 
     try {
         const objectID = new ObjectId(userid);
         const result = await users.findOneAndDelete({_id:objectID});
-        await profil.deleteOne({_id:result.value.profil});
-        await connexion.deleteOne({_id:result.value.connexion});
         return result.value != null;
 
     } catch(err) {
         console.error(err);
     }
 }
-
 
 async function nbUsers() {
     try {
@@ -85,29 +84,29 @@ async function nbUsers() {
     }
 }
 
-
-async function updateConnected(connexion_id) {
+async function updateConnected(user_id) {
     try {
-        const result = await connexion.findOne({_id:connexion_id});
-        return connexion.updateOne({_id:connexion_id}, {$set: {connected: !result.connected}})
+        const user = await users.findOne({ "_id": user_id });
+        return await users.updateOne(
+            { "_id": user_id },
+            { $set: { "connexion.connected": !user.connexion.connected } })
 
     } catch(err) {
         console.error(err);
     }
 }
 
-async function addRefreshToken(refreshToken, connexionId) {
-    await connexion.findOneAndUpdate({_id:connexionId}, {$set: {refreshToken: refreshToken}});
+async function addRefreshToken(refreshToken, user_id) {
+    await users.findOneAndUpdate({ "_id": user_id }, { $set: { "connexion.refreshToken": refreshToken } });
 }
 
-async function getRefreshToken(refreshToken) {
-    return await connexion.findOne({refreshToken: refreshToken});
+async function userFromRefreshToken(refreshToken) {
+    return await users.findOne({ "connexion.refreshToken": refreshToken });
 }
 
-async function removeRefreshToken(connexionId) {
-    await connexion.findOneAndUpdate({_id:connexionId}, {$set: {refreshToken: ""}});
+async function removeRefreshToken(user_id) {
+    await users.findOneAndUpdate({ "_id": user_id }, { $set: { "connexion.refreshToken": "" } });
 }
-
 
 module.exports = {
     createUser,
@@ -117,6 +116,6 @@ module.exports = {
     nbUsers,
     updateConnected,
     addRefreshToken,
-    getRefreshToken,
+    userFromRefreshToken,
     removeRefreshToken
 };

@@ -5,17 +5,15 @@ const createUser = async (req, res) => {
         const {login, password, email, dateNaissance} = req.body;
 
         if (email === undefined, dateNaissance === undefined || password === undefined || login === undefined) {
-            res.status(400).json({status : 400, message: "Error : Missing Fields"});
-            return;
+            return res.status(400).json({status : 400, message: "Error : Missing Fields"});
         }
 
-        if (await utils.isUserExist(req.body)) {
-            res.status(403).json({status : 403, message: "Error : User already exist"});
-            return;
+        if (await utils.isUserExist(req.body.email)) {
+            return res.status(403).json({status : 403, message: "Error : User already exist"});
         }
 
         await utils.createUser(req.body);
-        res.status(201).json({status : 201, message: "OK : User created", user: req.body});
+        return res.status(201).json({status : 201, message: "OK : User created", user: req.body});
 
     } catch (err) {
         console.error(err);

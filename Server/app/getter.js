@@ -5,13 +5,11 @@ const client = new MongoClient(uri);
 
 const database = client.db("ProjetWeb");
 const users = database.collection("Users");
-const connexion = database.collection("Connexion");
-const profil = database.collection("Profil");
 
 
 async function getUserById(userid) {
-    const objectID = new ObjectId(userid);
     try {
+        const objectID = new ObjectId(userid);
         return await users.findOne({_id:objectID});;
 
     } catch(err) {
@@ -19,19 +17,9 @@ async function getUserById(userid) {
     }
 }
 
-async function getConnexionByLogin(login) {
+async function getUserByLogin(login) {
     try { 
-        return await connexion.findOne({login:login});
-
-    } catch(err) {
-        console.error(err);
-    }
-}
-
-async function getProfilById(userid) {
-    try {
-        const objectID = new ObjectId(userid);
-        return await profil.findOne({ _id: objectID });
+        return await users.findOne({"connexion.login":login});
 
     } catch(err) {
         console.error(err);
@@ -50,7 +38,6 @@ async function getObjectID(userid) {
 module.exports = {
     getUserById,
     getObjectID,
-    getConnexionByLogin,
-    getProfilById
+    getUserByLogin,
 }
 

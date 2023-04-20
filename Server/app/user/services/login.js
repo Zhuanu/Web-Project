@@ -5,11 +5,6 @@ const getter = require('../../getter');
 
 const maxAge = 1 * 1 * 1 * 10;
 
-// const createToken = (id) => {
-//     return jwt.sign({id}, process.env.JWT_SECRET, {
-//         expiresIn: maxAge
-//     });
-// }
 
 const generateAccessToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET, {
@@ -19,11 +14,15 @@ const generateAccessToken = (id) => {
 
 const refresh = async (req, res) => {
     const refreshToken = req.body.refreshToken;
-    if (refreshToken == null) return res.status(400).json({status : 400, message: "No Refresh Token provided"});
-    if (!await utils.getRefreshToken(refreshToken)) return res.status(403).json({status : 403, message: "Invalid Refresh Token"});
-    jwt.verify(refreshToken, process.env.REFRESH_SECRET, (err, connexion) => {
+    if (refreshToken == null) 
+        return res.status(400).json({status : 400, message: "No Refresh Token provided"});
+
+    if (!await utils.userFromRefreshToken(refreshToken)) 
+        return res.status(403).json({status : 403, message: "Invalid Refresh Token"});
+
+    jwt.verify(refreshToken, process.env.REFRESH_SECRET, (err, user) => {
         if (err) return res.status(403).json({status : 403, message: "Invalid Refresh Token"});
-        const accessToken = generateAccessToken(connexion);
+        const accessToken = generateAccessToken(user);
         res.json({status:"200", message:"Token found", accessToken: accessToken});
     });
 }
@@ -32,28 +31,27 @@ const login = async (req, res, next) => {
     try {
         const {login, password} = req.body;
         if (password === undefined || login === undefined) {
-            res.status(400).json({status : 400, message: "Error : Missing Fields"});
-            return;
-        }
-        if (!(connexion = await getter.getConnexionByLogin(login))) {
-            res.status(401).json({status : 401, message: "Error : Unknown User"});
-            return;
-        }
-        if (!await utils.authentification(req.body)) {
-            res.status(401).json({status : 401, message: "Error : Invalid Login or Password"});
-            return;
-        }
-        if (connexion.connected) {
-            res.status(401).json({status : 401, message: "Error : User already connected"});
-            return;
+            return res.status(400).json({status : 400, message: "Error : Missing Fields"});
         }
         
-        const accessToken = generateAccessToken(connexion._id.toString());
-        const refreshToken = jwt.sign(connexion._id.toString(), process.env.REFRESH_SECRET);
-        await utils.addRefreshToken(refreshToken, connexion._id);
-        // console.log(connexion)
+        if (!(user = await getter.getUserByLogin(login))) {
+            return res.status(401).json({status : 401, message: "Error : Unknown User"});
+        }
+
+        if (!await utils.authentification(req.body)) {
+            return res.status(401).json({status : 401, message: "Error : Invalid Login or Password"});
+        }
+
+        if (user.connexion.connected) {
+            return res.status(401).json({status : 401, message: "Error : User already connected"});
+        }
+        
+        const accessToken = generateAccessToken(user._id.toString());
+        const refreshToken = jwt.sign(user._id.toString(), process.env.REFRESH_SECRET);
+        await utils.addRefreshToken(refreshToken, user._id);
+
         res.cookie('accessToken', accessToken, {httpOnly: true, maxAge: maxAge});
-        await utils.updateConnected(connexion._id);
+        await utils.updateConnected(user._id);
         res.status(200).json({status : 200, message: "OK : User logged in", accessToken:accessToken, refreshToken:refreshToken});
         // next();
 

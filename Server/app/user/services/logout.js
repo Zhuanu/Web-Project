@@ -15,10 +15,9 @@ const logout = async (req, res) => {
             return;
         }
 
-        // res.cookie('jwt', '', {maxAge: 1});
-        await utils.removeRefreshToken(user.connexion);
-        await utils.updateConnected(user.connexion);
-        // res.redirect('/');
+        res.cookie('jwt', '', {maxAge: 1});
+        await utils.removeRefreshToken(user._id);
+        await utils.updateConnected(user._id);
         res.status(200).json({status : 200, message: "OK : User logged out"});
 
     } catch(err) {

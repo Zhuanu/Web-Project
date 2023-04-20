@@ -3,7 +3,7 @@ const utils = require('../users');
 const getUserInfo = async (req, res) => {
         try {
             const count = await utils.nbUsers();
-            res.status(200).json({status : 200, message: count + " users registered"});
+            return res.status(200).json({status : 200, message: count + " users registered"});
 
         } catch (err) {
             console.error(err);

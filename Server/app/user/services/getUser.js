@@ -4,15 +4,13 @@ const getUser = async (req, res, next) => {
     const userid = req.params.userid;
     try {
         if (userid === undefined) {
-            res.status(400).json({status : 400, message: "Error : Missing Fields"});
-            return;
+            return res.status(400).json({status : 400, message: "Error : Missing Fields"});
         }
         if (!(user = await getter.getUserById(userid))) {
-            res.status(401).json({status : 401, message: "Error : Unknown User"});
-            return;
+            return res.status(401).json({status : 401, message: "Error : Unknown User"});
         }
         
-        res.status(200).json(user);
+        return res.status(200).json(user);
 
     } catch(err) {
         console.error(err);

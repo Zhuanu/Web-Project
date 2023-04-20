@@ -26,7 +26,7 @@ friend
 
     .get("/:userid/following/:friendid", friendFollowing.friendGetList)
 
-    .post("/:userid/following/:friendid", addFollowing.addFollowing)
+    .post("/:userid/following/:friendid", addFollowing)
 
     .delete("/:userid/following/:friendid", deleteFollowing.deleteFollowing)
 
