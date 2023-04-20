@@ -4,27 +4,22 @@ const friends = require('../friends.js');
 const getList = async (req, res) => {
     try {
         if (req.params.userid === undefined) {
-            res.status(400).json({status : 400, message: "Error : Missing Fields"});
-            return;
+            return res.status(400).json({status : 400, message: "Error : Missing Fields"});
         }
 
         const user = await getter.getUserById(req.params.userid);
 
         if (!user) {
-            res.status(401).json({status : 401, message: "Error : Unknown User"});
-            return;
+            return res.status(401).json({status : 401, message: "Error : Unknown User"});
         }
-
-        const myProfil = await getter.getProfilById(user.profil.toString());
 
         const inURL = await friends.followingOrFollowers(req.path);
 
         if (inURL === undefined) {
-            res.status(400).json({status : 400, message: "Error : Bad request"});
-            return;
+            return res.status(400).json({status : 400, message: "Error : Bad request"});
         }
         
-        const list = myProfil[inURL];
+        const list = user.profil[inURL];
 
         res.status(200).json({status : 200, message: "OK : Follower list", list});
 
@@ -35,4 +30,4 @@ const getList = async (req, res) => {
     }
 }
 
-module.exports = {getList}
+module.exports = getList

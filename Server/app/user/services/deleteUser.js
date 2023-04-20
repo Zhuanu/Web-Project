@@ -1,6 +1,6 @@
 const utils = require('../users');
 
-const deleteUser = async (req, res) => {
+module.exports = deleteUser = async (req, res) => {
     const userid = req.params.userid;
     try {
         if (userid === undefined) {
@@ -19,5 +19,3 @@ const deleteUser = async (req, res) => {
         res.status(500).json({status : 500, message: "Error : Internal Server Error"});
     }
 }
-
-module.exports = {deleteUser}

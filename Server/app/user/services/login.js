@@ -30,6 +30,7 @@ const refresh = async (req, res) => {
 const login = async (req, res, next) => {
     try {
         const {login, password} = req.body;
+        console.log("je rentre ici")
         if (password === undefined || login === undefined) {
             return res.status(400).json({status : 400, message: "Error : Missing Fields"});
         }
@@ -61,4 +62,5 @@ const login = async (req, res, next) => {
     }
 }
 
-module.exports = {login, refresh}
+
+module.exports = { login, refresh }

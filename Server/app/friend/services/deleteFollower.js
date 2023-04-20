@@ -3,32 +3,31 @@ const getter = require("../../getter.js");
 
 const deleteFollower = async (req, res, next) => {
     try {
-        console.log(req.params)
         if (req.params.userid === undefined || req.params.friendid === undefined) {
-            res.status(400).json({status : 400, message: "Error : Missing Fields"});
-            return;
+            return res.status(400).json({status : 400, message: "Error : Missing Fields"});
         }
-
+    
         const user = await getter.getUserById(req.params.userid);
-        const myProfil = await getter.getProfilById(user.profil.toString());
-        const friendProfil = await getter.getProfilById(req.params.friendid);
+        const friend = await getter.getUserById(req.params.friendid);
 
-        if (!myProfil || !friendProfil) {
-            res.status(401).json({status : 401, message: "Error : Unknown User"});
+        if (!user) {
+            return res.status(401).json({status : 401, message: "Error : Unknown User"});
+        }
+    
+        if (!friend) {
+            res.status(401).json({status : 401, message: "Error : Unknown Profil"});
             return;
         }
 
-        // remove friend from my array Followers and remove me from his array Following
-        const friendid = await getter.getObjectID(req.params.friendid);
-        const friendIndex = myProfil.followers.findIndex(follower => follower.toString() == friendid.toString());
-        const myIndex = friendProfil.following.findIndex(f => f.toString() == user.profil.toString());
+        const friendIndex = user.profil.followers.findIndex(follower => follower.toString() == friend._id.toString());
+        const myIndex = friend.profil.following.findIndex(f => f.toString() == user._id.toString());
 
         if (myIndex == -1 || friendIndex == -1) {
             res.status(400).json({status : 400, message: "Error : This user does not follow you"});
             return;
         }
 
-        friends.remove(myProfil, friendIndex, friendProfil, myIndex);
+        friends.remove(user, friendIndex, friend, myIndex);
         res.status(200).json({status : 200, message: "OK : Follower removed"});
 
     } catch(err) {
@@ -39,4 +38,4 @@ const deleteFollower = async (req, res, next) => {
     }
 }
 
-module.exports = {deleteFollower}
+module.exports = deleteFollower

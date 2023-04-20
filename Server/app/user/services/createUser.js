@@ -1,6 +1,6 @@
 const utils = require('../users');
 
-const createUser = async (req, res) => {
+module.exports = createUser = async (req, res) => {
     try {
         const {login, password, email, dateNaissance} = req.body;
 
@@ -20,5 +20,3 @@ const createUser = async (req, res) => {
         res.status(500).json({status : 500, message: "Error : Internal Server Error"});
     }
 }
-
-module.exports = {createUser}

@@ -1,7 +1,7 @@
 const express = require("express");
 
 const createUser = require("./services/createUser.js");
-const login = require("./services/login.js");
+const { login, refresh } = require("./services/login.js");
 const logout = require("./services/logout.js");
 const getUser = require("./services/getUser.js");
 const deleteUser = require("./services/deleteUser.js");
@@ -16,28 +16,24 @@ const user = express.Router();
 user.use(express.json())
 
 user
-    .post('/', createUser.createUser)
+    .post('/', createUser)
 
-    // .post('/login', login.login)
-
-    .post('/login', login.login, async (req, res) => {
-        res.redirect('/welcome');
-    })
+    .post('/login', login)
     
     .post('/welcome', auth, async (req, res) => {
         console.log("APR7S LE LOGIN");
         res.status(200).json({status : 200, message: "OK : User logged in welcome", connexion: req.connexion.id});
     })
 
-    .post('/refresh', login.refresh)
+    .post('/refresh', refresh)
 
-    .get('/infos', getUserInfo.getUserInfo)
+    .get('/infos', getUserInfo)
 
-    .delete('/:userid/logout', logout.logout)
+    .delete('/:userid/logout', logout)
 
-    .get('/:userid', getUser.getUser)
+    .get('/:userid', getUser)
 
-    .delete('/:userid', deleteUser.deleteUser)
+    .delete('/:userid', deleteUser)
 
     .use((req, res) => {
         res.status(404).json({status : 404, "message": "Page not found"});

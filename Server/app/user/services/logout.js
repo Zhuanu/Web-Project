@@ -1,7 +1,7 @@
 const utils = require('../users');
 const getter = require('../../getter');
 
-const logout = async (req, res) => {
+module.exports = logout = async (req, res) => {
     try {
         const userid = req.params.userid;
         if (userid === undefined) {
@@ -25,5 +25,3 @@ const logout = async (req, res) => {
         res.status(500).json({status : 500, message: "Error : Internal Server Error"});
     }
 }
-
-module.exports = {logout}

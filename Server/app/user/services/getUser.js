@@ -1,6 +1,6 @@
 const getter = require('../../getter');
 
-const getUser = async (req, res, next) => {
+module.exports = getUser = async (req, res, next) => {
     const userid = req.params.userid;
     try {
         if (userid === undefined) {
@@ -18,5 +18,3 @@ const getUser = async (req, res, next) => {
         next();
     }
 }
-
-module.exports = {getUser}
