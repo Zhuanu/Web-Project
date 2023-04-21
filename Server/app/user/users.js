@@ -56,8 +56,16 @@ async function authentification(info) {
 
 async function isUserExist(email){
     try {
-        const foundUser = await users.findOne({ email: email });
-        return foundUser;
+        return await users.findOne({ email: email });
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function isLoginExist(login){
+    try {
+        return await users.findOne({ "connexion.login": login });
 
     } catch (err) {
         console.error(err);
@@ -111,6 +119,7 @@ async function removeRefreshToken(user_id) {
 module.exports = {
     createUser,
     isUserExist,
+    isLoginExist,
     authentification,
     deleteUser,
     nbUsers,

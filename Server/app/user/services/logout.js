@@ -5,14 +5,12 @@ module.exports = logout = async (req, res) => {
     try {
         const userid = req.params.userid;
         if (userid === undefined) {
-            res.status(400).json({status : 400, message: "Error : Missing Fields"});
-            return;
+            return res.status(400).json({status : 400, message: "Error : Missing Fields"});
         }
 
         const user = await getter.getUserById(userid);
         if (!user) {
-            res.status(401).json({status : 401, message: "Error : Unknown User"});
-            return;
+            return res.status(401).json({status : 401, message: "Error : Unknown User"});
         }
 
         res.cookie('jwt', '', {maxAge: 1});
