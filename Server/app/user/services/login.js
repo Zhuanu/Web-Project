@@ -30,7 +30,6 @@ const refresh = async (req, res) => {
 const login = async (req, res, next) => {
     try {
         const {login, password} = req.body;
-        console.log("je rentre ici")
         if (password === undefined || login === undefined) {
             return res.status(400).json({status : 400, message: "Error : Missing Fields"});
         }
@@ -40,7 +39,7 @@ const login = async (req, res, next) => {
         }
 
         if (!await utils.authentification(req.body)) {
-            return res.status(401).json({status : 401, message: "Error : Invalid Login or Password"});
+            return res.status(200).json({status : 401, message: "Error : Invalid Login or Password"});
         }
 
         if (user.connexion.connected) {

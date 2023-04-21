@@ -8,7 +8,6 @@ const Profil = () => {
                 <Log />
                 <div className='img-container'>
                     {/* // trouve moi l'image dans le dossier public */}
-                    <img src='' alt='profil' />
                 </div>
             </div>
         </div>
