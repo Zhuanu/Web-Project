@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const utils = require('../users');
 const getter = require('../../getter');
 
-const maxAge = 1 * 1 * 1 * 60;
+const maxAge = 1 * 1 * 1 * 10;
 
 
 const generateAccessToken = (id) => {

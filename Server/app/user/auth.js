@@ -11,13 +11,18 @@ const verifyToken = (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(accessToken, config.JWT_SECRET);
-        console.log(decoded.id);
-        req.user = decoded.id; 
-        next();
+        jwt.verify(accessToken, config.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                return res.status(401).send("Invalid Token");
+            }
+            console.log(decoded.id);
+            req.user = decoded.id; 
+            next();
+        });
 
     } catch (err) {
-        return res.status(401).send("Invalid Token");
+        console.error(err);
+        res.status(500).json({status : 500, message: "Error : Internal Server Error", error: "header"});
     }
 };
 

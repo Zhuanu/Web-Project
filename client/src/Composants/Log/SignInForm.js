@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import cookie from 'js-cookie';
 
 
 const SignInForm = () => {
@@ -33,10 +32,9 @@ const SignInForm = () => {
             }
         })
         .then(res => {
-            cookie.set("accessToken", 3, {expires: 1})
-            console.log("data dans login", res.data);
+            console.log("data dans login", res);
             console.log("cookie dans login", res.cookie);
-            // window.location.href = "http://localhost:3000/";
+            window.location.href = "http://localhost:3000/";
         })
         .catch(err => {
             if (err.response.data.error === "login") {

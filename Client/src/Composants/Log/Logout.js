@@ -19,6 +19,7 @@ const Logout = () => {
             console.log("data dans logout", res.data);
             console.log("cookie dans logout", cookie.get("accessToken"));
             removeCookie("accessToken")
+            window.location.href = "http://localhost:3000/profil";
         })
         .catch(err => console.log(err));
     }

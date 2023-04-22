@@ -6,8 +6,8 @@ const Log = () => {
     const [mode, setMode] = useState(true);
 
     const handleMode = (e) => {
-        if (e.target.id === 'register') setMode(true);
-        else setMode(false);
+        if (e.target.id === 'register') setMode(false);
+        else setMode(true);
     };
 
     return (

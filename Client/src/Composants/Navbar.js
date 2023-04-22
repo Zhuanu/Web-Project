@@ -1,7 +1,7 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import Logout from './Log/Logout';
+import GetUser from './Profil/getUser';
 
 const Navbar = () => {
 
@@ -21,7 +21,7 @@ const Navbar = () => {
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
                 <a className="navbar-brand" href="/">Navbar</a>
-                {/* <p>{document.cookie}</p> */}
+                <GetUser />
                 <Logout />
             </div>
         </nav>
