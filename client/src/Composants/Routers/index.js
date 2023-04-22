@@ -4,15 +4,17 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Home from "../../Pages/Home";
 import Trending from "../../Pages/Trending";
 import Profil from "../../Pages/Profil";
+import Navbar from "../Navbar";
 
 const index = () => {
     return (
         <Router>
+            <Navbar />
             <Routes>
                 <Route path="/" element={<Home/>} />
                 <Route path="/trending" element={<Trending/>} />
                 <Route path="/profil" element={<Profil/>} />
-                <Route path="*" element={<Navigate to="/" />} />
+                <Route path="*" element={<Navigate to="/profil" />} />
             </Routes>
         </Router>
     );

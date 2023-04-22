@@ -17,8 +17,8 @@ const Log = () => {
                     <li onClick={handleMode} id='register' className={mode ? 'active-btn' : null}>S'inscrire</li>
                     <li onClick={handleMode} id='login' className={!mode ? 'active-btn' : null}>Se connecter</li>
                 </ul>
-                {mode && <SignUpForm />}
-                {!mode && <SignInForm />}
+                {!mode && <SignUpForm />}
+                {mode && <SignInForm />}
             </div>
         </div>
     );

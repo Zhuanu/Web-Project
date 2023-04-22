@@ -21,8 +21,7 @@ user
     .post('/login', login)
     
     .post('/welcome', auth, async (req, res) => {
-        console.log("APR7S LE LOGIN");
-        res.status(200).json({status : 200, message: "OK : User logged in welcome", connexion: req.connexion.id});
+        res.status(200).json({status : 200, message: "OK : User logged in welcome", user: req.user});
     })
 
     .post('/refresh', refresh)
@@ -31,7 +30,7 @@ user
 
     .delete('/:userid/logout', logout)
 
-    .get('/:userid', getUser)
+    .get('/:userid', auth, getUser)
 
     .delete('/:userid', deleteUser)
 

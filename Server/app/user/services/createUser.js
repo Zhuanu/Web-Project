@@ -8,12 +8,12 @@ module.exports = createUser = async (req, res) => {
             return res.status(400).json({status : 400, message: "Error : Missing Fields", error: "header"});
         }
 
-        if (await utils.isUserExist(req.body.email)) {
-            return res.status(403).json({status : 403, message: "Error : Email already used", error: "email"});
-        }
-
         if (await utils.isLoginExist(req.body.login)) {
             return res.status(403).json({status : 403, message: "Error : Login already used", error: "login"});
+        }
+
+        if (await utils.isUserExist(req.body.email)) {
+            return res.status(403).json({status : 403, message: "Error : Email already used", error: "email"});
         }
 
         await utils.createUser(req.body);

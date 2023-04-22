@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import cookie from 'js-cookie';
 
 
 const SignInForm = () => {
@@ -13,21 +14,29 @@ const SignInForm = () => {
     const myForm = document.getElementById("myForm");
 
 
-    const submitForm = (e) => {
+    const submitForm = async (e) => {
         e.preventDefault();
 
-        axios({
+        loginError.innerHTML = " ";
+        mdpError.innerHTML = " ";
+        headerError.innerHTML = " ";
+        resetForm();
+
+        await axios({
             method: "POST",
             url: "http://localhost:8000/api/user/login",
             withCredentials: true,
+            // credentials: "include",
             data: {
                 login: id, 
                 password: mdp
             }
         })
         .then(res => {
-            console.log(res.data);
-            window.location.href = "http://localhost:3000/";
+            cookie.set("accessToken", 3, {expires: 1})
+            console.log("data dans login", res.data);
+            console.log("cookie dans login", res.cookie);
+            // window.location.href = "http://localhost:3000/";
         })
         .catch(err => {
             if (err.response.data.error === "login") {
@@ -42,7 +51,6 @@ const SignInForm = () => {
             else {
                 console.log(err);
             }
-            myForm.reset();
         })
     }
 
@@ -69,6 +77,7 @@ const SignInForm = () => {
         <div className="login">
             <p id="header-error" className="form-text"></p>
             <h1>Ouvrir une session</h1>
+
             <form method="POST" action="" onSubmit={submitForm} id="myForm">
                 <label htmlFor="username" className="form-label">Login</label>
                 <br/>
@@ -76,6 +85,7 @@ const SignInForm = () => {
                     onChange={e => {setId(e.target.value)}}/>
                 <br/>
                 <p className="form-text" id="login-error"></p>
+
                 <label htmlFor="password">Mot de passe</label>
                 <br/>
                 <input type="password" name="password" id="password" value={mdp} 
@@ -83,12 +93,8 @@ const SignInForm = () => {
                 <br/>
                 <p className="form-text" id="mdp-error"></p>
                 <br/>
-                <button onClick={() => {
-                    loginError.innerHTML = " ";
-                    mdpError.innerHTML = " ";
-                    headerError.innerHTML = " ";
-                    resetForm();
-                }}>Se Connecter</button>
+
+                <button>Se Connecter</button>
                 <br/>
             </form>
         </div>);

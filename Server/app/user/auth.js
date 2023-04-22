@@ -3,9 +3,8 @@ const jwt = require("jsonwebtoken");
 const config = process.env;
 
 const verifyToken = (req, res, next) => {
-    console.log("body : " + req.body.accessToken);
-    console.log("headers : " + req.headers["x-access-token"]);
-    const accessToken = req.body.accessToken || (req.headers["x-access-token"]);
+    console.log("cookies : " + req.cookies.accessToken);
+    const accessToken = req.cookies.accessToken;
 
     if (!accessToken) {
         return res.status(403).send("A token is required for authentication");
@@ -13,15 +12,13 @@ const verifyToken = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(accessToken, config.JWT_SECRET);
-        console.log(decoded);
-        req.connexion = decoded; 
+        console.log(decoded.id);
+        req.user = decoded.id; 
         next();
 
     } catch (err) {
         return res.status(401).send("Invalid Token");
     }
-
-    // res.status(200).send("OK : User logged in welcome");
 };
 
 module.exports = verifyToken;

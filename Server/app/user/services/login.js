@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const utils = require('../users');
 const getter = require('../../getter');
 
-const maxAge = 1 * 1 * 1 * 10;
+const maxAge = 1 * 1 * 1 * 60;
 
 
 const generateAccessToken = (id) => {
@@ -50,7 +50,7 @@ const login = async (req, res, next) => {
         const refreshToken = jwt.sign(user._id.toString(), process.env.REFRESH_SECRET);
         await utils.addRefreshToken(refreshToken, user._id);
 
-        res.cookie('accessToken', accessToken, {httpOnly: true, maxAge: maxAge});
+        res.cookie('accessToken', accessToken, {httpOnly: true, maxAge: maxAge * 1000});
         await utils.updateConnected(user._id);
         res.status(200).json({status : 200, message: "OK : User logged in", accessToken:accessToken, refreshToken:refreshToken});
         // next();
