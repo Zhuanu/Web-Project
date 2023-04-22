@@ -1,7 +1,8 @@
 const getter = require('../../getter');
 
 module.exports = getUser = async (req, res, next) => {
-    const userid = req.params.userid;
+    console.log(req.user)
+    const userid = req.user
     try {
         if (userid === undefined) {
             return res.status(400).json({status : 400, message: "Error : Missing Fields"});

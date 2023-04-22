@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Logout from './Log/Logout';
-import GetUser from './Profil/getUser';
+import GetUser from './Profil/GetUser';
 
 const Navbar = () => {
 
