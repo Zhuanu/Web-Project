@@ -32,8 +32,6 @@ const SignInForm = () => {
             }
         })
         .then(res => {
-            console.log("data dans login", res);
-            console.log("cookie dans login", res.cookie);
             window.location.href = "http://localhost:3000/";
         })
         .catch(err => {

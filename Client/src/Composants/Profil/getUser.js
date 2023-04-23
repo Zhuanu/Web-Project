@@ -1,18 +1,17 @@
 import axios from 'axios';
-import cookie from 'js-cookie';
+// import cookie from 'js-cookie';
 
 const GetUser = () => {
     const getuser = async () => {
         await axios({
             method: "GET",
-            url: "http://localhost:8000/api/user/6441626122accafcaad7fd8b",
+            url: "http://localhost:8000/api/user/get",
             withCredentials: true,
         })
         .then((res) => {
             console.log("data dans getUser", res.data);
-            console.log("cookie dans getUser", cookie.get("accessToken"));
         })
-        .catch(err => console.log(err));
+        .catch(err => window.location.href = "http://localhost:3000/profil");
     }
 
     return <li onClick={getuser}>

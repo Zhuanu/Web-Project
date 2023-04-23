@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 
 const utils = require('../users');
 const getter = require('../../getter');
-const  { refresh, verifyToken, generateAccessToken, maxAge } = require('../auth');
+const  { generateAccessToken, maxAge } = require('../auth');
 
-const login = async (req, res, next) => {
+const login = async (req, res) => {
     try {
         const {login, password} = req.body;
         if (password === "" || login === "") {
@@ -23,14 +23,16 @@ const login = async (req, res, next) => {
             return res.status(401).json({status : 401, message: "Error : User already connected", error: "header"});
         }
         
-        const accessToken = generateAccessToken(user._id.toString());
-        const refreshToken = jwt.sign(user._id.toString(), process.env.REFRESH_SECRET);
-        await utils.addRefreshToken(refreshToken, user._id);
+        const day = 24 * 60 * 60;
+        const id = user._id;
+        const accessToken = generateAccessToken(id);
+        const refreshToken = jwt.sign({id}, process.env.REFRESH_SECRET, {expiresIn: maxAge});
+        await utils.addRefreshToken(refreshToken, id);
 
         res.cookie('accessToken', accessToken, {httpOnly: true, maxAge: maxAge * 1000});
+        res.cookie('refreshToken', refreshToken, {httpOnly: true, maxAge: maxAge * 1000});
         await utils.updateConnected(user._id);
         res.status(200).json({status : 200, message: "OK : User logged in", accessToken:accessToken, refreshToken:refreshToken});
-        // next();
 
     } catch (err) {
         console.error(err);

@@ -7,11 +7,9 @@ const getUser = require("./services/getUser.js");
 const deleteUser = require("./services/deleteUser.js");
 const getUserInfo = require("./services/getUserInfo.js");
 
-const {refresh, verifyToken} = require('./auth.js');
+const { verifyToken } = require('./auth.js');
 
 const user = express.Router();
-
-// user.route("/user")
 
 user.use(express.json())
 
@@ -20,15 +18,13 @@ user
 
     .post('/login', login)
     
-    .post('/welcome', verifyToken, async (req, res) => {
-        res.status(200).json({status : 200, message: "OK : User logged in welcome", user: req.user});
-    })
-
-    .post('/refresh', refresh)
+    // .post('/welcome', verifyToken, async (req, res) => {
+    //     res.status(200).json({status : 200, message: "OK : User logged in welcome", user: req.user});
+    // })
 
     .get('/infos', getUserInfo)
 
-    .delete('/:userid/logout', logout)
+    .get('/logout', verifyToken, logout)
 
     .get('/get', verifyToken, getUser)
 

@@ -1,7 +1,7 @@
 const getter = require('../../getter');
 
 module.exports = getUser = async (req, res, next) => {
-    console.log(req.user)
+    console.log("\n", req.user)
     const userid = req.user
     try {
         if (userid === undefined) {
@@ -11,6 +11,7 @@ module.exports = getUser = async (req, res, next) => {
             return res.status(401).json({status : 401, message: "Error : Unknown User"});
         }
         
+        console.log("problème de res dans getUser")
         return res.status(200).json(user);
 
     } catch(err) {

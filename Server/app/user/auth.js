@@ -1,55 +1,68 @@
 const jwt = require("jsonwebtoken");
-const { userFromRefreshToken } = require('./users');
+// const { userFromRefreshToken } = require('./users');
 
 const config = process.env;
 
 const maxAge = 1 * 1 * 1 * 10;
 
-const generateAccessToken = (id) => {
-    return jwt.sign({id}, process.env.JWT_SECRET, {
+const generateAccessToken = (user) => {
+    return jwt.sign({user}, process.env.JWT_SECRET, {
         expiresIn: maxAge
     });
 }
 
-const refresh = async (req, res) => {
-    const refreshToken = req.body.refreshToken;
-    if (refreshToken == null) 
-        return res.status(400).json({status : 400, message: "No Refresh Token provided"});
+const refresh = (req, res, next) => {
+    const refreshToken = req.cookies.refreshToken;
+    if (refreshToken == null) {
+        // res.clearCookie("accessToken");
+        // res.clearCookie("refreshToken");
+        return res.redirect("/api/user/6441626122accafcaad7fd8b/logout");
+    }
 
-    if (!await userFromRefreshToken(refreshToken)) 
-        return res.status(403).json({status : 403, message: "Invalid Refresh Token"});
-
-    jwt.verify(refreshToken, process.env.REFRESH_SECRET, (err, user) => {
-        if (err) return res.status(403).json({status : 403, message: "Invalid Refresh Token"});
-        const accessToken = generateAccessToken(user);
-        res.json({status:"200", message:"Token found", accessToken: accessToken});
+    jwt.verify(refreshToken, process.env.REFRESH_SECRET, (err, decoded) => {
+        if (err) {
+            res.clearCookie("accessToken");
+            res.clearCookie("refreshToken");
+            return res.status(401).json({status:401, message: "Error : No Refresh Token", error: "header"});
+        }
+        const accessToken = generateAccessToken(decoded.id);
+        next(accessToken)
     });
 }
 
 
 const verifyToken = (req, res, next) => {
-    console.log("cookies : " + req.cookies.accessToken);
-    const accessToken = req.cookies.accessToken;
+    let accessToken = req.cookies.accessToken;
 
     if (!accessToken) {
-        
-        return res.status(403).send("A token is required for authentication");
-    }
+        refresh(req, res, (newAccessToken) => {
+            console.log("newAccessToken : ", newAccessToken)
+            res.cookie("accessToken", newAccessToken, {httpOnly: true, maxAge: maxAge * 1000})
+            jwt.verify(newAccessToken, config.JWT_SECRET, (err, decoded) => {
+                if (err) {
+                    return res.status(401).send("Invalid Token");
+                }
+                req.user = decoded.user; 
+                next();
+            });
+        })
 
-    try {
-        jwt.verify(accessToken, config.JWT_SECRET, (err, decoded) => {
-            if (err) {
-                return res.status(401).send("Invalid Token");
-            }
-            console.log(decoded.id);
-            req.user = decoded.id; 
-            next();
-        });
+    } else {
+        console.log("accessToken dans le else : ", accessToken)
+        try {
+            return jwt.verify(accessToken, config.JWT_SECRET, (err, decoded) => {
+                if (err) {
+                    return res.status(401).send("Invalid Token");
+                }
+                req.user = decoded.user; 
+                next();
+            });
 
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({status : 500, message: "Error : Internal Server Error", error: "header"});
-    }
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({status : 500, message: "Error : Internal Server Error", error: "header"});
+        }
+    }   
 };
 
 module.exports = {verifyToken, refresh, generateAccessToken, maxAge};
