@@ -1,7 +1,9 @@
-
-import Log from '../Composants/Log';
 import { useContext } from 'react';
 import { UserContext } from '../Composants/AppContext';
+
+import Log from '../Composants/Log';
+import BasicInfo from '../Composants/Profil/BasicInfo';
+import Follow from '../Composants/Profil/ProfilPicture';
 
 const Profil = () => {
     const { user } = useContext(UserContext);
@@ -10,7 +12,11 @@ const Profil = () => {
     return (
         user 
         ? 
-        (<div className='profile-page'>Profile Page</div>) 
+        (<div className='profile-page'>
+            {/* <h1>Profile Page</h1> */}
+            <Follow />
+            <BasicInfo />
+        </div>)
         :
         (<div className='log-page'>
             <div className='log-container'>

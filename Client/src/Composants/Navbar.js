@@ -14,8 +14,7 @@ const Navbar = () => {
 
     return (
         user 
-        ?
-        (
+        ? (
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="/">
@@ -29,8 +28,7 @@ const Navbar = () => {
                     <Logout />
                 </div>
             </nav>
-        )
-        :
+        ) :
         (<nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
                 <ul>

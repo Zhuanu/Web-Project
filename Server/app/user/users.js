@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const { getObjectID } = require('../getter');
 
 const { MongoClient, ObjectId } = require('mongodb');
 const uri = "mongodb://localhost:27017";
@@ -104,6 +105,12 @@ async function updateConnected(user_id) {
     }
 }
 
+async function updatePicture(user_id, picture) {
+    console.log(await users.findOne({ "_id": getObjectID(user_id) }));
+    await users.findOneAndUpdate({ "_id": user_id }, { $set: { "profil.picture": picture } });
+}
+
+
 async function addRefreshToken(refreshToken, user_id) {
     await users.findOneAndUpdate({ "_id": user_id }, { $set: { "connexion.refreshToken": refreshToken } });
 }
@@ -113,7 +120,7 @@ async function userFromRefreshToken(refreshToken) {
 }
 
 async function removeRefreshToken(user_id) {
-    await users.findOneAndUpdate({ "_id": user_id }, { $set: { "connexion.refreshToken": "" } });
+   return await users.findOneAndUpdate({ "_id": user_id }, { $set: { "connexion.refreshToken": "" } });
 }
 
 module.exports = {
@@ -124,6 +131,8 @@ module.exports = {
     deleteUser,
     nbUsers,
     updateConnected,
+    updatePicture,
+
     addRefreshToken,
     userFromRefreshToken,
     removeRefreshToken

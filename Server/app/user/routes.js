@@ -6,6 +6,7 @@ const logout = require("./services/logout.js");
 const getUser = require("./services/getUser.js");
 const deleteUser = require("./services/deleteUser.js");
 const getUserInfo = require("./services/getUserInfo.js");
+const updatePicture = require("./services/updatePicture.js");
 
 const { verifyToken } = require('./auth.js');
 
@@ -18,9 +19,7 @@ user
 
     .post('/login', login)
     
-    // .post('/welcome', verifyToken, async (req, res) => {
-    //     res.status(200).json({status : 200, message: "OK : User logged in welcome", user: req.user});
-    // })
+    .post('/updatePicture', verifyToken, updatePicture)
 
     .get('/infos', getUserInfo)
 

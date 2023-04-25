@@ -27,6 +27,3 @@ const index = () => {
 };
 
 export default index;
-
-// Client/src/Pages/Home.js
-// Client/src/Composants/Routers/index.js
