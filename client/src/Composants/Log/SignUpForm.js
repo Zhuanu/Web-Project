@@ -87,6 +87,7 @@ const SignUpForm = () => {
             setPseudo("");
             setEmail("");
             setIsReset(false);
+            console.log("reset")
         }
     }, [isReset]);
 

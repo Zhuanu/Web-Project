@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useContext } from "react";
+import { UserContext } from "../AppContext";
 
 
 const SignInForm = () => {
@@ -12,6 +14,8 @@ const SignInForm = () => {
     const headerError = document.getElementById("header-error");
     const myForm = document.getElementById("myForm");
 
+
+    const { handleLogin } = useContext(UserContext);
 
     const submitForm = async (e) => {
         e.preventDefault();
@@ -32,6 +36,8 @@ const SignInForm = () => {
             }
         })
         .then(res => {
+            handleLogin(res.data.user);
+            localStorage.setItem("user", JSON.stringify(res.data.user));
             window.location.href = "http://localhost:3000/";
         })
         .catch(err => {

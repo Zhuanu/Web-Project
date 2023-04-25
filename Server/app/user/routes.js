@@ -28,6 +28,8 @@ user
 
     .get('/get', verifyToken, getUser)
 
+    .get('/sessionExpired', logout)
+
     .delete('/:userid', deleteUser)
 
     .use((req, res) => {

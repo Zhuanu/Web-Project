@@ -4,7 +4,8 @@ const getter = require('../../getter');
 
 module.exports = logout = async (req, res) => {
     try {
-        const userid = req.user
+
+        const userid = req.cookies.id;
         if (userid === undefined) {
             return res.status(400).json({status : 400, message: "Error : Missing Fields"});
         }
@@ -21,6 +22,7 @@ module.exports = logout = async (req, res) => {
         // supprime le cookie accessToken au moment de la deconnexion
         res.clearCookie('accessToken');
         res.clearCookie('refreshToken');
+        res.clearCookie('id');
         await utils.removeRefreshToken(user._id);
         await utils.updateConnected(user._id);
         res.status(200).json({status : 200, message: "OK : User logged out"});

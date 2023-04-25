@@ -16,16 +16,16 @@ const refresh = (req, res, next) => {
     if (refreshToken == null) {
         // res.clearCookie("accessToken");
         // res.clearCookie("refreshToken");
-        return res.redirect("/api/user/6441626122accafcaad7fd8b/logout");
+        return res.redirect("/api/user/sessionExpired");
     }
 
     jwt.verify(refreshToken, process.env.REFRESH_SECRET, (err, decoded) => {
         if (err) {
             res.clearCookie("accessToken");
             res.clearCookie("refreshToken");
-            return res.status(401).json({status:401, message: "Error : No Refresh Token", error: "header"});
+            return res.redirect("/api/user/sessionExpired");
         }
-        const accessToken = generateAccessToken(decoded.id);
+        const accessToken = generateAccessToken(decoded.user);
         next(accessToken)
     });
 }
@@ -33,14 +33,13 @@ const refresh = (req, res, next) => {
 
 const verifyToken = (req, res, next) => {
     let accessToken = req.cookies.accessToken;
-
     if (!accessToken) {
         refresh(req, res, (newAccessToken) => {
             console.log("newAccessToken : ", newAccessToken)
             res.cookie("accessToken", newAccessToken, {httpOnly: true, maxAge: maxAge * 1000})
             jwt.verify(newAccessToken, config.JWT_SECRET, (err, decoded) => {
                 if (err) {
-                    return res.status(401).send("Invalid Token");
+                    res.status(401).send("Invalid Token");
                 }
                 req.user = decoded.user; 
                 next();

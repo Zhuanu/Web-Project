@@ -1,7 +1,12 @@
 import axios from 'axios';
 import cookie from 'js-cookie';
+import { useContext } from 'react';
+import { UserContext } from '../AppContext';
 
 const Logout = () => {
+
+    const { handleLogout } = useContext(UserContext);
+
     const removeCookie = (key) => {
         if (window !== "undefined") {
             cookie.remove(key, { expires: 1 });
@@ -20,9 +25,13 @@ const Logout = () => {
             console.log("cookie dans logout", cookie.get("accessToken"));
             removeCookie("accessToken");
             removeCookie("refreshToken");
+            removeCookie("id");
+            handleLogout();
             window.location.href = "http://localhost:3000/profil";
         })
-        .catch(err => window.location.href = "http://localhost:3000/profil");
+        .catch(err => {
+            console.log(err)
+        });
     }
     
     return <li onClick={logout}>
