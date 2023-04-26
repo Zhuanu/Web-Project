@@ -36,8 +36,8 @@ const SignInForm = () => {
             }
         })
         .then(res => {
-            handleLogin(res.data.user);
-            localStorage.setItem("user", JSON.stringify(res.data.user));
+            handleLogin(res.data.userid);
+            localStorage.setItem("userid", JSON.stringify(res.data.userid));
             window.location.href = "http://localhost:3000/";
         })
         .catch(err => {

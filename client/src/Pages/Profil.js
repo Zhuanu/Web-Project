@@ -6,11 +6,12 @@ import BasicInfo from '../Composants/Profil/BasicInfo';
 import Follow from '../Composants/Profil/ProfilPicture';
 
 const Profil = () => {
-    const { user } = useContext(UserContext);
+    const { userid } = useContext(UserContext);
+
 
 
     return (
-        user 
+        userid 
         ? 
         (<div className='profile-page'>
             {/* <h1>Profile Page</h1> */}

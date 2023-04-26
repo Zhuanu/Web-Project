@@ -1,15 +1,15 @@
 const getter = require('../../getter');
 
 module.exports = getUser = async (req, res, next) => {
-    user = req.user
+    const userid = req.userid
     try {
-        if (user === undefined) {
+        if (userid === undefined) {
             return res.status(400).json({status : 400, message: "Error : Missing Fields"});
         }
         
-        // if (!(user = await getter.getUserById(userid))) {
-        //     return res.status(401).json({status : 401, message: "Error : Unknown User"});
-        // }
+        if (!(user = await getter.getUserById(userid))) {
+            return res.status(401).json({status : 401, message: "Error : Unknown User"});
+        }
 
         return res.status(200).json(user);
 

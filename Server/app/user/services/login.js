@@ -24,17 +24,18 @@ const login = async (req, res) => {
         }
         
         const day = 24 * 60 * 60;
-        const id = user._id;
+        const userid = user._id.toString();
 
-        const accessToken = generateAccessToken(user);
-        const refreshToken = jwt.sign({user}, process.env.REFRESH_SECRET, {expiresIn: 7 * day});
-        await utils.addRefreshToken(refreshToken, id);
+        const accessToken = generateAccessToken(userid);
+        const refreshToken = jwt.sign({userid}, process.env.REFRESH_SECRET, {expiresIn: 7 * day});
+
+        await utils.updateConnected(userid);
 
         res.cookie('accessToken', accessToken, {httpOnly: true, maxAge: maxAge * 1000});
         res.cookie('refreshToken', refreshToken, {httpOnly: true, maxAge: 7 * day * 1000});
-        res.cookie('id', id.toString(), {httpOnly: true})
-        await utils.updateConnected(user._id);
-        res.status(200).json({status : 200, message: "OK : User logged in", user: user});
+        res.cookie('id', userid, {httpOnly: true})
+
+        res.status(200).json({status : 200, message: "OK : User logged in", userid: userid});
 
     } catch (err) {
         console.error(err);

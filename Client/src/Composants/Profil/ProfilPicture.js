@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 
+const fs = require('fs');
+
 const ProfilPictureCss = styled.img`
     border-radius: 50%;
     height: 100px;
@@ -24,7 +26,27 @@ const DropZoneWrapper = styled.div`
 
 
 const ProfilPicture = () => {
-    const { user } = useContext(UserContext);
+
+    const handleDropzoneSubmit = async (acceptedFiles) => {
+        console.log("choisi", acceptedFiles[0])
+        await axios({
+            method: "POST",
+            url: "http://localhost:8000/api/user/updatePicture",
+            withCredentials: true,
+            data: {
+                picture: acceptedFiles[0]
+            }
+        })
+        .then((res) => {
+            console.log(res.data.oldPicture)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
+
+
+    const { userid } = useContext(UserContext);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: {
             'image/jpg': [],
@@ -33,30 +55,6 @@ const ProfilPicture = () => {
           },
         onDrop: (acceptedFiles) => handleDropzoneSubmit(acceptedFiles),
     });
-
-
-    const handleDropzoneSubmit = async (acceptedFiles) => {
-        const file = acceptedFiles[0];
-        const fileName = file.name;
-        const filePath = `public/${fileName}`;
-        await axios({
-            method: "POST",
-            url: "http://localhost:8000/api/user/updatePicture",
-            withCredentials: true,
-            data: {
-                picture: filePath,
-                fileName: fileName,
-                file: file
-            }
-        })
-        .then((res) => {
-            console.log(res.data)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-    }
-
 
     return (
         <div className="profil-comp">
@@ -67,7 +65,7 @@ const ProfilPicture = () => {
                     <ProfilPictureCss src="https://i.pinimg.com/originals/c6/9e/cd/c69ecdcf899d0e29cc4bd8deef643f45.jpg" alt="pp"/>
                     <input {...getInputProps()} />
                 </DropZoneWrapper>
-                <p>@{user.profil.pseudo}</p>
+                {/* <p>@{user.profil.pseudo}</p> */}
             </section>
             <p>bio</p>
             <p>Followers</p>

@@ -6,27 +6,27 @@ import { useState, useEffect } from 'react';
 require('bootstrap/dist/css/bootstrap.min.css')
 
 function App() {
-    const [user, setUser] = useState(null);
+    const [userid, setUserid] = useState(null);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem("user");
+        const storedUser = localStorage.getItem("userid");
         if (storedUser) {
-            setUser(JSON.parse(storedUser));
+            setUserid(JSON.parse(storedUser));
         }
     }, []);
 
-    const handleLogin = (user) => {
-        localStorage.setItem("user", JSON.stringify(user));
-        setUser(user);
+    const handleLogin = (userid) => {
+        localStorage.setItem("userid", JSON.stringify(userid));
+        setUserid(userid);
     };
 
     const handleLogout = () => {
-        localStorage.removeItem("user");
-        setUser(null);
+        localStorage.removeItem("userid");
+        setUserid(null);
     };
     
     return (
-        <UserContext.Provider value={{user, handleLogin, handleLogout}}>
+        <UserContext.Provider value={{userid, handleLogin, handleLogout}}>
             <Routes />
         </UserContext.Provider>
     );

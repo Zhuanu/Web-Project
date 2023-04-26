@@ -8,12 +8,12 @@ import '../App.css'
 // aide moi à coder le useEffect pour que le composant se mette à jour quand on se connecte ou quand on se déconnecte
 
 const Navbar = () => {
-    const { user } = useContext(UserContext);
+    const { userid } = useContext(UserContext);
     
-    console.log(user);
+    console.log(userid);
 
     return (
-        user 
+        userid 
         ? (
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="container-fluid">
@@ -24,7 +24,7 @@ const Navbar = () => {
                         </ul>
                     </a>
                     <GetUser />
-                    <p>Bienvenue @{user.profil.pseudo}</p>
+                    {/* <p>Bienvenue @{user.profil.pseudo}</p> */}
                     <Logout />
                 </div>
             </nav>

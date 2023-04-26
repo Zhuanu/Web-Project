@@ -1,12 +1,10 @@
 const jwt = require("jsonwebtoken");
-// const { userFromRefreshToken } = require('./users');
 
 const config = process.env;
+const maxAge = 1 * 1 * 1 * 30;
 
-const maxAge = 1 * 1 * 1 * 10;
-
-const generateAccessToken = (user) => {
-    return jwt.sign({user}, process.env.JWT_SECRET, {
+const generateAccessToken = (userid) => {
+    return jwt.sign({userid}, process.env.JWT_SECRET, {
         expiresIn: maxAge
     });
 }
@@ -14,8 +12,7 @@ const generateAccessToken = (user) => {
 const refresh = (req, res, next) => {
     const refreshToken = req.cookies.refreshToken;
     if (refreshToken == null) {
-        // res.clearCookie("accessToken");
-        // res.clearCookie("refreshToken");
+        res.clearCookie("accessToken");
         return res.redirect("/api/user/sessionExpired");
     }
 
@@ -25,7 +22,7 @@ const refresh = (req, res, next) => {
             res.clearCookie("refreshToken");
             return res.redirect("/api/user/sessionExpired");
         }
-        const accessToken = generateAccessToken(decoded.user);
+        const accessToken = generateAccessToken(decoded.userid);
         next(accessToken)
     });
 }
@@ -35,25 +32,25 @@ const verifyToken = (req, res, next) => {
     let accessToken = req.cookies.accessToken;
     if (!accessToken) {
         refresh(req, res, (newAccessToken) => {
-            console.log("newAccessToken : ", newAccessToken)
+            // console.log("newAccessToken : ", newAccessToken)
             res.cookie("accessToken", newAccessToken, {httpOnly: true, maxAge: maxAge * 1000})
             jwt.verify(newAccessToken, config.JWT_SECRET, (err, decoded) => {
                 if (err) {
                     res.status(401).send("Invalid Token");
                 }
-                req.user = decoded.user; 
+                req.userid = decoded.userid; 
                 next();
             });
         })
 
     } else {
-        console.log("accessToken dans le else : ", accessToken)
+        // console.log("accessToken dans le else : ", accessToken)
         try {
             return jwt.verify(accessToken, config.JWT_SECRET, (err, decoded) => {
                 if (err) {
                     return res.status(401).send("Invalid Token");
                 }
-                req.user = decoded.user; 
+                req.userid = decoded.userid; 
                 next();
             });
 

@@ -93,11 +93,12 @@ async function nbUsers() {
     }
 }
 
-async function updateConnected(user_id) {
+async function updateConnected(userid) {
     try {
-        const user = await users.findOne({ "_id": user_id });
+        const ObjectID = new ObjectId(userid);
+        const user = await users.findOne({ "_id": ObjectID });
         return await users.updateOne(
-            { "_id": user_id },
+            { "_id": ObjectID },
             { $set: { "connexion.connected": !user.connexion.connected } })
 
     } catch(err) {
@@ -105,22 +106,24 @@ async function updateConnected(user_id) {
     }
 }
 
-async function updatePicture(user_id, picture) {
-    console.log(await users.findOne({ "_id": getObjectID(user_id) }));
-    await users.findOneAndUpdate({ "_id": user_id }, { $set: { "profil.picture": picture } });
+async function updatePicture(userid, picture) {
+    const objectID = new ObjectId(userid);
+    return await users.findOneAndUpdate({ "_id": objectID }, { $set: { "profil.picture": picture } });
 }
 
 
-async function addRefreshToken(refreshToken, user_id) {
-    await users.findOneAndUpdate({ "_id": user_id }, { $set: { "connexion.refreshToken": refreshToken } });
+async function addRefreshToken(refreshToken, userid) {
+    const objectID = new ObjectId(userid);
+    return await users.findOneAndUpdate({ "_id": objectID }, { $set: { "connexion.refreshToken": refreshToken } });
 }
 
 async function userFromRefreshToken(refreshToken) {
     return await users.findOne({ "connexion.refreshToken": refreshToken });
 }
 
-async function removeRefreshToken(user_id) {
-   return await users.findOneAndUpdate({ "_id": user_id }, { $set: { "connexion.refreshToken": "" } });
+async function removeRefreshToken(userid) {
+    const objectID = new ObjectId(userid);
+    return await users.findOneAndUpdate({ "_id": objectID }, { $set: { "connexion.refreshToken": "" } });
 }
 
 module.exports = {
