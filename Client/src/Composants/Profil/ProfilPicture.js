@@ -4,11 +4,10 @@ import styled from 'styled-components';
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 
-const fs = require('fs');
-
 const ProfilPictureCss = styled.img`
     border-radius: 50%;
     height: 100px;
+    width: 100px;
     display: block;
 `;
 
@@ -28,17 +27,19 @@ const DropZoneWrapper = styled.div`
 const ProfilPicture = () => {
 
     const handleDropzoneSubmit = async (acceptedFiles) => {
-        console.log("choisi", acceptedFiles[0])
+        const formData = new FormData();
+        formData.append("picture", acceptedFiles[0]);
         await axios({
             method: "POST",
             url: "http://localhost:8000/api/user/updatePicture",
             withCredentials: true,
-            data: {
-                picture: acceptedFiles[0]
-            }
+            data: formData,
+            headers: {
+                "Content-Type": "multipart/form-data" // set the Content-Type header to multipart/form-data
+              }
         })
         .then((res) => {
-            console.log(res.data.oldPicture)
+            console.log(res.data)
         })
         .catch((err) => {
             console.log(err)
@@ -47,11 +48,10 @@ const ProfilPicture = () => {
 
 
     const { userid } = useContext(UserContext);
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    const { getRootProps, getInputProps } = useDropzone({
         accept: {
             'image/jpg': [],
             'image/jpeg': [],
-            'image/png': []
           },
         onDrop: (acceptedFiles) => handleDropzoneSubmit(acceptedFiles),
     });
@@ -62,14 +62,21 @@ const ProfilPicture = () => {
             {/* <RoundImg src={user.profil.picture} alt="avatar" /> */}
             <section className="container">
                 <DropZoneWrapper {...getRootProps({className: 'dropzone'})}>
-                    <ProfilPictureCss src="https://i.pinimg.com/originals/c6/9e/cd/c69ecdcf899d0e29cc4bd8deef643f45.jpg" alt="pp"/>
-                    <input {...getInputProps()} />
+                    <input {...getInputProps()} name="picture" />
+                    <ProfilPictureCss src={`/uploads/${userid}.jpg`} alt="pp"/>
                 </DropZoneWrapper>
+                {/* <ProfilPictureCss src="https://i.pinimg.com/originals/c6/9e/cd/c69ecdcf899d0e29cc4bd8deef643f45.jpg" alt="pp"/> */}
+
+
+
+
+                {/*<form method="POST" action="http://localhost:8000/api/user/updatePicture" encType="multipart/form-data">
+                    <input type="file" name="picture" className="picture"></input>
+                    <input type="submit" value="Envoyer"></input>
+                </form> */}
                 {/* <p>@{user.profil.pseudo}</p> */}
             </section>
             <p>bio</p>
-            <p>Followers</p>
-            <p>Following</p>
         </div>
     );
 }

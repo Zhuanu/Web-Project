@@ -3,10 +3,12 @@ const express = require("express");
 const deleteFollower = require("./services/deleteFollower.js");
 const addFollowing = require("./services/addFollowing.js");
 const deleteFollowing = require("./services/deleteFollowing.js");
-const getListFollowers = require("./services/getList.js");
-const getListFollowing = require("./services/getList.js");
+const getFollowers = require("./services/getFollowers.js");
+const getFollowing = require("./services/getFollowing.js");
 // const friendFollowers = require("./services/friendList.js");
 // const friendFollowing = require("./services/friendList.js");
+
+const { verifyToken } = require('../user/auth.js');
 
 const friend = express.Router();
 
@@ -16,13 +18,13 @@ friend.use(express.json())
 
 friend
 
-    .get("/:userid/followers", getListFollowers)
+    .get("/followers", verifyToken, getFollowers)
 
     // .get("/:userid/followers/:friendid", friendFollowers.friendGetList)
 
     .delete("/:userid/followers/:friendid", deleteFollower)
 
-    .get("/:userid/following", getListFollowing)
+    .get("/following", verifyToken, getFollowing)
 
     // .get("/:userid/following/:friendid", friendFollowing.friendGetList)
 

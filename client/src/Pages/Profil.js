@@ -3,7 +3,9 @@ import { UserContext } from '../Composants/AppContext';
 
 import Log from '../Composants/Log';
 import BasicInfo from '../Composants/Profil/BasicInfo';
-import Follow from '../Composants/Profil/ProfilPicture';
+import ProfilPicture from '../Composants/Profil/ProfilPicture';
+import MyFollowers from '../Composants/Profil/MyFollowers';
+import MyFollowing from '../Composants/Profil/MyFollowing';
 
 const Profil = () => {
     const { userid } = useContext(UserContext);
@@ -15,7 +17,11 @@ const Profil = () => {
         ? 
         (<div className='profile-page'>
             {/* <h1>Profile Page</h1> */}
-            <Follow />
+            <ProfilPicture />
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <MyFollowers />
+                <MyFollowing />
+            </div>
             <BasicInfo />
         </div>)
         :

@@ -36,28 +36,7 @@ async function following(user, friend) {
     }
 }
 
-async function followingOrFollowers(url, myProfil) {
-    try {
-        const regexp = /^\/([^/]+)\/([^/]+)\/(.*)$/;
-        const match = regexp.exec(url);
-        if (match) {
-            const service = match[2];
-            if (service === "following") {
-                return service;
-            }
-            if (service === "followers") {
-                return service;
-            }
-        }
-        return undefined;
-
-    } catch(err) {
-        console.error(err);
-    }
-}
-
 module.exports = {
     remove,
-    following,
-    followingOrFollowers
+    following
 }

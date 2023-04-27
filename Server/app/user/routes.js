@@ -6,7 +6,7 @@ const logout = require("./services/logout.js");
 const getUser = require("./services/getUser.js");
 const deleteUser = require("./services/deleteUser.js");
 const getUserInfo = require("./services/getUserInfo.js");
-const updatePicture = require("./services/updatePicture.js");
+const { updatePicture, upload } = require("./services/updatePicture.js");
 
 const { verifyToken } = require('./auth.js');
 
@@ -19,7 +19,9 @@ user
 
     .post('/login', login)
     
-    .post('/updatePicture', verifyToken, updatePicture)
+    .post('/updatePicture', verifyToken, upload.single('picture'), (req, res) => {
+        res.send('File uploaded!' + req.userid)
+    })
 
     .get('/infos', getUserInfo)
 
