@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../AppContext";
 import styled from 'styled-components';
 import { useDropzone } from "react-dropzone";
@@ -22,9 +22,31 @@ const DropZoneWrapper = styled.div`
     height: 100px;
 `;
 
-
+// i want the element in the container to be centered
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`;
 
 const ProfilPicture = () => {
+
+    const [username, setUsername] = useState('');
+
+    useEffect(() => {
+        axios({
+            method: "GET",
+            url: "http://localhost:8000/api/user/get",
+            withCredentials: true,
+        })
+        .then((res) => {
+            setUsername(res.data.profil.pseudo)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }, []);
 
     const handleDropzoneSubmit = async (acceptedFiles) => {
         const formData = new FormData();
@@ -57,27 +79,13 @@ const ProfilPicture = () => {
     });
 
     return (
-        <div className="profil-comp">
-            <h1>Profil</h1>
-            {/* <RoundImg src={user.profil.picture} alt="avatar" /> */}
-            <section className="container">
-                <DropZoneWrapper {...getRootProps({className: 'dropzone'})}>
-                    <input {...getInputProps()} name="picture" />
-                    <ProfilPictureCss src={`/uploads/${userid}.jpg`} alt="pp"/>
-                </DropZoneWrapper>
-                {/* <ProfilPictureCss src="https://i.pinimg.com/originals/c6/9e/cd/c69ecdcf899d0e29cc4bd8deef643f45.jpg" alt="pp"/> */}
-
-
-
-
-                {/*<form method="POST" action="http://localhost:8000/api/user/updatePicture" encType="multipart/form-data">
-                    <input type="file" name="picture" className="picture"></input>
-                    <input type="submit" value="Envoyer"></input>
-                </form> */}
-                {/* <p>@{user.profil.pseudo}</p> */}
-            </section>
-            <p>bio</p>
-        </div>
+        <Container>
+            <DropZoneWrapper {...getRootProps({className: 'dropzone'})}>
+                <input {...getInputProps()} name="picture" />
+                <ProfilPictureCss src={`/uploads/${userid}.jpg`} alt="pp"/>
+            </DropZoneWrapper>
+            <p style={{}}>@{username}</p>
+        </Container>
     );
 }
 

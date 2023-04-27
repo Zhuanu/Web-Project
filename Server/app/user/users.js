@@ -22,7 +22,8 @@ async function createUser(info) {
                 followers: [], 
                 following: [], 
                 posts: [], 
-                picture: ""
+                picture: "",
+                creationDate: new Date().toDateString()
             },
             connexion: {
                 password: mdp, 
@@ -111,6 +112,27 @@ async function updatePicture(userid, picture) {
     return await users.findOneAndUpdate({ "_id": objectID }, { $set: { "profil.picture": picture } });
 }
 
+async function updateBio(userid, bio) {
+    const objectID = new ObjectId(userid);
+    return await users.findOneAndUpdate({ "_id": objectID }, { $set: { "profil.bio": bio } });
+}
+
+async function updateUsername(userid, username) {
+    const objectID = new ObjectId(userid);
+    return await users.findOneAndUpdate({ "_id": objectID }, { $set: { "profil.pseudo": username } });
+}
+
+async function updateEmail(userid, email) {
+    const objectID = new ObjectId(userid);
+    return await users.findOneAndUpdate({ "_id": objectID }, { $set: { "email": email } });
+}
+
+async function updatePassword(userid, password) {
+    const objectID = new ObjectId(userid);
+    const mdp = await bcrypt.hash(password, 10);
+    return await users.findOneAndUpdate({ "_id": objectID }, { $set: { "connexion.password": mdp }})
+}
+
 
 async function addRefreshToken(refreshToken, userid) {
     const objectID = new ObjectId(userid);
@@ -135,6 +157,10 @@ module.exports = {
     nbUsers,
     updateConnected,
     updatePicture,
+    updateBio,
+    updateUsername,
+    updateEmail,
+    updatePassword,
 
     addRefreshToken,
     userFromRefreshToken,

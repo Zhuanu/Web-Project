@@ -1,15 +1,29 @@
-import { useContext } from "react";
-import { UserContext } from "../../Composants/AppContext";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const BasicInfo = () => {
-    const { userid } = useContext(UserContext);
+    const [email, setEmail] = useState('');
+    const [dateNaissance, setDateNaissance] = useState('');
+
+    useEffect(() => {
+        axios({
+            method: "GET",
+            url: "http://localhost:8000/api/user/get",
+            withCredentials: true,
+        })
+        .then((res) => {
+            setEmail(res.data.email);
+            setDateNaissance(res.data.dateNaissance);
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }, []);
 
     return (
         <div>
-            <h1>Basic Information</h1>
-            {/* <p>Username: {user.profil.pseudo}</p>
-            <p>Email: {user.email}</p>
-            <p>Birthdate : {user.dateNaissance}</p> */}
+            <p>email: {email}</p>
+            <p>date de naissance: {dateNaissance}</p>
         </div>
     );
 }

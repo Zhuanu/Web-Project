@@ -10,7 +10,7 @@ module.exports = getUser = async (req, res, next) => {
         if (!(user = await getter.getUserById(userid))) {
             return res.status(401).json({status : 401, message: "Error : Unknown User"});
         }
-
+        console.log(user)
         return res.status(200).json(user);
 
     } catch(err) {

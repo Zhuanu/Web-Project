@@ -1,27 +1,59 @@
 import { useContext } from 'react';
 import { UserContext } from '../Composants/AppContext';
+import styled from 'styled-components';
 
 import Log from '../Composants/Log';
 import BasicInfo from '../Composants/Profil/BasicInfo';
 import ProfilPicture from '../Composants/Profil/ProfilPicture';
 import MyFollowers from '../Composants/Profil/MyFollowers';
 import MyFollowing from '../Composants/Profil/MyFollowing';
+import Bio from '../Composants/Profil/Bio';
+import EditProfil from '../Composants/Profil/EditProfil';
+
+const Container = styled.div`
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 60px;
+`;
+
+const Container2 = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 60px;
+`;
+
+// i want the element in the container to be centered
+const Container3 = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 60px;
+    margin-bottom: 60px;
+`;
+
 
 const Profil = () => {
     const { userid } = useContext(UserContext);
-
-
 
     return (
         userid 
         ? 
         (<div className='profile-page'>
-            {/* <h1>Profile Page</h1> */}
-            <ProfilPicture />
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <MyFollowers />
-                <MyFollowing />
-            </div>
+            <h1>Profile Page</h1>
+            <Container3>
+                <ProfilPicture />
+                <Container2>
+                    <EditProfil />
+                    <Container>
+                        <MyFollowers />
+                        <MyFollowing />
+                    </Container>
+                </Container2>
+            </Container3>
+            <Bio />
             <BasicInfo />
         </div>)
         :
