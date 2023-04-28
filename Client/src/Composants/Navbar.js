@@ -16,16 +16,15 @@ const Navbar = () => {
         userid 
         ? (
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <div className="container-fluid">
+                <div className="container-fluid sidebar">
                     <a className="navbar-brand" href="/">
-                        <ul>
+                        <ul style={{listStyleType:"none", margin: 0, padding: 0}}>
                             <li>logo</li>
-                            <li>nom du site</li>
+                            <li>nom</li>
                         </ul>
                     </a>
-                    <GetUser />
-                    {/* <p>Bienvenue @{user.profil.pseudo}</p> */}
-                    <Logout />
+                        <GetUser />
+                        <Logout />
                 </div>
             </nav>
         ) :

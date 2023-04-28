@@ -3,11 +3,11 @@ const getter = require("../../getter.js");
 
 const deleteFollowing = async (req, res, next) => {
     try {
-        if (req.params.userid === undefined || req.params.friendid === undefined) {
+        if (req.userid === undefined || req.params.friendid === undefined) {
             return res.status(400).json({status : 400, message: "Error : Missing Fields"});
         }
     
-        const user = await getter.getUserById(req.params.userid);
+        const user = await getter.getUserById(req.userid);
         const friend = await getter.getUserById(req.params.friendid);
 
         if (!user) {
@@ -28,7 +28,8 @@ const deleteFollowing = async (req, res, next) => {
         }
 
         friends.remove(friend, myIndex, user, friendIndex);
-        res.status(200).json({status : 200, message: "OK : Follower removed"});
+        const following = user.profil.following;
+        res.status(200).json({status : 200, message: "OK : Follower removed", following: following});
 
     } catch(err) {
         console.error(err);

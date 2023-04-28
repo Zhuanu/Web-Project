@@ -25,7 +25,6 @@ const getFollowers = async (req, res) => {
     } catch(err) {
         console.error(err);
         res.status(500).json({status : 500, message: "Error : Internal Server Error"});
-        // next();
     }
 }
 

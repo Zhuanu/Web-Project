@@ -22,7 +22,7 @@ friend
 
     // .get("/:userid/followers/:friendid", friendFollowers.friendGetList)
 
-    .delete("/:userid/followers/:friendid", deleteFollower)
+    .delete("/followers/:friendid", verifyToken, deleteFollower)
 
     .get("/following", verifyToken, getFollowing)
 
@@ -30,7 +30,7 @@ friend
 
     .post("/:userid/following/:friendid", addFollowing)
 
-    .delete("/:userid/following/:friendid", deleteFollowing)
+    .delete("/following/:friendid", verifyToken, deleteFollowing)
 
     .use((req, res) => {
         res.status(404).json({status : 404, "message": "Page not foundo"});

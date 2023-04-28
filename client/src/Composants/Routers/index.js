@@ -6,8 +6,6 @@ import Trending from "../../Pages/Trending";
 import Profil from "../../Pages/Profil";
 import Navbar from "../Navbar";
 
-import '../../App.css'
-
 const index = () => {
     return (
         <div className='grid-container'>

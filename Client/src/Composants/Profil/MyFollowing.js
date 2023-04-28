@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
@@ -13,26 +13,43 @@ const FriendPicture = styled.img`
     display: block;
 `;
 
-const MyFollowers = () => {
+const MyFollowing = () => {
 
-    useEffect(() => {
+    useEffect(() => handleDisplay(), [])
+
+    const handleDisplay = () => {
         axios({
             method: "GET",
             url: "http://localhost:8000/api/friend/following",
             withCredentials: true,
         })
         .then((res) => {
-            console.log(res.data)
             setFollowing(res.data.following)
         })
         .catch((err) => {
             console.log(err)
         })
-    }, [])
+    }
+
+
+    const handleDelete = (id) => {
+        axios({
+            method: "DELETE",
+            url: `http://localhost:8000/api/friend/following/${id}`,
+            withCredentials: true,
+        })
+        .then((res) => {
+            handleDisplay()
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
 
 
     const [following, setFollowing] = useState([]);
     const [show, setShow] = useState(false);
+
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -45,7 +62,7 @@ const MyFollowers = () => {
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>following</Modal.Title>
+                    <Modal.Title style={{ width: '50%', margin: '0 auto' }}>following</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                 <ul>
@@ -55,17 +72,14 @@ const MyFollowers = () => {
                             <FriendPicture src={`/uploads/${f.id}.jpg`} alt={f.id + "'s profil picture"} />
                             <p style={{ margin: '0 0 0 10px' }}>{f.pseudo}</p>
                         </div>
-                        <button>Retirer</button>
+                        <button onClick={() => {handleDelete(f.id)}}>Delete</button>
                         </li>
                     ))}
                 </ul>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
                     <Button variant="primary" onClick={handleClose}>
-                        Save Changes
+                        Close
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -73,4 +87,4 @@ const MyFollowers = () => {
   );
 };
 
-export default MyFollowers;
+export default MyFollowing;
