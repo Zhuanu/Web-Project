@@ -2,11 +2,11 @@ const getter = require("../../getter.js")
 
 const getFollowing = async (req, res) => {
     try {
-        if (req.userid === undefined) {
+        if (req.params.friendid === undefined) {
             return res.status(400).json({status : 400, message: "Error : Missing Fields"});
         }
 
-        const user = await getter.getUserById(req.userid);
+        const user = await getter.getUserById(req.params.friendid);
         if (!user) {
             return res.status(401).json({status : 401, message: "Error : Unknown User"});
         }

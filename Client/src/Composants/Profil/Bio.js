@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { UserContext } from '../AppContext';
 
 export const DescriptionContainer = styled.div`
   display: flex;
@@ -9,39 +10,21 @@ export const DescriptionContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-// export const DescriptionInput = styled.input`
-//   padding: 10px;
-//   margin-bottom: 10px;
-//   border: 1px solid #ccc;
-//   border-radius: 5px;
-//   width: 100%;
-//   max-width: 400px;
-// `;
-
-// export const DescriptionButton = styled.button`
-//   padding: 10px 20px;
-//   background-color: #007bff;
-//   color: #fff;
-//   border: none;
-//   border-radius: 5px;
-//   cursor: pointer;
-//   transition: all 0.3s ease;
-  
-//   &:hover {
-//     background-color: #0069d9;
-//   }
-// `;
-
-
 const Bio = () => {
     const [bio, setBio] = useState('')
     const [creationDate, setCreationDate] = useState('')
+    const { profil, userid } = useContext(UserContext);
     
 
     useEffect(() => {
+        const me = userid === profil;
+        const url = me
+        ? "http://localhost:8000/api/user/get"
+        : `http://localhost:8000/api/friend/profil/${window.location.href.split('/')[4]}`
+        
         axios({
             method: "GET",
-            url: "http://localhost:8000/api/user/get",
+            url: url,
             withCredentials: true,
         })
         .then((res) => {
@@ -51,7 +34,7 @@ const Bio = () => {
         .catch((err) => {
             console.log(err)
         })
-    }, []);
+    }, [profil, userid]);
 
     return (
         <DescriptionContainer>

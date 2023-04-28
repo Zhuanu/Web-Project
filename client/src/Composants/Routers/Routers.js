@@ -1,12 +1,14 @@
-import React from "react";
+import { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "../../Pages/Home";
-import Trending from "../../Pages/Trending";
+import ProfilFriend from "../../Pages/ProfilFriend";
 import Profil from "../../Pages/Profil";
 import Navbar from "../Navbar";
+import { UserContext } from "../AppContext";
 
-const index = () => {
+const Routers = () => {
+    const { userid, profil } = useContext(UserContext);
     return (
         <div className='grid-container'>
             <Navbar />
@@ -14,8 +16,7 @@ const index = () => {
                 <Router>
                     <Routes>
                         <Route path="/" element={<Home/>} />
-                        <Route path="/trending" element={<Trending/>} />
-                        <Route path="/profil" element={<Profil/>} />
+                        {userid === profil ? <Route path="/profil" element={<Profil/>} /> : <Route path="/profil/:id" element={<ProfilFriend/>} />}
                         <Route path="*" element={<Navigate to="/profil" />} />
                     </Routes>
                 </Router>
@@ -24,4 +25,4 @@ const index = () => {
     );
 };
 
-export default index;
+export default Routers;

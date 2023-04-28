@@ -1,14 +1,16 @@
 import { useContext } from 'react';
 import { UserContext } from '../Composants/AppContext';
-import styled from 'styled-components';
 
 import Log from '../Composants/Log';
 import BasicInfo from '../Composants/Profil/BasicInfo';
 import ProfilPicture from '../Composants/Profil/ProfilPicture';
+
+
 import MyFollowers from '../Composants/Profil/MyFollowers';
 import MyFollowing from '../Composants/Profil/MyFollowing';
 import Bio from '../Composants/Profil/Bio';
 import EditProfil from '../Composants/Profil/EditProfil';
+import styled from "styled-components";
 
 const Container = styled.div`
     display: inline-flex;
@@ -24,7 +26,6 @@ const Container2 = styled.div`
     margin-left: 60px;
 `;
 
-// i want the element in the container to be centered
 const Container3 = styled.div`
     display: flex;
     flex-direction: row;

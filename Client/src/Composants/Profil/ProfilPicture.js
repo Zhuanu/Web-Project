@@ -33,11 +33,23 @@ const Container = styled.div`
 const ProfilPicture = () => {
 
     const [username, setUsername] = useState('');
+    const { userid, profil } = useContext(UserContext);
+    const { getRootProps, getInputProps } = useDropzone({
+        accept: {
+            'image/jpg': [],
+          },
+        onDrop: (acceptedFiles) => handleDropzoneSubmit(acceptedFiles),
+    });
 
     useEffect(() => {
+        const me = userid === profil;
+        const url = me
+        ? "http://localhost:8000/api/user/get"
+        : `http://localhost:8000/api/friend/profil/${window.location.href.split('/')[4]}`
+
         axios({
             method: "GET",
-            url: "http://localhost:8000/api/user/get",
+            url: url,
             withCredentials: true,
         })
         .then((res) => {
@@ -46,7 +58,7 @@ const ProfilPicture = () => {
         .catch((err) => {
             console.log(err)
         })
-    }, []);
+    }, [profil, userid]);
 
     const handleDropzoneSubmit = async (acceptedFiles) => {
         const formData = new FormData();
@@ -57,35 +69,34 @@ const ProfilPicture = () => {
             withCredentials: true,
             data: formData,
             headers: {
-                "Content-Type": "multipart/form-data" // set the Content-Type header to multipart/form-data
+                "Content-Type": "multipart/form-data"
               }
         })
         .then((res) => {
-            console.log(res.data)
+            console.log(res.data);
+            window.location.reload();
         })
         .catch((err) => {
             console.log(err)
         })
     }
 
-
-    const { userid } = useContext(UserContext);
-    const { getRootProps, getInputProps } = useDropzone({
-        accept: {
-            'image/jpg': [],
-            'image/jpeg': [],
-          },
-        onDrop: (acceptedFiles) => handleDropzoneSubmit(acceptedFiles),
-    });
-
     return (
-        <Container>
+        userid === profil ? 
+        (<Container>
             <DropZoneWrapper {...getRootProps({className: 'dropzone'})}>
                 <input {...getInputProps()} name="picture" />
-                <ProfilPictureCss src={`/uploads/${userid}.jpg`} alt="pp"/>
+                <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/>
             </DropZoneWrapper>
-            <p style={{}}>@{username}</p>
+            <p>@{username}</p>
         </Container>
+        ) :
+        (<Container>
+            <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/>
+            <p>@{username}</p>
+        </Container>
+        )
+
     );
 }
 

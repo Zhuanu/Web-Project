@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from '../AppContext';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
 
 import axios from "axios";
 
@@ -14,25 +16,56 @@ const FriendPicture = styled.img`
 `;
 
 const MyFollowers = () => {
+    const [followers, setFollowers] = useState([]);
+    const [original, setOriginal] = useState([]);
+    const [show, setShow] = useState(false);
+    const { userid, profil, setProfil } = useContext(UserContext);
 
-    useEffect(() => handleDisplay(), [])
+    useEffect(() => {
+        handleDisplay();
+    }, [profil]);
+
+    useEffect(() => handleFollowing(), []);
 
     const handleDisplay = () => {
+        const me = userid === profil;
+        const url = me 
+        ? "http://localhost:8000/api/friend/followers" 
+        : `http://localhost:8000/api/friend/followers/${window.location.href.split('/')[4]}`
+
         axios({
             method: "GET",
-            url: "http://localhost:8000/api/friend/followers",
+            url: url,
             withCredentials: true,
         })
         .then((res) => {
-            setFollowers(res.data.followers)
+            if (me) {
+                setFollowers(res.data.followers)
+            }
+            else {
+                setFollowers(res.data.followers)
+            }
         })
         .catch((err) => {
             console.log(err)
         })
     }
 
+     const handleFollowing = () => {
+        axios({
+            method: "GET",
+            url: "http://localhost:8000/api/friend/following",
+            withCredentials: true,
+        })
+        .then((res) => {
+            setOriginal(res.data.following)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+     }
 
-    const handleDelete = (id) => {
+    const handleDeleteFollowers = (id) => {
         axios({
             method: "DELETE",
             url: `http://localhost:8000/api/friend/followers/${id}`,
@@ -46,14 +79,58 @@ const MyFollowers = () => {
         })
     }
 
-    const handleFriend = (id) => {
-
+    const handleDeleteFollowing = (id) => {
+        axios({
+            method: "DELETE",
+            url: `http://localhost:8000/api/friend/following/${id}`,
+            withCredentials: true,
+        })
+        .then((res) => {
+            handleDisplay()
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }
 
+    const handleFriend = (id) => {
+        axios({
+            method: "GET",
+            url: `http://localhost:8000/api/friend/profil/${id}`,
+            withCredentials: true,
+        })
+        .then((res) => {
+            console.log(res.data)
+            console.log(original)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
 
-    const [followers, setFollowers] = useState([]);
-    const [show, setShow] = useState(false);
+    const handleAdd = (id) => {
+        console.log(id, "=====================")
+        axios({
+            method: "POST",
+            url: `http://localhost:8000/api/friend/following/${id}`,
+            withCredentials: true,
+        })
+        .then((res) => {
+            handleDisplay()
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
 
+    const appartient = (id) => {
+        for (let i = 0; i < original.length; i++) {
+            if (JSON.stringify(original[i]) === JSON.stringify(id)) {
+                return true
+            }
+        }
+        return false
+    }
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -72,11 +149,15 @@ const MyFollowers = () => {
                 <ul>
                     {followers.map((follower) => (
                         <li key={follower.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }} onClick={() => { handleFriend(follower.id) }}>
+                        <Link to={`/profil/${follower.id}`} style={{ display: 'flex', alignItems: 'center' }} onClick={() => { handleFriend(follower.id); setProfil(follower.id) }}>
                             <FriendPicture src={`/uploads/${follower.id}.jpg`} alt={follower.id + "'s profil picture"} />
                             <p style={{ margin: '0 0 0 10px' }}>{follower.pseudo}</p>
-                        </div>
-                        <button onClick={() => {handleDelete(follower.id)}}>Delete</button>
+                        </Link>
+
+                        {userid === profil && (<button className="btn btn-danger" onClick={() => {handleDeleteFollowers(follower.id)}}>Delete</button>)}
+                        {userid !== profil && appartient(follower) && (<button className="btn btn-secondary" onClick={() => {handleDeleteFollowing(follower.id)}}>Suivi(e)</button>)}
+                        {userid !== profil && !appartient(follower) && userid !== follower.id && (<button className="btn btn-success" onClick={() => {handleAdd(follower.id)}}>Follow</button>)}
+
                         </li>
                     ))}
                 </ul>

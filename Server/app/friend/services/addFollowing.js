@@ -3,15 +3,16 @@ const getter = require("../../getter.js");
 
 const addFollowing = async (req, res, next) => {
     try {
-        if (req.params.userid === undefined || req.params.friendid === undefined) {
+
+        if (req.params.friendid === undefined) {
             return res.status(400).json({status : 400, message: "Error : Missing Fields"});
         }
 
-        if (req.params.userid == req.params.friendid) {
+        if (req.userid == req.params.friendid) {
             return res.status(400).json({status : 400, message: "Error : You can't follow yourself"});
         }
-    
-        const user = await getter.getUserById(req.params.userid);
+
+        const user = await getter.getUserById(req.userid);
         const friend = await getter.getUserById(req.params.friendid);
 
         if (!user) {
@@ -23,7 +24,6 @@ const addFollowing = async (req, res, next) => {
             return;
         }
     
-
         const result = user.profil.following.find(f => f.toString() == friend._id.toString());
         const result2 = friend.profil.followers.find(follower => follower.toString() == user._id.toString());
 

@@ -1,5 +1,4 @@
 const getter = require("../../getter.js")
-const friends = require('../friends.js');
 
 const getFollowers = async (req, res) => {
     try {
@@ -16,7 +15,10 @@ const getFollowers = async (req, res) => {
 
         const result = []
         for (const id of list) {
-            const friend = await getter.getUserById(id);
+            const friend = await getter.getUserById(id.toString());
+            if (!friend) {
+                continue;
+            }
             result.push({id: id, pseudo: friend.profil.pseudo})
         }
 

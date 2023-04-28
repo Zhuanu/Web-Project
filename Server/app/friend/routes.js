@@ -5,8 +5,10 @@ const addFollowing = require("./services/addFollowing.js");
 const deleteFollowing = require("./services/deleteFollowing.js");
 const getFollowers = require("./services/getFollowers.js");
 const getFollowing = require("./services/getFollowing.js");
-// const friendFollowers = require("./services/friendList.js");
-// const friendFollowing = require("./services/friendList.js");
+const getProfil = require("./services/getProfil.js");
+
+const friendFollowers = require("./services/friendFollowers.js");
+const friendFollowing = require("./services/friendFollowing.js");
 
 const { verifyToken } = require('../user/auth.js');
 
@@ -20,17 +22,19 @@ friend
 
     .get("/followers", verifyToken, getFollowers)
 
-    // .get("/:userid/followers/:friendid", friendFollowers.friendGetList)
+    .get("/followers/:friendid", verifyToken, friendFollowers)
 
     .delete("/followers/:friendid", verifyToken, deleteFollower)
 
     .get("/following", verifyToken, getFollowing)
 
-    // .get("/:userid/following/:friendid", friendFollowing.friendGetList)
+    .get("/following/:friendid", verifyToken, friendFollowing)
 
-    .post("/:userid/following/:friendid", addFollowing)
+    .post("/following/:friendid", verifyToken, addFollowing)
 
     .delete("/following/:friendid", verifyToken, deleteFollowing)
+
+    .get("/profil/:userid", verifyToken, getProfil)
 
     .use((req, res) => {
         res.status(404).json({status : 404, "message": "Page not foundo"});

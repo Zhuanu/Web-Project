@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from '../AppContext';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
 
 import axios from "axios";
 
@@ -14,13 +16,37 @@ const FriendPicture = styled.img`
 `;
 
 const MyFollowing = () => {
+    const [following, setFollowing] = useState([]);
+    const [original, setOriginal] = useState([]);
+    const [show, setShow] = useState(false);
+    const { userid, profil, setProfil } = useContext(UserContext);
 
-    useEffect(() => handleDisplay(), [])
+    useEffect(() => handleDisplay(), [profil])
+    useEffect(() => handleFollowing(), []);
 
-    const handleDisplay = () => {
+    const handleFollowing = () => {
         axios({
             method: "GET",
             url: "http://localhost:8000/api/friend/following",
+            withCredentials: true,
+        })
+        .then((res) => {
+            setOriginal(res.data.following)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+     }
+
+    const handleDisplay = () => {
+        const me = userid === profil;
+        const url = me
+        ? "http://localhost:8000/api/friend/following"
+        : `http://localhost:8000/api/friend/following/${window.location.href.split('/')[4]}`
+
+        axios({
+            method: "GET",
+            url: url,
             withCredentials: true,
         })
         .then((res) => {
@@ -31,8 +57,7 @@ const MyFollowing = () => {
         })
     }
 
-
-    const handleDelete = (id) => {
+    const handleDeleteFollowing = (id) => {
         axios({
             method: "DELETE",
             url: `http://localhost:8000/api/friend/following/${id}`,
@@ -46,10 +71,43 @@ const MyFollowing = () => {
         })
     }
 
+    const handleFriend = (id) => {
+        axios({
+            method: "GET",
+            url: `http://localhost:8000/api/friend/profil/${id}`,
+            withCredentials: true,
+        })
+        .then((res) => {
+            console.log(res.data)
+            console.log(original, "fjekaljfkleajfkleajflaekflkae")
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
 
-    const [following, setFollowing] = useState([]);
-    const [show, setShow] = useState(false);
+    const handleAdd = (id) => {
+        axios({
+            method: "POST",
+            url: `http://localhost:8000/api/friend/following/${id}`,
+            withCredentials: true,
+        })
+        .then((res) => {
+            handleDisplay()
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
 
+    const appartient = (id) => {
+        for (let i = 0; i < original.length; i++) {
+            if (JSON.stringify(original[i]) === JSON.stringify(id)) {
+                return true
+            }
+        }
+        return false
+    }
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -68,11 +126,15 @@ const MyFollowing = () => {
                 <ul>
                     {following.map((f) => (
                         <li key={f.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Link to={`/profil/${f.id}`} style={{ display: 'flex', alignItems: 'center' }} onClick={() => { handleFriend(f.id); setProfil(f.id) }}>
                             <FriendPicture src={`/uploads/${f.id}.jpg`} alt={f.id + "'s profil picture"} />
                             <p style={{ margin: '0 0 0 10px' }}>{f.pseudo}</p>
-                        </div>
-                        <button onClick={() => {handleDelete(f.id)}}>Delete</button>
+                        </Link>
+                        
+                        {userid === profil && (<button className="btn btn-secondary" onClick={() => {handleDeleteFollowing(f.id)}}>Suivi(e)</button>)}
+                        {userid !== profil && appartient(f) && (<button className="btn btn-secondary" onClick={() => {handleDeleteFollowing(f.id)}}>Suivi(e)</button>)}
+                        {userid !== profil && !appartient(f) && userid !== f.id && (<button className="btn btn-success" onClick={() => {handleAdd(f.id)}}>Follow</button>)}
+
                         </li>
                     ))}
                 </ul>

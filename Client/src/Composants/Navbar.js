@@ -9,8 +9,6 @@ import '../App.css'
 
 const Navbar = () => {
     const { userid } = useContext(UserContext);
-    
-    console.log(userid);
 
     return (
         userid 
