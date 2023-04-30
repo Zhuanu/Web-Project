@@ -26,8 +26,10 @@ async function following(user, friend) {
     try {
         const newFollowing = user.profil.following
         newFollowing.push(friend._id);
+        
         const newFollower = friend.profil.followers
         newFollower.push(user._id);
+
         await users.updateOne({ _id: user._id }, { $set: { "profil.following": newFollowing } });
         await users.updateOne({ _id: friend._id }, { $set: { "profil.followers": newFollower } });
 

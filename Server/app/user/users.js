@@ -94,6 +94,15 @@ async function nbUsers() {
     }
 }
 
+async function getUsers() {
+    try {
+        return await users.find().toArray();
+
+    } catch(err) {
+        console.error(err);
+    }
+}
+
 async function updateConnected(userid) {
     try {
         const ObjectID = new ObjectId(userid);
@@ -155,6 +164,8 @@ module.exports = {
     authentification,
     deleteUser,
     nbUsers,
+    getUsers,
+
     updateConnected,
     updatePicture,
     updateBio,

@@ -2,6 +2,7 @@ import axios from 'axios';
 import cookie from 'js-cookie';
 import { useContext } from 'react';
 import { UserContext } from '../AppContext';
+import { BoxArrowLeft } from 'react-bootstrap-icons';
 
 const Logout = () => {
 
@@ -34,9 +35,11 @@ const Logout = () => {
         });
     }
     
-    return <li onClick={logout}>
-        <img src="/logout.jpg" alt = "icon" />
-    </li>
+    return <div className="d-flex justify-content-end" onClick={logout}>
+                <BoxArrowLeft className="icon" size={30} />
+                <p className="flex-grow-0" style={{margin:"0 0 0 10px"}}>Log out</p>
+            </div>
+  
 }
 
 export default Logout;

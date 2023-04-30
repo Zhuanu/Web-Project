@@ -10,7 +10,7 @@ import { UserContext } from "../AppContext";
 const Routers = () => {
     const { userid, profil } = useContext(UserContext);
     return (
-        <div className='grid-container'>
+        <div className=''>
             <Navbar />
             <div className="main-content">
                 <Router>

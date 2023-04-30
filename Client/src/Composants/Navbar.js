@@ -13,18 +13,18 @@ const Navbar = () => {
     return (
         userid 
         ? (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <div className="container-fluid sidebar">
-                    <a className="navbar-brand" href="/">
-                        <ul style={{listStyleType:"none", margin: 0, padding: 0}}>
-                            <li>logo</li>
-                            <li>nom</li>
-                        </ul>
-                    </a>
-                        <GetUser />
-                        <Logout />
-                </div>
-            </nav>
+            <ul className="container-fluid list-unstyled nav nav-tabs">
+                <li className='p-2 flex-grow-1'>
+                    <a className="nav-link text-start">logo + nom du site</a>
+                </li>
+                <li className='p-2 flex-grow-1'>
+                    <a className="nav-link text-center"><GetUser /></a>
+                </li>
+                <li className='p-2 flex-grow-1'>
+                    <a className="nav-link text-end"><Logout /></a>
+                </li>
+            </ul>
+
         ) :
         (<nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">

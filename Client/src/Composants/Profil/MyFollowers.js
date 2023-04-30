@@ -100,8 +100,7 @@ const MyFollowers = () => {
             withCredentials: true,
         })
         .then((res) => {
-            console.log(res.data)
-            console.log(original)
+            handleClose()
         })
         .catch((err) => {
             console.log(err)
@@ -109,7 +108,6 @@ const MyFollowers = () => {
     }
 
     const handleAdd = (id) => {
-        console.log(id, "=====================")
         axios({
             method: "POST",
             url: `http://localhost:8000/api/friend/following/${id}`,
@@ -149,7 +147,7 @@ const MyFollowers = () => {
                 <ul>
                     {followers.map((follower) => (
                         <li key={follower.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Link to={`/profil/${follower.id}`} style={{ display: 'flex', alignItems: 'center' }} onClick={() => { handleFriend(follower.id); setProfil(follower.id) }}>
+                        <Link to={`/profil/${follower.id}`} style={{ display: 'flex', alignItems: 'center' }} onClick={() => { setProfil(follower.id); handleFriend(follower.id) }}>
                             <FriendPicture src={`/uploads/${follower.id}.jpg`} alt={follower.id + "'s profil picture"} />
                             <p style={{ margin: '0 0 0 10px' }}>{follower.pseudo}</p>
                         </Link>

@@ -1,5 +1,5 @@
-const friends = require('../friends.js');
-const getter = require("../../getter.js");
+const { following } = require('../friends.js');
+const { getUserById } = require("../../getter.js");
 
 const addFollowing = async (req, res, next) => {
     try {
@@ -12,8 +12,8 @@ const addFollowing = async (req, res, next) => {
             return res.status(400).json({status : 400, message: "Error : You can't follow yourself"});
         }
 
-        const user = await getter.getUserById(req.userid);
-        const friend = await getter.getUserById(req.params.friendid);
+        const user = await getUserById(req.userid);
+        const friend = await getUserById(req.params.friendid);
 
         if (!user) {
             return res.status(401).json({status : 401, message: "Error : Unknown User"});
@@ -33,9 +33,9 @@ const addFollowing = async (req, res, next) => {
             return;
         }
     
-        friends.following(user, friend);
-    
-        res.status(200).json({status : 200, message: "OK : You are now following this user"});
+        await following(user, friend);
+        const f = user.profil.following;
+        res.status(200).json({status : 200, message: "OK : You are now following this user", following: f});
     
     } catch(err) {
         console.error(err);

@@ -26,7 +26,7 @@ user
 
     .post('/editProfil', verifyToken, editProfil)
 
-    .get('/infos', getUserInfo)
+    .get('/infos', verifyToken, getUserInfo)
 
     .get('/logout', verifyToken, logout)
 

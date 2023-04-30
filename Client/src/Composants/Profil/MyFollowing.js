@@ -78,8 +78,7 @@ const MyFollowing = () => {
             withCredentials: true,
         })
         .then((res) => {
-            console.log(res.data)
-            console.log(original, "fjekaljfkleajfkleajflaekflkae")
+            handleClose()
         })
         .catch((err) => {
             console.log(err)
@@ -126,7 +125,7 @@ const MyFollowing = () => {
                 <ul>
                     {following.map((f) => (
                         <li key={f.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Link to={`/profil/${f.id}`} style={{ display: 'flex', alignItems: 'center' }} onClick={() => { handleFriend(f.id); setProfil(f.id) }}>
+                        <Link to={`/profil/${f.id}`} style={{ display: 'flex', alignItems: 'center' }} onClick={() => { setProfil(f.id); handleFriend(f.id) }}>
                             <FriendPicture src={`/uploads/${f.id}.jpg`} alt={f.id + "'s profil picture"} />
                             <p style={{ margin: '0 0 0 10px' }}>{f.pseudo}</p>
                         </Link>
