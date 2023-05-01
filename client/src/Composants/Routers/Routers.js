@@ -2,13 +2,14 @@ import { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "../../Pages/Home";
-import ProfilFriend from "../../Pages/ProfilFriend";
+// import ProfilFriend from "../../Pages/ProfilFriend";
 import Profil from "../../Pages/Profil";
 import Navbar from "../Navbar";
 import { UserContext } from "../AppContext";
 
 const Routers = () => {
-    const { userid, profil } = useContext(UserContext);
+    const { profil } = useContext(UserContext);
+
     return (
         <div className=''>
             <Navbar />
@@ -16,8 +17,9 @@ const Routers = () => {
                 <Router>
                     <Routes>
                         <Route path="/" element={<Home/>} />
-                        {userid === profil ? <Route path="/profil" element={<Profil/>} /> : <Route path="/profil/:id" element={<ProfilFriend/>} />}
-                        <Route path="*" element={<Navigate to="/profil" />} />
+                        <Route path="/profil" element={<Profil/>} />
+                        <Route path={`/profil/${profil}`} element={<Profil/>} />
+                        <Route path="*" element={<Navigate to="/" />} />
                     </Routes>
                 </Router>
             </div>

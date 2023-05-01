@@ -15,135 +15,143 @@ const FriendPicture = styled.img`
     display: block;
 `;
 
-const MyFollowing = () => {
+const MyFollowing = ({ setFriend }) => {
+    const [isLoading, setIsLoading] = useState(true);
     const [following, setFollowing] = useState([]);
-    const [original, setOriginal] = useState([]);
     const [show, setShow] = useState(false);
-    const { userid, profil, setProfil } = useContext(UserContext);
+    const { userid, profil, setProfil, listFollowing, setlistFollowing } = useContext(UserContext);
 
-    useEffect(() => handleDisplay(), [profil])
-    useEffect(() => handleFollowing(), []);
-
-    const handleFollowing = () => {
-        axios({
-            method: "GET",
-            url: "http://localhost:8000/api/friend/following",
-            withCredentials: true,
-        })
-        .then((res) => {
-            setOriginal(res.data.following)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-     }
-
-    const handleDisplay = () => {
+    useEffect(() => {
+        setIsLoading(false);
         const me = userid === profil;
-        const url = me
-        ? "http://localhost:8000/api/friend/following"
-        : `http://localhost:8000/api/friend/following/${window.location.href.split('/')[4]}`
-
+        const url = me 
+        ? "http://localhost:8000/api/friend/following" 
+        : `http://localhost:8000/api/friend/following/${profil}`
         axios({
             method: "GET",
             url: url,
             withCredentials: true,
         })
         .then((res) => {
-            setFollowing(res.data.following)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-    }
+            const array = res.data.following;
+            const updatedArray = array.map((user) => {
+                const isFollowed = listFollowing.some((follow) => {
+                    return follow._id.toString() === user._id.toString();
+                });
+                return {
+                    ...user,
+                    isFollowed: isFollowed
+                };
+            });
+            setFollowing(updatedArray)
+        });
+    }, [profil, userid, listFollowing]);
 
-    const handleDeleteFollowing = (id) => {
-        axios({
-            method: "DELETE",
-            url: `http://localhost:8000/api/friend/following/${id}`,
-            withCredentials: true,
-        })
-        .then((res) => {
-            handleDisplay()
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-    }
 
-    const handleFriend = (id) => {
-        axios({
-            method: "GET",
-            url: `http://localhost:8000/api/friend/profil/${id}`,
-            withCredentials: true,
-        })
-        .then((res) => {
-            handleClose()
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-    }
-
-    const handleAdd = (id) => {
-        axios({
-            method: "POST",
-            url: `http://localhost:8000/api/friend/following/${id}`,
-            withCredentials: true,
-        })
-        .then((res) => {
-            handleDisplay()
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-    }
-
-    const appartient = (id) => {
-        for (let i = 0; i < original.length; i++) {
-            if (JSON.stringify(original[i]) === JSON.stringify(id)) {
-                return true
+    const handleDeleteFollowing = (userId) => {
+        const updatedList = following.map(user => {
+            if (user?._id.toString() === userId.toString()) {
+                axios({
+                    method: "DELETE",
+                    url: `http://localhost:8000/api/friend/following/${userId}`,
+                    withCredentials: true,
+                })
+                .then((res) => {
+                    setlistFollowing(res.data.following)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+                return {
+                    ...user,
+                    isFollowed: false
+                };
+            } else {
+                return user;
             }
-        }
-        return false
-    }
+        });
+        setFollowing(updatedList);
+    };
+
+
+    const handleFollow = (userId) => {
+        const updatedList = following.map(user => {
+            if (user?._id.toString() === userId.toString()) {
+                axios({
+                    method: "POST",
+                    url: `http://localhost:8000/api/friend/following/${userId}`,
+                    withCredentials: true,
+                })
+                .then((res) => {
+                    setlistFollowing(res.data.following)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+                return {
+                    ...user,
+                    isFollowed: true
+                };
+
+            } else {
+                return user;
+            }
+        });
+        setFollowing(updatedList);
+    };
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const handleRedirect = (user) => {
+        setProfil(user._id);
+        setFriend(user)
+        handleClose();
+    };
+
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
-                {`${following.length} following`}
-            </Button>
-
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title style={{ width: '50%', margin: '0 auto' }}>following</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                <ul>
-                    {following.map((f) => (
-                        <li key={f.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Link to={`/profil/${f.id}`} style={{ display: 'flex', alignItems: 'center' }} onClick={() => { setProfil(f.id); handleFriend(f.id) }}>
-                            <FriendPicture src={`/uploads/${f.id}.jpg`} alt={f.id + "'s profil picture"} />
-                            <p style={{ margin: '0 0 0 10px' }}>{f.pseudo}</p>
-                        </Link>
-                        
-                        {userid === profil && (<button className="btn btn-secondary" onClick={() => {handleDeleteFollowing(f.id)}}>Suivi(e)</button>)}
-                        {userid !== profil && appartient(f) && (<button className="btn btn-secondary" onClick={() => {handleDeleteFollowing(f.id)}}>Suivi(e)</button>)}
-                        {userid !== profil && !appartient(f) && userid !== f.id && (<button className="btn btn-success" onClick={() => {handleAdd(f.id)}}>Follow</button>)}
-
-                        </li>
-                    ))}
-                </ul>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="primary" onClick={handleClose}>
-                        Close
+            {isLoading ? (
+                <div>
+                    <div className="d-flex align-items-center justify-content-center">
+                        <strong>Loading...</strong>
+                        <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                    </div>  
+                </div>
+            ) : (
+                <div>
+                    <Button variant="primary" onClick={handleShow}>
+                        <b>{`${following.length}`}</b> following
                     </Button>
-                </Modal.Footer>
-            </Modal>
+
+                    <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title style={{ width: '50%', margin: '0 auto' }}>following</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                        <ul>
+                            {following.map((f) => (
+                                <li key={f._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <Link to={`/profil/${f._id}`} style={{ display: 'flex', alignItems: 'center' }} onClick={() => { handleRedirect(f) }}>
+                                    {f.profil.picture ? <FriendPicture src={`/uploads/${f._id}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
+                                    <p style={{ margin: '0 0 0 10px' }}>{f.profil.pseudo}</p>
+                                    <p>{f.isFollowed + ""}</p>
+                                </Link>
+                                
+                                {f?.isFollowed && (<button className="btn btn-secondary" onClick={() => {handleDeleteFollowing(f._id)}}>Suivi(e)</button>)}
+                                {!f?.isFollowed && userid !== f?._id && (<button className="btn btn-success" onClick={() => {handleFollow(f._id)}}>Follow</button>)}
+
+                                </li>
+                            ))}
+                        </ul>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="primary" onClick={handleClose}>
+                                Close
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+            </div>)}
         </>
   );
 };

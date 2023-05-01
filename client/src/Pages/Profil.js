@@ -1,16 +1,15 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from '../Composants/AppContext';
+import styled from "styled-components";
 
-import Log from '../Composants/Log';
+
+import Log from '../Composants/Log/Log';
 import BasicInfo from '../Composants/Profil/BasicInfo';
 import ProfilPicture from '../Composants/Profil/ProfilPicture';
-
-
 import MyFollowers from '../Composants/Profil/MyFollowers';
 import MyFollowing from '../Composants/Profil/MyFollowing';
 import Bio from '../Composants/Profil/Bio';
 import EditProfil from '../Composants/Profil/EditProfil';
-import styled from "styled-components";
 
 const Container = styled.div`
     display: inline-flex;
@@ -37,7 +36,8 @@ const Container3 = styled.div`
 
 
 const Profil = () => {
-    const { userid } = useContext(UserContext);
+    const { profil, userid } = useContext(UserContext);
+    const [friend, setFriend] = useState({});
 
     return (
         userid 
@@ -45,17 +45,17 @@ const Profil = () => {
         (<div className='profile-page'>
             <h1>Profile Page</h1>
             <Container3>
-                <ProfilPicture />
+                <ProfilPicture friend={friend} />
                 <Container2>
-                    <EditProfil />
+                    {userid === profil ? <EditProfil /> : null}
                     <Container>
-                        <MyFollowers />
-                        <MyFollowing />
+                        <MyFollowers setFriend={setFriend} />
+                        <MyFollowing setFriend={setFriend} />
                     </Container>
                 </Container2>
             </Container3>
             <Bio />
-            <BasicInfo />
+            {userid === profil ? <BasicInfo /> : null}
         </div>)
         :
         (<div className='log-page'>

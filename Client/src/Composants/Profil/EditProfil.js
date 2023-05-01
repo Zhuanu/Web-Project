@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../AppContext";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-
 import axios from "axios";
 
 const EditProfil = () => {
@@ -13,6 +13,8 @@ const EditProfil = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const [error, setError] = useState(false);
+
+    const { setUser } = useContext(UserContext);
 
     const handleCheck = (e) => {
         e.preventDefault();
@@ -46,14 +48,14 @@ const EditProfil = () => {
             data: data
         })
         .then((res) => {
-            console.log(res.data.message);
+            console.log("data EditProfil", res.data);
+            setUser(res.data.user)
             handleClose();
-            window.location.reload();
         })
         .catch((err) => {
             console.log(err);
         });
-      }
+    }
 
     return (
     <>

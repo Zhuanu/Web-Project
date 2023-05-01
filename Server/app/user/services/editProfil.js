@@ -12,22 +12,23 @@ const editProfil = async (req, res) => {
         }
 
         if (username) {
-            updateUsername(userid, username);
+            await updateUsername(userid, username);
         }
 
         if (email) {
-            updateEmail(userid, email);
+            await updateEmail(userid, email);
         }
 
         if (bio) {
-            updateBio(userid, bio);
+            await updateBio(userid, bio);
         }
 
         if (password) {
-            updatePassword(userid, password);
+            await updatePassword(userid, password);
         }
 
-        return res.status(200).json({ status: 200, message: "User updated" });
+        const result = await getUserById(userid);
+        return res.status(200).json({ status: 200, message: "User updated", user: result});
 
     } catch (err) {
         console.error(err);

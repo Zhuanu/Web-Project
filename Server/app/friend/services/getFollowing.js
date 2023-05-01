@@ -19,7 +19,7 @@ const getFollowing = async (req, res) => {
             if (!friend) {
                 continue
             }
-            result.push({id: id, pseudo: friend.profil.pseudo})
+            result.push(friend)
         }
 
         res.status(200).json({status : 200, message: "OK : Following list", following: result});

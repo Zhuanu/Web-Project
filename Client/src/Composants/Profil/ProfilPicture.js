@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import { UserContext } from "../AppContext";
 import styled from 'styled-components';
 import { useDropzone } from "react-dropzone";
@@ -22,7 +22,6 @@ const DropZoneWrapper = styled.div`
     height: 100px;
 `;
 
-// i want the element in the container to be centered
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -30,35 +29,16 @@ const Container = styled.div`
     justify-content: center;
 `;
 
-const ProfilPicture = () => {
-
-    const [username, setUsername] = useState('');
-    const { userid, profil } = useContext(UserContext);
+const ProfilPicture = ({ friend }) => {
+    const { userid, profil, user, setUser } = useContext(UserContext);
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
             'image/jpg': [],
+            'image/jpeg': [],
           },
         onDrop: (acceptedFiles) => handleDropzoneSubmit(acceptedFiles),
     });
 
-    useEffect(() => {
-        const me = userid === profil;
-        const url = me
-        ? "http://localhost:8000/api/user/get"
-        : `http://localhost:8000/api/friend/profil/${window.location.href.split('/')[4]}`
-
-        axios({
-            method: "GET",
-            url: url,
-            withCredentials: true,
-        })
-        .then((res) => {
-            setUsername(res.data.profil.pseudo)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-    }, [profil, userid]);
 
     const handleDropzoneSubmit = async (acceptedFiles) => {
         const formData = new FormData();
@@ -70,11 +50,11 @@ const ProfilPicture = () => {
             data: formData,
             headers: {
                 "Content-Type": "multipart/form-data"
-              }
+            }
         })
         .then((res) => {
-            console.log(res.data);
-            window.location.reload();
+            console.log("data ProfilPicture", res.data);
+            setUser(res.data.user)
         })
         .catch((err) => {
             console.log(err)
@@ -86,14 +66,14 @@ const ProfilPicture = () => {
         (<Container>
             <DropZoneWrapper {...getRootProps({className: 'dropzone'})}>
                 <input {...getInputProps()} name="picture" />
-                <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/>
+                {user?.profil.picture ? <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/> : <ProfilPictureCss src={`/uploads/default.jpg`} alt="pp"/>}
             </DropZoneWrapper>
-            <p>@{username}</p>
+            <p>@{user?.profil.pseudo}</p>
         </Container>
         ) :
         (<Container>
-            <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/>
-            <p>@{username}</p>
+            {friend?.profil.picture ? <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/> : <ProfilPictureCss src={`/uploads/default.jpg`} alt="pp"/>}
+            <p>@{user?.profil.pseudo}</p>
         </Container>
         )
 

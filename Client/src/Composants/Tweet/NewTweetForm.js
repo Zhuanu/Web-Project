@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { UserContext } from '../AppContext';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -31,6 +32,8 @@ const NewTweetForm = ({user, listFollowing}) => {
     const [file, setFile] = useState("");
     // const [listTweet, setListTweet] = useState([]);
 
+    const { userid } = useContext(UserContext);
+
     const handlePicture = (e) => {
 
     };
@@ -58,37 +61,20 @@ const NewTweetForm = ({user, listFollowing}) => {
 
             ) : (
                 <div className="container bg-light mx-auto d-block border" style={{width:"400px"}}>
-                    <h2 className='text-center'>Tweet</h2>
                     <div className="d-flex justify-content-between mx-auto p-2" >
                         <p><span className='fw-bold'>{user?.profil.followers.length + ""}</span> followers</p>
-                        <Link to="/profil">
-                            <FriendPicture src={`/uploads/${user?._id}.jpg`} alt="profil picture" />
-                        </Link>
+                        <h2 className='text-center'>Tweet</h2>
+                        {/* <Link to="/profil">
+                            {user?.profil.picture ? <FriendPicture src={`/uploads/${userid}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
+                        </Link> */}
                         <p><span className='fw-bold'>{listFollowing?.length + ""}</span> following</p>
                     </div>
 
                     <div className="d-flex row justify-content-center">
-                        <textarea rows='5' name='tweet' id='tweet' placeholder="What's happening ?" value={tweet} onChange={(e) => {setTweet(e.target.value)}}/>
-                        { picture || tweet ? (
-                            <ul className="card-group list-unstyled bg-warning position-relative">
-                                <div className="card text-center">
-                                    <div className="card-header d-flex align-items-center">
-                                        <FriendPicture src={`/uploads/${user?._id}.jpg`} alt="profil picture" />
-                                        <p className='ms-3 mb-0'>@{user?.profil.pseudo}</p>
-                                        <p style={{paddingLeft:"120px"}}>{displayDate()}</p>
-                                    </div>
-                                    <div className="card-body">
-                                        <p className="card-text">{tweet}</p>
-                                        {picture && (
-                                            <ImageInsert src={picture} alt="picture" />
-                                        )}
-                                    </div>
-                                </div>
-                            </ul>
-                        ) : null}
+                        <textarea rows='5' style={{resize:"none"}} name='tweet' id='tweet' placeholder="What's happening ?" value={tweet} onChange={(e) => {setTweet(e.target.value)}}/>
                     </div>
 
-                    <div className="row position-relative container">
+                    <div className="footer row position-relative container">
 
                         <div className='icon'>
                             { !picture && (
@@ -105,6 +91,24 @@ const NewTweetForm = ({user, listFollowing}) => {
                             <button className='btn btn-danger' onClick={() => {handleCancel()}}>Cancel</button>
                             <button className='btn btn-primary' onClick={() => {handleSendTweet()}}>Tweet</button>
                         </li>
+
+                        { picture || tweet ? (
+                            <ul className="card-group list-unstyled bg-warning position-relative">
+                                <div className="card text-center">
+                                    <div className="card-header d-flex align-items-center">
+                                        {user?.profil.picture ? <FriendPicture src={`/uploads/${userid}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
+                                        <p className='ms-3 mb-0'>@{user?.profil.pseudo}</p>
+                                        <p style={{paddingLeft:"120px"}}>{displayDate()}</p>
+                                    </div>
+                                    <div className="card-body">
+                                        <p className="card-text">{tweet}</p>
+                                        {picture && (
+                                            <ImageInsert src={picture} alt="picture" />
+                                        )}
+                                    </div>
+                                </div>
+                            </ul>
+                        ) : null}
 
                     </div>
                 </div>

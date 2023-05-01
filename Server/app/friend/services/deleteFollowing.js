@@ -29,7 +29,11 @@ const deleteFollowing = async (req, res, next) => {
 
         await remove(friend, myIndex, user, friendIndex);
         const following = user.profil.following;
-        res.status(200).json({status : 200, message: "OK : Follower removed", following: following});
+        const result = [];
+        for (const id of following) {
+            result.push(await getUserById(id.toString()));
+        }
+        res.status(200).json({status : 200, message: "OK : Follower removed", following: result});
 
     } catch(err) {
         console.error(err);

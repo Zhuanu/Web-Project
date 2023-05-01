@@ -27,15 +27,20 @@ const addFollowing = async (req, res, next) => {
         const result = user.profil.following.find(f => f.toString() == friend._id.toString());
         const result2 = friend.profil.followers.find(follower => follower.toString() == user._id.toString());
 
-
         if (result !== undefined || result2 !== undefined) {
             res.status(400).json({status : 400, message: "Error : You already follow this user"});
             return;
         }
+
     
         await following(user, friend);
         const f = user.profil.following;
-        res.status(200).json({status : 200, message: "OK : You are now following this user", following: f});
+        const result3 = [];
+        for (const id of f) {
+            result3.push(await getUserById(id.toString()));
+        }
+
+        res.status(200).json({status : 200, message: "OK : You are now following this user", following: result3});
     
     } catch(err) {
         console.error(err);

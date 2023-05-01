@@ -6,7 +6,7 @@ const logout = require("./services/logout.js");
 const getUser = require("./services/getUser.js");
 const deleteUser = require("./services/deleteUser.js");
 const getUserInfo = require("./services/getUserInfo.js");
-const upload = require("./services/updatePicture.js");
+const {upload, updatePicture } = require("./services/updatePicture.js");
 const editProfil = require("./services/editProfil.js");
 
 const { verifyToken } = require('./auth.js');
@@ -20,9 +20,8 @@ user
 
     .post('/login', login)
     
-    .post('/updatePicture', verifyToken, upload.single('picture'), (req, res) => {
-        res.send('File uploaded!' + req.userid)
-    })
+    .post('/updatePicture', verifyToken, upload.single('picture'), updatePicture)
+    // .post('/updatePicture', verifyToken, upload.single('picture'), (req, res) => {res.status(200).json({ status: 200, message: "Picture updated" })})
 
     .post('/editProfil', verifyToken, editProfil)
 

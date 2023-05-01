@@ -32,7 +32,6 @@ const verifyToken = (req, res, next) => {
     let accessToken = req.cookies.accessToken;
     if (!accessToken) {
         refresh(req, res, (newAccessToken) => {
-            // console.log("newAccessToken : ", newAccessToken)
             res.cookie("accessToken", newAccessToken, {httpOnly: true, maxAge: maxAge * 1000})
             jwt.verify(newAccessToken, config.JWT_SECRET, (err, decoded) => {
                 if (err) {
@@ -44,7 +43,6 @@ const verifyToken = (req, res, next) => {
         })
 
     } else {
-        // console.log("accessToken dans le else : ", accessToken)
         try {
             return jwt.verify(accessToken, config.JWT_SECRET, (err, decoded) => {
                 if (err) {

@@ -22,7 +22,7 @@ async function createUser(info) {
                 followers: [], 
                 following: [], 
                 posts: [], 
-                picture: "",
+                picture: false,
                 creationDate: new Date().toDateString()
             },
             connexion: {
@@ -118,7 +118,7 @@ async function updateConnected(userid) {
 
 async function updatePicture(userid, picture) {
     const objectID = new ObjectId(userid);
-    return await users.findOneAndUpdate({ "_id": objectID }, { $set: { "profil.picture": picture } });
+    return await users.findOneAndUpdate({ "_id": objectID }, { $set: { "profil.picture": true } });
 }
 
 async function updateBio(userid, bio) {

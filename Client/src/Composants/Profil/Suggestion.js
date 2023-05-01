@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { UserContext } from '../AppContext';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -9,9 +10,10 @@ const FriendPicture = styled.img`
     display: block;
 `;
 
-const Suggestions = ({setlistFollowing}) => {
+const Suggestions = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [listSuggestion, setlistSuggestion] = useState([]);
+    const { setlistFollowing } = useContext(UserContext);
 
     useEffect(() => {
         setIsLoading(false);
@@ -99,10 +101,11 @@ const Suggestions = ({setlistFollowing}) => {
                             <li key={user?._id}>
                                 <div className='row'>
                                     <div className='col'>
-                                        <FriendPicture src={`/uploads/${user?._id}.jpg`} alt="profil picture" />
+                                        {user?.profil.picture ? <FriendPicture src={`/uploads/${user._id}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
                                     </div>
                                     <div className='col'>
                                         <p>@{user?.profil.pseudo}</p>
+                                        <p>{user?.isFollowed + ""}</p>
                                     </div>
                                     <div className='col'>
                                         {user?.isFollowed ? (
