@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { UserContext } from '../AppContext';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import FollowButton from './FollowButton';
+import UnfollowButton from './UnfollowButton';
 
 const FriendPicture = styled.img`
     border-radius: 50%;
@@ -13,7 +14,6 @@ const FriendPicture = styled.img`
 const Suggestions = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [listSuggestion, setlistSuggestion] = useState([]);
-    const { setlistFollowing } = useContext(UserContext);
 
     useEffect(() => {
         setIsLoading(false);
@@ -31,58 +31,6 @@ const Suggestions = () => {
             console.log(err)
         })
     }, [])
-
-
-    const handleFollow = (userId) => {
-        const updatedList = listSuggestion.map(user => {
-            if (user._id.toString() === userId.toString()) {
-                axios({
-                    method: "POST",
-                    url: `http://localhost:8000/api/friend/following/${userId}`,
-                    withCredentials: true,
-                })
-                .then((res) => {
-                    setlistFollowing(res.data.following)
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-                return {
-                    ...user,
-                    isFollowed: true
-                };
-
-            } else {
-                return user;
-            }
-        });
-        setlistSuggestion(updatedList);
-      };
-
-    const handleDelete = (userId) => {
-        const updatedList = listSuggestion.map(user => {
-            if (user._id.toString() === userId.toString()) {
-                axios({
-                    method: "DELETE",
-                    url: `http://localhost:8000/api/friend/following/${userId}`,
-                    withCredentials: true,
-                })
-                .then((res) => {
-                    setlistFollowing(res.data.following)
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-                return {
-                    ...user,
-                    isFollowed: false
-                };
-            } else {
-                return user;
-            }
-        });
-        setlistSuggestion(updatedList);
-    };
 
     return (
         <div className='suggestions bg-light'>
@@ -109,9 +57,9 @@ const Suggestions = () => {
                                     </div>
                                     <div className='col'>
                                         {user?.isFollowed ? (
-                                            <button onClick={() => {handleDelete(user._id)}}>Suivi(e)</button>
+                                            <UnfollowButton userId={user?._id} list={listSuggestion} setList={setlistSuggestion} />
                                         ) : (
-                                            <button onClick={() => {handleFollow(user._id)}}>Follow</button>
+                                            <FollowButton userId={user?._id} list={listSuggestion} setList={setlistSuggestion} />
                                         )}
                                     </div>
                                 </div>

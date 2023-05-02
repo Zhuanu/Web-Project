@@ -1,11 +1,14 @@
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from '../AppContext';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
-
 import axios from "axios";
+
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import UnfollowButton from "./UnfollowButton";
+import FollowButton from "./FollowButton";
+import DeleteFollowerButton from "./DeleteFollowerButton";
 
 
 const FriendPicture = styled.img`
@@ -19,104 +22,49 @@ const MyFollowers = ({ setFriend }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [followers, setFollowers] = useState([]);
     const [show, setShow] = useState(false);
-    const { userid, profil, setProfil, listFollowing, setlistFollowing } = useContext(UserContext);
+    const { userid, profil, setProfil, listFollowing } = useContext(UserContext);
 
     useEffect(() => {
         setIsLoading(false);
-        const me = userid === profil;
-        const url = me 
-        ? "http://localhost:8000/api/friend/followers" 
-        : `http://localhost:8000/api/friend/followers/${profil}`
+        const myProfil = userid === profil;
 
-        axios({
-            method: "GET",
-            url: url,
-            withCredentials: true,
-        })
-        .then((res) => {
-            const array = res.data.followers;
-            console.log("fjakzljfzlkajf",listFollowing)
-            const updatedArray = array.map((user) => {
-                const isFollowed = listFollowing.some((follow) => {
-                    return follow._id.toString() === user._id.toString();
+        myProfil ? (
+            axios({
+                method: "GET",
+                url: "http://localhost:8000/api/friend/followers",
+                withCredentials: true,
+            })
+            .then((res) => {
+                setFollowers(res.data.followers);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        ) : (
+            axios({
+                method: "GET",
+                url: `http://localhost:8000/api/friend/followers/${profil}`,
+                withCredentials: true,
+            })
+            .then((res) => {
+                const array = res.data.followers;
+    
+                const updatedArray = array.map((user) => {
+                    const isFollowed = listFollowing.some((follow) => {
+                        return follow._id.toString() === user._id.toString();
+                    });
+                    return {
+                        ...user,
+                        isFollowed: isFollowed
+                    };
                 });
-                return {
-                    ...user,
-                    isFollowed: isFollowed
-                };
-            });
-            setFollowers(updatedArray)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+                setFollowers(updatedArray)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        );
     }, [profil, userid, listFollowing]);
-
-    const handleDeleteFollowers = (id) => {
-        axios({
-            method: "DELETE",
-            url: `http://localhost:8000/api/friend/followers/${id}`,
-            withCredentials: true,
-        })
-        .then((res) => {
-            setFollowers(res.data.followers)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-    }
-
-    const handleDeleteFollowing = (userId) => {
-        const updatedList = followers.map(user => {
-            if (user._id.toString() === userId.toString()) {
-                axios({
-                    method: "DELETE",
-                    url: `http://localhost:8000/api/friend/following/${userId}`,
-                    withCredentials: true,
-                })
-                .then((res) => {
-                    setlistFollowing(res.data.following)
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-                return {
-                    ...user,
-                    isFollowed: false
-                };
-            } else {
-                return user;
-            }
-        });
-        setFollowers(updatedList);
-    };
-
-
-    const handleFollow = (userId) => {
-        const updatedList = followers.map(user => {
-            if (user._id.toString() === userId.toString()) {
-                axios({
-                    method: "POST",
-                    url: `http://localhost:8000/api/friend/following/${userId}`,
-                    withCredentials: true,
-                })
-                .then((res) => {
-                    setlistFollowing(res.data.following)
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-                return {
-                    ...user,
-                    isFollowed: true
-                };
-
-            } else {
-                return user;
-            }
-        });
-        setFollowers(updatedList);
-    };
 
 
     const handleClose = () => {
@@ -159,9 +107,10 @@ const MyFollowers = ({ setFriend }) => {
                                     <p>{follower.isFollowed + ""}</p>
                                 </Link>
 
-                                {userid === profil && (<button className="btn btn-danger" onClick={() => {handleDeleteFollowers(follower?._id)}}>Delete</button>)}
-                                {userid !== profil && follower?.isFollowed && (<button className="btn btn-secondary" onClick={() => {handleDeleteFollowing(follower?._id)}}>Suivi(e)</button>)}
-                                {userid !== profil && !follower?.isFollowed && userid !== follower?._id && (<button className="btn btn-success" onClick={() => {handleFollow(follower?._id)}}>Follow</button>)}
+                                {userid === profil && (<DeleteFollowerButton userId={follower._id} setList={setFollowers}/>)}
+
+                                {userid !== profil && follower?.isFollowed && (<UnfollowButton userId={follower._id} list={followers} setList={setFollowers} />)}
+                                {userid !== profil && !follower?.isFollowed && userid !== follower?._id && (<FollowButton userId={follower._id} list={followers} setList={setFollowers} />)}
 
                                 </li>
                             ))}

@@ -22,9 +22,6 @@ app.use(cors({origin: "http://localhost:3000", credentials: true}));
 app.use('/api/user', user);
 app.use('/api/friend', friend);
 app.use('/api/messages', messages)
-app.get('/cookie', (req, res) => {
-    res.json({cookies:req.cookies});
-})
 
 const server = app.listen(port, () => {
     console.log(`Serveur actif sur le port ${port}`);

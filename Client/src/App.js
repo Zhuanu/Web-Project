@@ -19,31 +19,33 @@ function App() {
             setProfil(JSON.parse(storedUser));
         }
 
-        axios({
-            method: "GET",
-            url: "http://localhost:8000/api/user/get",
-            withCredentials: true,
-        })
-        .then((res) => {
-            setUser(res.data)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+        if (userid) {
+            axios({
+                method: "GET",
+                url: "http://localhost:8000/api/user/get",
+                withCredentials: true,
+            })
+            .then((res) => {
+                setUser(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
 
-        axios ({
-            method: 'GET',
-            url: 'http://localhost:8000/api/friend/following',
-            withCredentials: true,
-        })
-        .then((res) => {
-            setlistFollowing(res.data.following)
-        })
-        .catch ((err) => {
-            console.log(err)
-        })
+            axios ({
+                method: 'GET',
+                url: 'http://localhost:8000/api/friend/following',
+                withCredentials: true,
+            })
+            .then((res) => {
+                setlistFollowing(res.data.following)
+            })
+            .catch ((err) => {
+                console.log(err)
+            })
+        }
 
-    }, []);
+    }, [userid]);
 
     const handleLogin = (userid) => {
         localStorage.setItem("userid", JSON.stringify(userid));

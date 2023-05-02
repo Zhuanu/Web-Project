@@ -73,7 +73,7 @@ const ProfilPicture = ({ friend }) => {
         ) :
         (<Container>
             {friend?.profil.picture ? <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/> : <ProfilPictureCss src={`/uploads/default.jpg`} alt="pp"/>}
-            <p>@{user?.profil.pseudo}</p>
+            <p>@{friend?.profil.pseudo}</p>
         </Container>
         )
 

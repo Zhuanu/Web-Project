@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { Link } from "react-router-dom";
 
 import axios from "axios";
+import UnfollowButton from "./UnfollowButton";
+import FollowButton from "./FollowButton";
 
 
 const FriendPicture = styled.img`
@@ -19,7 +21,7 @@ const MyFollowing = ({ setFriend }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [following, setFollowing] = useState([]);
     const [show, setShow] = useState(false);
-    const { userid, profil, setProfil, listFollowing, setlistFollowing } = useContext(UserContext);
+    const { userid, profil, setProfil, listFollowing } = useContext(UserContext);
 
     useEffect(() => {
         setIsLoading(false);
@@ -47,58 +49,6 @@ const MyFollowing = ({ setFriend }) => {
         });
     }, [profil, userid, listFollowing]);
 
-
-    const handleDeleteFollowing = (userId) => {
-        const updatedList = following.map(user => {
-            if (user?._id.toString() === userId.toString()) {
-                axios({
-                    method: "DELETE",
-                    url: `http://localhost:8000/api/friend/following/${userId}`,
-                    withCredentials: true,
-                })
-                .then((res) => {
-                    setlistFollowing(res.data.following)
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-                return {
-                    ...user,
-                    isFollowed: false
-                };
-            } else {
-                return user;
-            }
-        });
-        setFollowing(updatedList);
-    };
-
-
-    const handleFollow = (userId) => {
-        const updatedList = following.map(user => {
-            if (user?._id.toString() === userId.toString()) {
-                axios({
-                    method: "POST",
-                    url: `http://localhost:8000/api/friend/following/${userId}`,
-                    withCredentials: true,
-                })
-                .then((res) => {
-                    setlistFollowing(res.data.following)
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-                return {
-                    ...user,
-                    isFollowed: true
-                };
-
-            } else {
-                return user;
-            }
-        });
-        setFollowing(updatedList);
-    };
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -132,14 +82,15 @@ const MyFollowing = ({ setFriend }) => {
                         <ul>
                             {following.map((f) => (
                                 <li key={f._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <Link to={`/profil/${f._id}`} style={{ display: 'flex', alignItems: 'center' }} onClick={() => { handleRedirect(f) }}>
-                                    {f.profil.picture ? <FriendPicture src={`/uploads/${f._id}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
-                                    <p style={{ margin: '0 0 0 10px' }}>{f.profil.pseudo}</p>
-                                    <p>{f.isFollowed + ""}</p>
-                                </Link>
-                                
-                                {f?.isFollowed && (<button className="btn btn-secondary" onClick={() => {handleDeleteFollowing(f._id)}}>Suivi(e)</button>)}
-                                {!f?.isFollowed && userid !== f?._id && (<button className="btn btn-success" onClick={() => {handleFollow(f._id)}}>Follow</button>)}
+                                    <Link to={`/profil/${f._id}`} style={{ display: 'flex', alignItems: 'center' }} onClick={() => { handleRedirect(f) }}>
+                                        {f.profil.picture ? <FriendPicture src={`/uploads/${f._id}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
+                                        <p style={{ margin: '0 0 0 10px' }}>{f.profil.pseudo}</p>
+                                        <p>{f.isFollowed + ""}</p>
+                                    </Link>
+
+                                        {f?.isFollowed 
+                                        ? <UnfollowButton userId={f._id} list={following} setList={setFollowing} />
+                                        : userid !== f?._id && <FollowButton userId={f._id} list={following} setList={setFollowing} />}
 
                                 </li>
                             ))}

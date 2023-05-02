@@ -10,13 +10,11 @@ const modifyTweet = async (req, res) => {
         };
 
         const { tweetId, content } = req.body;
-        const result = await utils.modifyTweet(tweetId, content);
+        const newTweet = await utils.modifyTweet(tweetId, content);
 
-        if (!result) {
+        if (!newTweet) {
             return res.status(400).json({status : 400, message: "Error : Tweet not found"});
         }
-
-        const newTweet = await utils.getTweetById(tweetId);
 
         res.status(200).json({status : 200, message: "OK : Tweet successfully modified", newTweet: newTweet});
         

@@ -54,7 +54,7 @@ const Profil = () => {
                     </Container>
                 </Container2>
             </Container3>
-            <Bio />
+            <Bio friend={friend}/>
             {userid === profil ? <BasicInfo /> : null}
         </div>)
         :
