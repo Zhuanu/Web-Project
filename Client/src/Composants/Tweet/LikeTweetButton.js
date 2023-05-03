@@ -3,27 +3,31 @@ import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../AppContext';
 import { HeartFill } from 'react-bootstrap-icons';
 
-const LikeTweetButton = ({ myTweet }) => {
+const LikeTweetButton = ({ myTweet, setMyTweet, myComment, setMyComment }) => {
     const [likers, setLikers] = useState([]);
     const [liked, setLiked] = useState();
     const [isLikersInitialised, setIsLikersInitialised] = useState(false);
 
     const { userid } = useContext(UserContext);
 
+    const myTweetExist = myTweet ? true : false;
+    const thing = (myTweetExist ? myTweet : myComment)
+
     useEffect(() => {
         axios({
             method: 'GET',
-            url: `http://localhost:8000/api/messages/like/${myTweet._id}`,
+            url: `http://localhost:8000/api/messages/like/${thing._id}`,
             withCredentials: true,
         })
         .then((res) => {
             console.log(res.data)
             setLikers(res.data.listUsers);
+            myTweetExist ? (setMyTweet({...thing, likers: res.data.listUsers})) : (setMyComment({...thing, likers: res.data.listUsers}))
         })
         .catch((err) => {
             console.log(err)
         });
-    }, [myTweet._id]);
+    }, [thing._id]);
 
 
     useEffect(() => {
@@ -42,12 +46,13 @@ const LikeTweetButton = ({ myTweet }) => {
             method: `${liked ? 'DELETE' : 'POST'}`,
             url: `http://localhost:8000/api/messages/like`,
             data: {
-                tweetId: myTweet._id
+                tweetId: thing._id
             },
             withCredentials: true,
         })
         .then((res) => {
             setLikers(res.data.listUsers);
+            myTweetExist ? (setMyTweet({...thing, likers: res.data.listUsers})) : (setMyComment({...thing, likers: res.data.listUsers}))
             setLiked(res.data.state)
         })
         .catch((err) => {
@@ -58,9 +63,11 @@ const LikeTweetButton = ({ myTweet }) => {
 
     return (
         isLikersInitialised ? (
+            <div className='like'>
                 <label className='btn btn-link'>
                     <HeartFill size={20} color={liked ? "red" : `${null}`} onClick={handleClickLikeButton} style={{cursor: "pointer"}} />
                 </label>
+            </div>
 
         ) : (
 

@@ -5,7 +5,7 @@ import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-const DeleteTweetButton = ({ myTweet }) => {
+const DeleteTweetButton = ({ myTweet, myComment, setMyComments }) => {
     const [showAlert, setShowAlert] = useState(false);
     const { setListTweet } = useContext(TweetContext);
 
@@ -28,6 +28,22 @@ const DeleteTweetButton = ({ myTweet }) => {
         })
     }
 
+    const handleCommentDeleted = () => {
+        axios({
+            method: 'DELETE',
+            url: `http://localhost:8000/api/messages/comment`,
+            data: {
+                commentid: myComment._id,
+                tweetid: myComment.tweetid
+            },
+            withCredentials: true,
+        })
+        .then((res) => {
+            setMyComments(res.data.commentsFromTweet);
+            handleCloseAlert();
+        })
+    }
+
     const handleCloseAlert = () => {
         setShowAlert(false);
     };
@@ -40,10 +56,10 @@ const DeleteTweetButton = ({ myTweet }) => {
             {showAlert && (
                 <Modal show={showAlert} onHide={handleCloseAlert}>
                     <Modal.Body>
-                        <p className='text-center'>Are you sure you want to delete this tweet?</p>
+                        <p className='text-center'>Are you sure you want to delete this?</p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="primary" onClick={handleClickConfirmDeleteButton}>
+                        <Button variant="primary" onClick={myTweet ? (handleClickConfirmDeleteButton) : (handleCommentDeleted)}>
                             Supprimer
                         </Button>
                         <Button variant="danger" onClick={handleCloseAlert}>

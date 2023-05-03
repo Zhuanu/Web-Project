@@ -25,33 +25,31 @@ const ImageInsert = styled.img`
 
 
 
-const NewTweetForm = ({user, listFollowing}) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [tweet, setTweet] = useState("");
-    const [picture, setPicture] = useState("");
-    const [file, setFile] = useState("");
+const NewTweetForm = ({user, listFollowing, isInitialised}) => {
+    const [message, setMessage] = useState("");
+    // const [picture, setPicture] = useState("");
+    // const [file, setFile] = useState("");
     // const [listTweet, setListTweet] = useState([]);
 
     const { userid } = useContext(UserContext);
 
-    const handlePicture = (e) => {
+    // const handlePicture = (e) => {
 
-    };
+    // };
 
     const handleSendTweet = () => {
 
     }
 
     const handleCancel = () => {
-        setTweet("");
-        setPicture("");
-        setFile("");
-        setIsLoading(false);
+        setMessage("");
+        // setPicture("");
+        // setFile("");
     }
 
     return (
         <div className='tweet-form'>
-            {isLoading ? (
+            {!isInitialised ? (
                 <div className="">
                     <div className="d-flex align-items-center justify-content-center">
                         <strong>Loading...</strong>
@@ -61,22 +59,22 @@ const NewTweetForm = ({user, listFollowing}) => {
 
             ) : (
                 <div className="container bg-light mx-auto d-block border" style={{width:"400px"}}>
-                    <div className="d-flex justify-content-between mx-auto p-2" >
+                    {/* <div className="d-flex justify-content-between mx-auto p-2" >
                         <p><span className='fw-bold'>{user?.profil.followers.length + ""}</span> followers</p>
                         <h2 className='text-center'>Tweet</h2>
-                        {/* <Link to="/profil">
+                        <Link to="/profil">
                             {user?.profil.picture ? <FriendPicture src={`/uploads/${userid}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
-                        </Link> */}
+                        </Link>
                         <p><span className='fw-bold'>{listFollowing?.length + ""}</span> following</p>
-                    </div>
+                    </div> */}
 
                     <div className="d-flex row justify-content-center">
-                        <textarea rows='5' style={{resize:"none"}} name='tweet' id='tweet' placeholder="What's happening ?" value={tweet} onChange={(e) => {setTweet(e.target.value)}}/>
+                        <textarea rows='5' style={{resize:"none"}} name='tweet' id='tweet' placeholder="What's happening ?" value={message} onChange={(e) => {setMessage(e.target.value)}}/>
                     </div>
 
                     <div className="footer row position-relative container">
 
-                        <div className='icon'>
+                        {/* <div className='icon'>
                             { !picture && (
                             <>
                                 <label htmlFor="file-upload">
@@ -85,14 +83,14 @@ const NewTweetForm = ({user, listFollowing}) => {
                                 <input className="invisible" type="file" id="file-upload" accept=".jpg" onChange={(e) => {handlePicture(e)}}/>
                             </>
                             )}
-                        </div>
+                        </div> */}
 
-                        <li className='card-footer tweet d-flex justify-content-end position-absolute top-0 end-0'>
+                        <div className='card-footer tweet d-flex justify-content-end position-absolute top-0 end-0'>
                             <button className='btn btn-danger' onClick={() => {handleCancel()}}>Cancel</button>
                             <button className='btn btn-primary' onClick={() => {handleSendTweet()}}>Tweet</button>
-                        </li>
+                        </div>
 
-                        { picture || tweet ? (
+                        { message ? (
                             <ul className="card-group list-unstyled bg-warning position-relative">
                                 <div className="card text-center">
                                     <div className="card-header d-flex align-items-center">
@@ -101,10 +99,10 @@ const NewTweetForm = ({user, listFollowing}) => {
                                         <p style={{paddingLeft:"120px"}}>{displayDate()}</p>
                                     </div>
                                     <div className="card-body">
-                                        <p className="card-text">{tweet}</p>
-                                        {picture && (
+                                        <p className="card-text">{message}</p>
+                                        {/* {picture && (
                                             <ImageInsert src={picture} alt="picture" />
-                                        )}
+                                        )} */}
                                     </div>
                                 </div>
                             </ul>

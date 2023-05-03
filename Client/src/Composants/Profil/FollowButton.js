@@ -3,7 +3,7 @@ import { UserContext } from "../AppContext";
 import { PersonPlusFill } from "react-bootstrap-icons";
 import axios from "axios";
 
-const FollowButton = ({userId, list, setList}) => {
+const FollowButton = ({userId, list, setList, tweet}) => {
     const { setlistFollowing } = useContext(UserContext);
 
     const handleFollow = () => {
@@ -33,11 +33,29 @@ const FollowButton = ({userId, list, setList}) => {
         setList(updatedList);
     };
 
+    const handleFollowForTweet = () => {
+        axios({
+            method: "POST",
+            url: `http://localhost:8000/api/friend/following/${userId}`,
+            withCredentials: true,
+        })
+        .then((res) => {
+            setlistFollowing(res.data.following)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+        return {
+            ...tweet,
+            isFollowed: true
+        };
+    };
+
     return (
         <button 
             className="btn btn-success d-flex align-items-center justify-content-center"
             style={{ borderRadius: "10px", height: "40px", width: "120px", fontSize: "1.1rem" }}
-            onClick={() => handleFollow()}
+            onClick={() => {tweet ? (handleFollowForTweet()) : (handleFollow())}}
         >
             <PersonPlusFill size={20} />
             <span style={{ marginLeft: "5px" }}>Follow</span>

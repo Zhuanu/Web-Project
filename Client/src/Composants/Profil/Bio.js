@@ -14,13 +14,14 @@ const Bio = ({ friend }) => {
     return (
         userid === profil ? (
           <DescriptionContainer>
-              <p>Member since {user?.profil.creationDate}</p>
-              <p>Bio: {user?.profil.bio}</p>
+
+              <p>Member since {user?.profil?.creationDate}</p>
+              <p>Bio: {user?.profil?.bio}</p>
           </DescriptionContainer>
         ) : (
           <DescriptionContainer>
               <p>Member since {friend?.profil.creationDate}</p>
-              <p>Bio: {friend?.profil.bio}</p>
+              <p>Bio: {friend?.profil?.bio}</p>
           </DescriptionContainer>
         )
     );

@@ -7,6 +7,9 @@ const database = client.db("ProjetWeb");
 const users = database.collection("Users");
 const tweets = database.collection("Tweets");
 const likes = database.collection("Likes");
+const comments = database.collection("Comments");
+
+
 
 async function createTweet(content, userid) {
     const docTweet = {
@@ -21,6 +24,7 @@ async function createTweet(content, userid) {
 async function deleteTweet(tweetId) {
     await tweets.deleteOne({ _id: new ObjectId(tweetId) });
     await likes.deleteMany({ tweetid: new ObjectId(tweetId) });
+    await comments.deleteMany({ tweetid: new ObjectId(tweetId) });
 }
 
 async function modifyTweet(tweetId, content) {
@@ -33,7 +37,6 @@ async function modifyTweet(tweetId, content) {
     const tweet = await tweets.findOne({ _id: new ObjectId(tweetId) });
     const user = await users.findOne({ _id: new ObjectId(tweet.userid) });
     const tweetModified = { ...tweet, pseudo: user.profil.pseudo, picture: user.profil.picture };
-    console.log(tweetModified, "tweetModified")
     return tweetModified;
 }
 
@@ -44,7 +47,7 @@ async function getAllTweets() {
     for (const tweet of allTweets) {
         const user = await users.findOne({ _id: new ObjectId(tweet.userid) });
         const tweetModified = { ...tweet, pseudo: user.profil.pseudo, picture: user.profil.picture };
-        allTweetsFinal.push(tweetModified);
+        allTweetsFinal.unshift(tweetModified);
     }
 
     return allTweetsFinal;
@@ -53,6 +56,9 @@ async function getAllTweets() {
 async function getAllTweetsFromUser(userid) {
     return await tweets.find({ userid: new ObjectId(userid) }).toArray();
 }
+
+
+
 
 async function likeTweet(tweetId, userid) {
     const docLike = {
@@ -77,8 +83,54 @@ async function getLikesFromTweet(tweetid) {
     return result ? result.map((like) => like.userid) : [];
 }
 
+
+
+
 async function getTweetById(tweetId) {
     return await tweets.findOne({ _id: new ObjectId(tweetId) });
+}
+
+
+
+async function createComment(tweetId, text, userid) {
+    const docComment = {
+        tweetid: new ObjectId(tweetId),
+        text: text,
+        userid: new ObjectId(userid),
+        date: new Date().toLocaleTimeString() + " - " + new Date().toLocaleDateString(),
+    }
+
+    await comments.insertOne(docComment);
+}
+
+async function deleteComment(commentid) {
+    await comments.deleteOne({ _id: new ObjectId(commentid) });
+}
+
+async function modifyComment(commentid, text) {
+    await comments.updateOne({ _id: new ObjectId(commentid) }, {
+        $set: {
+            text: text,
+            date: new Date().toLocaleTimeString() + " - " + new Date().toLocaleDateString(),
+        }
+    });
+    const comment = await comments.findOne({ _id: new ObjectId(commentid) });
+    const user = await users.findOne({ _id: new ObjectId(comment.userid) });
+    const commentModified = { ...comment, pseudo: user.profil.pseudo, picture: user.profil.picture };
+    return commentModified;
+}
+
+async function getCommentsFromTweet(tweetid) {
+    const commentaires = await comments.find({ tweetid: new ObjectId(tweetid) }).toArray();
+    const commentsFinal = [];
+
+    for (const comment of commentaires) {
+        const user = await users.findOne({ _id: new ObjectId(comment.userid) });
+        const commentModified = { ...comment, pseudo: user.profil.pseudo, picture: user.profil.picture };
+        commentsFinal.unshift(commentModified);
+    }
+
+    return commentsFinal;
 }
   
 
@@ -93,5 +145,10 @@ module.exports = {
     unlikeTweet,
     getLikesFromTweet,
 
-    getTweetById
+    getTweetById,
+
+    createComment,
+    deleteComment,
+    modifyComment,
+    getCommentsFromTweet,
 }

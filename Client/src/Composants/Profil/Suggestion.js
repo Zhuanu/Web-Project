@@ -47,21 +47,20 @@ const Suggestions = () => {
                     {listSuggestion && listSuggestion.slice(0, 5).map((user) => {
                         return (
                             <li key={user?._id}>
-                                <div className='row'>
-                                    <div className='col'>
+                                <div className='d-flex justify-content-between'>
+                                    <div className='d-flex align-items-center'>
                                         {user?.profil.picture ? <FriendPicture src={`/uploads/${user._id}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
+                                        <span style={{marginLeft: "5px"}}>@{user?.profil.pseudo}</span>
                                     </div>
-                                    <div className='col'>
-                                        <p>@{user?.profil.pseudo}</p>
-                                        <p>{user?.isFollowed + ""}</p>
-                                    </div>
-                                    <div className='col'>
+
+                                    <div className="">
                                         {user?.isFollowed ? (
                                             <UnfollowButton userId={user?._id} list={listSuggestion} setList={setlistSuggestion} />
                                         ) : (
                                             <FollowButton userId={user?._id} list={listSuggestion} setList={setlistSuggestion} />
                                         )}
                                     </div>
+
                                 </div>
                             </li>
                         )

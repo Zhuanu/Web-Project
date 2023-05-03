@@ -1,7 +1,7 @@
 const { getUserById } = require("../../getter.js");
 const utils = require("../messages.js");
 
-const createTweet = async (req, res, next) => {
+const createTweet = async (req, res) => {
     try {
         const userid = req.userid;
         const user = await getUserById(userid);

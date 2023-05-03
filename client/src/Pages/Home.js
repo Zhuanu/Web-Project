@@ -4,13 +4,13 @@ import { UserContext, TweetContext } from '../Composants/AppContext';
 
 
 import Log from '../Composants/Log/Log';
-import NewTweetForm from '../Composants/Tweet/NewTweetForm';
+import TweetForm from '../Composants/Tweet/TweetForm';
 import TweetsWall from '../Composants/Tweet/TweetsWall';
 import Suggestions from '../Composants/Profil/Suggestion';
 import axios from 'axios';
 
 const Home = () => {
-    const { userid, listFollowing, setlistFollowing, user } = useContext(UserContext);
+    const { userid } = useContext(UserContext);
     const [listTweet, setListTweet] = useState(null);
     const [isListTweetInitialised, setIsListTweetInitialised] = useState(false);
 
@@ -37,12 +37,12 @@ const Home = () => {
                 <TweetContext.Provider value={{ listTweet, setListTweet }}>
                     <div className='main-page'>
                         <h1 className='text-center'>Home Page</h1>
-                        <div className='row'>
-                            <div className='col'>
-                                <NewTweetForm user={user} listFollowing={listFollowing} setlistFollowing={setlistFollowing}/>
+                        <div className='d-flex' style={{padding: "3% 5% 0 5%"}}>
+                            <div className='container' style={{paddingRight: "2%"}}>
+                                <TweetForm isInitialised={isListTweetInitialised}/>
                                 <TweetsWall />
                             </div>
-                            <div className='col'>
+                            <div className='container' style={{paddingLeft: "2%"}}>
                                 <Suggestions />
                             </div>
                         </div>

@@ -66,14 +66,14 @@ const ProfilPicture = ({ friend }) => {
         (<Container>
             <DropZoneWrapper {...getRootProps({className: 'dropzone'})}>
                 <input {...getInputProps()} name="picture" />
-                {user?.profil.picture ? <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/> : <ProfilPictureCss src={`/uploads/default.jpg`} alt="pp"/>}
+                {user?.profil?.picture ? <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/> : <ProfilPictureCss src={`/uploads/default.jpg`} alt="pp"/>}
             </DropZoneWrapper>
-            <p>@{user?.profil.pseudo}</p>
+            <p>@{user?.profil?.pseudo}</p>
         </Container>
         ) :
         (<Container>
-            {friend?.profil.picture ? <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/> : <ProfilPictureCss src={`/uploads/default.jpg`} alt="pp"/>}
-            <p>@{friend?.profil.pseudo}</p>
+            {friend?.profil?.picture ? <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/> : <ProfilPictureCss src={`/uploads/default.jpg`} alt="pp"/>}
+            <p>@{friend?.profil?.pseudo}</p>
         </Container>
         )
 

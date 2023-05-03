@@ -10,6 +10,12 @@ const likeTweet = require("./services/likeTweet.js");
 const unlikeTweet = require("./services/unlikeTweet.js");
 const getUsersWhoLikedTweet = require("./services/getUsersWhoLikedTweet.js");
 
+
+const createComment = require("./services/createComment.js");
+const deleteComment = require("./services/deleteComment.js");
+const modifyComment = require("./services/modifyComment.js");
+const getCommentsFromTweet = require("./services/getCommentsFromTweet.js");
+
 const { verifyToken } = require('../user/auth.js');
 
 const messages = express.Router();
@@ -32,6 +38,14 @@ messages
     .delete("/like", verifyToken, unlikeTweet)
 
     .get("/like/:tweetid", verifyToken, getUsersWhoLikedTweet)
+
+    .post("/comment", verifyToken, createComment)
+
+    .delete("/comment", verifyToken, deleteComment)
+
+    .put("/comment", verifyToken, modifyComment)
+
+    .get("/comment/:tweetid", verifyToken, getCommentsFromTweet)
 
     .use((req, res) => {
         res.status(404).json({status : 404, "message": "Page not found"});
