@@ -33,8 +33,8 @@ const Suggestions = () => {
     }, [])
 
     return (
-        <div className='suggestions bg-light'>
-            <h2 className='text-center'>Suggestions</h2>
+        <div className='suggestions'>
+            <h3 className='text-center' style={{marginBottom: "15px"}}>Suggestions</h3>
             {isLoading ? (
                 <div>
                     <div className="d-flex align-items-center justify-content-center">
@@ -44,13 +44,13 @@ const Suggestions = () => {
                 </div>
             ) : (
                 <ul className='list-unstyled'>
-                    {listSuggestion && listSuggestion.slice(0, 5).map((user) => {
+                    {listSuggestion && listSuggestion.slice(0, 4).map((user) => {
                         return (
-                            <li key={user?._id}>
+                            <li key={user?._id} style={{margin: "10px 0 10px 0"}}>
                                 <div className='d-flex justify-content-between'>
                                     <div className='d-flex align-items-center'>
                                         {user?.profil.picture ? <FriendPicture src={`/uploads/${user._id}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
-                                        <span style={{marginLeft: "5px"}}>@{user?.profil.pseudo}</span>
+                                        <span style={{margin: "0 10px 0 10px"}}>@{user?.profil.pseudo}</span>
                                     </div>
 
                                     <div className="">

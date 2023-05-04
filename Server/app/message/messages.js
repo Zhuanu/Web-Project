@@ -14,8 +14,8 @@ const comments = database.collection("Comments");
 async function createTweet(content, userid) {
     const docTweet = {
         content: content,
-        userid: userid,
-        date: new Date().toLocaleTimeString() + " - " + new Date().toLocaleDateString(),
+        userid: new ObjectId(userid),
+        date: new Date().toLocaleDateString() + " - " + new Date().toLocaleTimeString(),
     }
 
     await tweets.insertOne(docTweet);
@@ -54,7 +54,10 @@ async function getAllTweets() {
 }
 
 async function getAllTweetsFromUser(userid) {
-    return await tweets.find({ userid: new ObjectId(userid) }).toArray();
+    const objectId = new ObjectId(userid)
+    const result = await tweets.find({ userid: objectId }).toArray();
+    console.log(result)
+    return result
 }
 
 
@@ -83,6 +86,29 @@ async function getLikesFromTweet(tweetid) {
     return result ? result.map((like) => like.userid) : [];
 }
 
+async function likeComment(commentId, userid) {
+    const docLike = {
+        commentid: new ObjectId(commentId),
+        userid: new ObjectId(userid),
+    }
+
+    await likes.insertOne(docLike);
+}
+
+async function unlikeComment(commentId, userid) {
+    await likes.deleteOne({ commentid: new ObjectId(commentId), userid: new ObjectId(userid) });
+}
+
+async function getLikesFromComment(commentid) {
+    const objectId = new ObjectId(commentid)
+    const result = await likes.find(
+      { commentid: objectId },
+      { projection: { _id: 0, userid: 1} }
+    ).toArray();
+    
+    return result ? result.map((like) => like.userid) : [];
+}
+
 
 
 
@@ -97,7 +123,7 @@ async function createComment(tweetId, text, userid) {
         tweetid: new ObjectId(tweetId),
         text: text,
         userid: new ObjectId(userid),
-        date: new Date().toLocaleTimeString() + " - " + new Date().toLocaleDateString(),
+        date: new Date().toLocaleDateString() + " - " + new Date().toLocaleTimeString(),
     }
 
     await comments.insertOne(docComment);
@@ -105,6 +131,7 @@ async function createComment(tweetId, text, userid) {
 
 async function deleteComment(commentid) {
     await comments.deleteOne({ _id: new ObjectId(commentid) });
+    await likes.deleteMany({ commentid: new ObjectId(commentid) });
 }
 
 async function modifyComment(commentid, text) {
@@ -144,6 +171,9 @@ module.exports = {
     likeTweet,
     unlikeTweet,
     getLikesFromTweet,
+    likeComment,
+    unlikeComment,
+    getLikesFromComment,
 
     getTweetById,
 

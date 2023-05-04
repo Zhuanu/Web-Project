@@ -11,7 +11,6 @@ const generateAccessToken = (userid) => {
 
 const refresh = (req, res, next) => {
     const refreshToken = req.cookies.refreshToken;
-    console.log("refreshToken", req.cookies)
     if (refreshToken == null) {
         res.clearCookie("accessToken");
         return res.redirect("/api/user/sessionExpired");

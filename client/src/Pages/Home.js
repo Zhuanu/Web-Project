@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { UserContext, TweetContext } from '../Composants/AppContext';
+import axios from 'axios';
 
 
 import Log from '../Composants/Log/Log';
 import TweetForm from '../Composants/Tweet/TweetForm';
 import TweetsWall from '../Composants/Tweet/TweetsWall';
 import Suggestions from '../Composants/Profil/Suggestion';
-import axios from 'axios';
+import InfoForHome from '../Composants/Tweet/InfoForHome';
 
 const Home = () => {
     const { userid } = useContext(UserContext);
@@ -35,18 +36,24 @@ const Home = () => {
             isListTweetInitialised ? (
 
                 <TweetContext.Provider value={{ listTweet, setListTweet }}>
-                    <div className='main-page'>
+                    <div className='main-page' style={{display: "flex", flexDirection: "column", alignItems: "center", height: "100vh"}}>
                         <h1 className='text-center'>Home Page</h1>
-                        <div className='d-flex' style={{padding: "3% 5% 0 5%"}}>
-                            <div className='container' style={{paddingRight: "2%"}}>
-                                <TweetForm isInitialised={isListTweetInitialised}/>
-                                <TweetsWall />
+                        <div style={{display: "flex", width: "80%"}}>
+                            <div style={{flex: "2", marginRight: "10px", paddingRight: "10%"}}>
+                                <div style={{width: "100%", marginBottom: "20px"}}>
+                                    <TweetForm isInitialised={isListTweetInitialised}/>
+                                </div>
+                                <div style={{width: "100%"}}>
+                                    <TweetsWall />
+                                </div>
                             </div>
-                            <div className='container' style={{paddingLeft: "2%"}}>
+                            <div style={{flex: "1"}}>
                                 <Suggestions />
+                                <InfoForHome />
                             </div>
                         </div>
                     </div>
+
                 </TweetContext.Provider>
 
             ) : (

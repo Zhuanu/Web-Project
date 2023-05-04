@@ -37,8 +37,8 @@ const SignInForm = () => {
         })
         .then(res => {
             handleLogin(res.data.userid);
+            console.log(res.cookies)
             localStorage.setItem("userid", JSON.stringify(res.data.userid));
-            window.location.href = "http://localhost:3000/";
         })
         .catch(err => {
             if (err.response.data.error === "login") {

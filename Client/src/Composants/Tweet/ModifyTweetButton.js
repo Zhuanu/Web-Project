@@ -39,6 +39,7 @@ const ModifyTweetButton = ({ myTweet, setMyTweet, myComment, setMyComment }) => 
                 commentid: myComment._id,
                 text: tweetContent
             },
+            withCredentials: true,
         })
         .then((res) => {
             setMyComment(res.data.modifiedComment);

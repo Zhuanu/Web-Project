@@ -10,10 +10,18 @@ const likeTweet = async (req, res) => {
             return res.status(401).json({status : 401, message: "Error : Unknown User"});
         }
 
-        const { tweetId } = req.body;
-        await utils.likeTweet(tweetId, userid);
+        const { tweetId, commentId } = req.body;
 
-        const listUsers = await utils.getLikesFromTweet(tweetId);
+
+        let listUsers = [];
+        if (tweetId) {
+            await utils.likeTweet(tweetId, userid);
+            listUsers = await utils.getLikesFromTweet(tweetId);
+        }
+        else {
+            await utils.likeComment(commentId, userid);
+            listUsers = await utils.getLikesFromComment(commentId);
+        }
 
         res.status(200).json({status : 200, message: "OK : Tweet Liked", listUsers: listUsers, state: true})
 

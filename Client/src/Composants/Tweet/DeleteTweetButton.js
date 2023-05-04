@@ -1,13 +1,14 @@
 import { useState, useContext } from 'react';
-import { TweetContext } from '../AppContext';
+import { TweetContext, CommentContext } from '../AppContext';
 import { Trash3 } from 'react-bootstrap-icons';
 import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-const DeleteTweetButton = ({ myTweet, myComment, setMyComments }) => {
+const DeleteTweetButton = ({ myTweet, myComment }) => {
     const [showAlert, setShowAlert] = useState(false);
     const { setListTweet } = useContext(TweetContext);
+    const { setListComments } = useContext(CommentContext);
 
     const handleClickDeleteButton = () => {
         setShowAlert(true);
@@ -39,7 +40,7 @@ const DeleteTweetButton = ({ myTweet, myComment, setMyComments }) => {
             withCredentials: true,
         })
         .then((res) => {
-            setMyComments(res.data.commentsFromTweet);
+            setListComments(res.data.commentsFromTweet);
             handleCloseAlert();
         })
     }

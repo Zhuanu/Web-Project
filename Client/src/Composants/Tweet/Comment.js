@@ -16,13 +16,7 @@ const Comment = ({comment, setMyComments }) => {
     const [myComment , setMyComment] = useState(comment)
     const { userid } = useContext(UserContext);
 
-    function getTweetAge(dateCreationTweet) {
-        const diff = new Date() - new Date(dateCreationTweet);
-        const diffMinutes = Math.round(diff / (1000 * 60));
-        return `${diffMinutes} minutes ago`;
-    }
-
-    // return (<p>fjkealfjealk</p>)
+      
       
     return (
         <div className='card' style={{margin: "0px 0 10px 0px", borderRadius: "40px 10px 10px 10px"}}>
@@ -36,7 +30,7 @@ const Comment = ({comment, setMyComments }) => {
                     {myComment.userid === userid ? (
                         <div className="myButton d-flex" style={{}}>
                             <ModifyTweetButton myComment={myComment} setMyComment={setMyComment} />
-                            <DeleteTweetButton myComment={myComment} setMyComment={setMyComment}  />
+                            <DeleteTweetButton myComment={myComment} />
                         </div>
                     ) : (<span></span>)}
                     <LikeTweetButton myComment={myComment} setMyComment={setMyComment}/>

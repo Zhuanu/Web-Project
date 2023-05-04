@@ -11,7 +11,7 @@ const getAllTweetsFromUser = async (req, res) => {
         };
 
         const result = await utils.getAllTweetsFromUser(userid);
-
+        
         if (!result) {
             return res.status(400).json({status : 400, message: "Error : Tweet not found"});
         }

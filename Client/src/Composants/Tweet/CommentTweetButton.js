@@ -1,5 +1,6 @@
 import { ChatText, Send } from "react-bootstrap-icons";
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
+import { CommentContext } from "../AppContext";
 import axios from "axios";
 
 import { Modal, Button } from "react-bootstrap";
@@ -12,31 +13,13 @@ const ProfilPicture = styled.img`
     width: 50px;
 `;
 
+
 const CommentTweetButton = ({ myTweet, setMyTweet }) => {
-    const [comments, setComments] = useState([]);
-    const [text, setText] = useState('');
     const [showAlert, setShowAlert] = useState(false);
+    const { listComments, setListComments } = useContext(CommentContext);
+    const [text, setText] = useState("");
 
-    useEffect(() => {
-        axios({
-            method: 'GET',
-            url: `http://localhost:8000/api/messages/comment/${myTweet._id}`,
-            withCredentials: true,
-        })
-        .then((res) => {
-            console.log(res.data)
-            setComments(res.data.commentsFromTweet);
-            console.log("print dans COmmentTweetButton", res.data.commentsFromTweet);
-            setMyTweet({...myTweet, comments: res.data.commentsFromTweet})
-        })
-        .catch((err) => {
-            console.log(err)
-        });
-    }, [myTweet._id]);
-
-    const handleClickCommentButton = () => {
-        setShowAlert(true);
-    };
+    const handleShowAlert = () => setShowAlert(true);
 
     const handleCloseAlert = () => {
         setShowAlert(false);
@@ -51,17 +34,18 @@ const CommentTweetButton = ({ myTweet, setMyTweet }) => {
                 text: text,
                 tweetid: myTweet._id
             },
+            withCredentials: true,
         })
         .then((res) => {
             console.log(res.data)
-            setComments(res.data.commentsFromTweet);
+            setListComments(res.data.commentsFromTweet);
             setMyTweet({...myTweet, comments: res.data.commentsFromTweet})
+            setText("");
         })
         .catch((err) => {
             console.log(err)
         });
     };
-
 
     const TweetDisplay = () => {
         return (
@@ -76,22 +60,24 @@ const CommentTweetButton = ({ myTweet, setMyTweet }) => {
 
                 <div className='card-body'>
                     <p className='card-text' style={{boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", borderRadius: "10px", border: "border: 3px inset rgba(28,110,164,0.74)", padding: "0 5px 0 5px"}}>{myTweet.content}</p>
-                    <p className="" 
-                        style={{ margin: "5px 15px 0 15px", borderTop: "1px solid #ccc", borderBottom: "1px solid #ccc"}}>
-                        Last edited {new Date().toLocaleTimeString() + " - " + new Date().toLocaleDateString()} 
-                        <br/>
-                        {myTweet?.likers?.length} likes
-                    </p>
+                    <div style={{borderTop: "1px solid #ccc", borderBottom: "1px solid #ccc"}}>
+                        <p style={{margin: "0"}}>
+                            Last edited {new Date().toLocaleTimeString() + " - " + new Date().toLocaleDateString()} 
+                        </p>
+                        <div className="d-flex justify-content-between">
+                            <span><b>{myTweet?.likers?.length}</b> likes</span>
+                            <span><b>{listComments.length}</b> comments</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
     };
 
     return (
-        <div className="comment">
-
+        <div className="">
             <label className='btn btn-link'>
-                <ChatText size={20} onClick={handleClickCommentButton} style={{cursor: "pointer"}} />
+                <ChatText size={20} onClick={handleShowAlert} style={{cursor: "pointer"}} />
             </label>
 
             {showAlert && (
@@ -100,9 +86,9 @@ const CommentTweetButton = ({ myTweet, setMyTweet }) => {
                         <div className="tweetDisplay col d-flex align-items-center" >
                             <TweetDisplay />
                         </div>
-                        
-                        <div className="commentDisplay col">
-                            <CommentsWall comments={comments} />
+
+                        <div className="col">
+                            <CommentsWall myTweet={myTweet}/>
                             <div className="commentForm d-flex">
                                 <textarea className='container-fluid' id="tweetContent" name="tweetContent" placeholder="What's happening ?" rows="2" 
                                     style={{resize: "none", borderRadius: "10px", border: "2px solid #ccc", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "10px", fontSize: "1rem", fontFamily: "sans-serif", width: "100%"}} value={text}
@@ -119,8 +105,9 @@ const CommentTweetButton = ({ myTweet, setMyTweet }) => {
                     </Modal.Footer>
                 </Modal>
             )}
+
         </div>
     );
-};
+}
 
 export default CommentTweetButton;

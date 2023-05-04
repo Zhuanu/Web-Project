@@ -10,8 +10,7 @@ const LikeTweetButton = ({ myTweet, setMyTweet, myComment, setMyComment }) => {
 
     const { userid } = useContext(UserContext);
 
-    const myTweetExist = myTweet ? true : false;
-    const thing = (myTweetExist ? myTweet : myComment)
+    const thing = (myTweet ? myTweet : myComment)
 
     useEffect(() => {
         axios({
@@ -22,7 +21,7 @@ const LikeTweetButton = ({ myTweet, setMyTweet, myComment, setMyComment }) => {
         .then((res) => {
             console.log(res.data)
             setLikers(res.data.listUsers);
-            myTweetExist ? (setMyTweet({...thing, likers: res.data.listUsers})) : (setMyComment({...thing, likers: res.data.listUsers}))
+            myTweet ? (setMyTweet({...thing, likers: res.data.listUsers})) : (setMyComment({...thing, likers: res.data.listUsers}))
         })
         .catch((err) => {
             console.log(err)
@@ -42,17 +41,16 @@ const LikeTweetButton = ({ myTweet, setMyTweet, myComment, setMyComment }) => {
 
 
     const handleClickLikeButton = () => {
+        const data = (myTweet ? {tweetId: thing._id} : {commentId: thing._id})
         axios({
             method: `${liked ? 'DELETE' : 'POST'}`,
             url: `http://localhost:8000/api/messages/like`,
-            data: {
-                tweetId: thing._id
-            },
+            data: data,
             withCredentials: true,
         })
         .then((res) => {
             setLikers(res.data.listUsers);
-            myTweetExist ? (setMyTweet({...thing, likers: res.data.listUsers})) : (setMyComment({...thing, likers: res.data.listUsers}))
+            myTweet ? (setMyTweet({...thing, likers: res.data.listUsers})) : (setMyComment({...thing, likers: res.data.listUsers}))
             setLiked(res.data.state)
         })
         .catch((err) => {
