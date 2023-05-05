@@ -56,12 +56,19 @@ const ModifyTweetButton = ({ myTweet, setMyTweet, myComment, setMyComment }) => 
     };
 
     return (
-        <div className='modify'>
+        <div className='modify align-self-center'>
             <label className='btn btn-link'>
-                <PencilSquare size={20} onClick={handleClickModifyButton} style={{cursor: "pointer"}}/>
+                <PencilSquare size={25} onClick={handleClickModifyButton} style={{cursor: "pointer"}}/>
             </label>
             {showAlert && (
-                <Modal show={showAlert} onHide={handleCloseAlert}>
+                <Modal show={showAlert} onHide={handleCloseAlert}
+                    style={{
+                        position: 'fixed',
+                        top: '75%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                >
                     <Modal.Body>
                         <textarea className='container-fluid' id="tweetContent" name="tweetContent" placeholder="What's happening ?" rows="3" 
                             style={{resize: "none", borderRadius: "10px", border: "2px solid #ccc", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "10px", fontSize: "1rem", fontFamily: "sans-serif", height: "150px", width: "100%"}} value={tweetContent}

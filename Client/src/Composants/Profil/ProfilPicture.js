@@ -6,27 +6,15 @@ import axios from "axios";
 
 const ProfilPictureCss = styled.img`
     border-radius: 50%;
-    height: 100px;
-    width: 100px;
-    display: block;
+    height: 110px;
+    width: 110px;
 `;
 
 const DropZoneWrapper = styled.div`
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     border: 2px dashed #ccc;
-    margin: 20px;
     border-radius: 50%;
-    width: 100px;
-    height: 100px;
-`;
-
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    width: 110px;
+    height: 110px;
 `;
 
 const ProfilPicture = ({ friend }) => {
@@ -62,19 +50,19 @@ const ProfilPicture = ({ friend }) => {
     }
 
     return (
-        userid === profil ? 
-        (<Container>
-            <DropZoneWrapper {...getRootProps({className: 'dropzone'})}>
-                <input {...getInputProps()} name="picture" />
-                {user?.profil?.picture ? <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/> : <ProfilPictureCss src={`/uploads/default.jpg`} alt="pp"/>}
-            </DropZoneWrapper>
-            <p>@{user?.profil?.pseudo}</p>
-        </Container>
-        ) :
-        (<Container>
-            {friend?.profil?.picture ? <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/> : <ProfilPictureCss src={`/uploads/default.jpg`} alt="pp"/>}
-            <p>@{friend?.profil?.pseudo}</p>
-        </Container>
+        userid === profil ? (
+            <div className="d-flex align-items-center" style={{flexDirection: "column", margin: "20px"}}>
+                <DropZoneWrapper {...getRootProps({className: 'dropzone'})}>
+                    <input {...getInputProps()} name="picture" />
+                    {user?.profil?.picture ? <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/> : <ProfilPictureCss src={`/uploads/default.jpg`} alt="pp"/>}
+                </DropZoneWrapper>
+                <p style={{fontSize: "20px", margin: "10px 0 0 0", color: "whitesmoke"}}>@{user?.profil?.pseudo}</p>
+            </div>
+        ) : (
+            <div className="d-flex align-items-center" style={{flexDirection: "column", margin: "20px"}}>
+                {friend?.profil?.picture ? <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/> : <ProfilPictureCss src={`/uploads/default.jpg`} alt="pp"/>}
+                <p style={{fontSize: "20px", margin: "10px 0 0 0", color: "whitesmoke"}}>@{friend?.profil?.pseudo}</p>
+            </div>
         )
 
     );

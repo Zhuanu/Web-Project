@@ -38,8 +38,20 @@
 }
 
 
-/* body {
-  background-image: url('/public/uploads/6445b3c4e43706993b6dcaf7.jpg');
+.main-content {
+  background-image: url('/public/background2.jpg');
   background-repeat: no-repeat;
+  background-attachment: local;
   background-size: cover;
-} */
+  height: 100vh;
+  max-height: 100vh;
+}
+
+.fenetre {
+  background-image: url('/public/background2.jpg');
+  background-repeat: no-repeat;
+  background-attachment: local;
+  background-size: cover;
+}
+
+

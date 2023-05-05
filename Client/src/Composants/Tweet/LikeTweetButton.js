@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../AppContext';
-import { HeartFill } from 'react-bootstrap-icons';
+import { HeartFill, Heart } from 'react-bootstrap-icons';
 
 const LikeTweetButton = ({ myTweet, setMyTweet, myComment, setMyComment }) => {
     const [likers, setLikers] = useState([]);
@@ -61,9 +61,11 @@ const LikeTweetButton = ({ myTweet, setMyTweet, myComment, setMyComment }) => {
 
     return (
         isLikersInitialised ? (
-            <div className='like'>
+            <div className='like align-self-center'>
                 <label className='btn btn-link'>
-                    <HeartFill size={20} color={liked ? "red" : `${null}`} onClick={handleClickLikeButton} style={{cursor: "pointer"}} />
+                    
+                    {liked && <HeartFill size={25} color="red" onClick={handleClickLikeButton} style={{cursor: "pointer"}} />}
+                    {!liked && <Heart size={25} onClick={handleClickLikeButton} style={{cursor: "pointer"}} />}
                 </label>
             </div>
 

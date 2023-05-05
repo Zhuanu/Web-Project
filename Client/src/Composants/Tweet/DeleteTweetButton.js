@@ -50,21 +50,28 @@ const DeleteTweetButton = ({ myTweet, myComment }) => {
     };
 
     return (
-        <div className='delete'>
+        <div className='delete align-self-center'>
             <label className='btn btn-link'>
-                <Trash3 size={20} onClick={handleClickDeleteButton} style={{cursor: "pointer"}}/>
+                <Trash3 size={25} onClick={handleClickDeleteButton} style={{cursor: "pointer"}}/>
             </label>
             {showAlert && (
-                <Modal show={showAlert} onHide={handleCloseAlert}>
+                <Modal show={showAlert} onHide={handleCloseAlert}
+                    style={{
+                        position: 'fixed',
+                        top: '75%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                >
                     <Modal.Body>
                         <p className='text-center'>Are you sure you want to delete this?</p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="primary" onClick={myTweet ? (handleClickConfirmDeleteButton) : (handleCommentDeleted)}>
-                            Supprimer
-                        </Button>
                         <Button variant="danger" onClick={handleCloseAlert}>
                             Close
+                        </Button>
+                        <Button variant="primary" onClick={myTweet ? (handleClickConfirmDeleteButton) : (handleCommentDeleted)}>
+                            Supprimer
                         </Button>
                     </Modal.Footer>
                 </Modal>

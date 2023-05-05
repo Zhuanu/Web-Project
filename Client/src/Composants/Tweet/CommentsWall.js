@@ -21,7 +21,7 @@ const CommentsWall = ({ myTweet }) => {
     }, [myTweet]);
 
     return (
-        <div className="comments-wall" style={{maxHeight: "calc(82vh - 90px)", overflowY: "auto"}}>
+        <div className="comments-wall" style={{maxHeight: "55vh", overflowY: "auto", borderRadius: "10px"}}>
             {listComments.map((comment) => (
                 <Comment key={comment._id} comment={comment} />
             ))}

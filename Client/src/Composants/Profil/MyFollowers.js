@@ -79,38 +79,36 @@ const MyFollowers = ({ setFriend }) => {
     }
 
     return (
-        <>
-        {isLoading ? (
-                <div>
-                    <div className="d-flex align-items-center justify-content-center">
-                        <strong>Loading...</strong>
-                        <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-                    </div>  
-                </div>
+        <div className="MyFollowers">
+            {isLoading ? (
+                <div className="d-flex align-items-center justify-content-center">
+                    <strong>Loading...</strong>
+                    <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                </div>  
             ) : (
                 <div className="followersWindow">
-                    <Button variant="primary" onClick={handleShow}>
+                    <button className="btn btn-link" onClick={handleShow} 
+                        style={{cursor: "pointer", textDecoration: "none", fontSize: "20px"}}>
                         <b>{`${followers.length}`}</b> followers
-                    </Button>
+                    </button>
 
-                    <Modal show={show} onHide={handleClose}>
+                    <Modal show={show} backdrop onHide={handleClose} style={{position: "fixed", top: "100px", left: "50px"}}>
                         <Modal.Header closeButton>
-                            <Modal.Title style={{ width: '50%', margin: '0 auto' }}>followers</Modal.Title>
+                            <Modal.Title style={{width: '50%', margin: '0 auto' }}>followers</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                         <ul>
                             {followers.map((follower) => (
-                                <li key={follower?._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <Link to={`/profil/${follower?._id}`} style={{ display: 'flex', alignItems: 'center' }} onClick={() => { handleRedirect(follower) }}>
-                                    {follower?.profil.picture ? <FriendPicture src={`/uploads/${follower?._id}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
-                                    <p style={{ margin: '0 0 0 10px' }}>{follower?.profil.pseudo}</p>
-                                    <p>{follower.isFollowed + ""}</p>
-                                </Link>
+                                <li key={follower?._id} className="d-flex justify-content-between align-items-center m-2">
 
-                                {userid === profil && (<DeleteFollowerButton userId={follower._id} setList={setFollowers}/>)}
+                                    <Link to={`/profil/${follower?._id}`} style={{textDecoration: "none"}} className="d-flex align-items-center" onClick={() => { handleRedirect(follower) }}>
+                                        {follower?.profil.picture ? <FriendPicture src={`/uploads/${follower?._id}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
+                                        <span style={{ margin: "0 15px" }}>@{follower?.profil.pseudo}</span>
+                                    </Link>
 
-                                {userid !== profil && follower?.isFollowed && (<UnfollowButton userId={follower._id} list={followers} setList={setFollowers} />)}
-                                {userid !== profil && !follower?.isFollowed && userid !== follower?._id && (<FollowButton userId={follower._id} list={followers} setList={setFollowers} />)}
+                                    {userid === profil && (<DeleteFollowerButton userId={follower._id} setList={setFollowers}/>)}
+                                    {userid !== profil && follower?.isFollowed && (<UnfollowButton userId={follower._id} list={followers} setList={setFollowers} />)}
+                                    {userid !== profil && !follower?.isFollowed && userid !== follower?._id && (<FollowButton userId={follower._id} list={followers} setList={setFollowers} />)}
 
                                 </li>
                             ))}
@@ -123,7 +121,7 @@ const MyFollowers = ({ setFriend }) => {
                         </Modal.Footer>
                     </Modal>
                 </div>)}
-        </>
+    </div>
   );
 };
 

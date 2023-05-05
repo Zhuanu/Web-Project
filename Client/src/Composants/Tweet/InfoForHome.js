@@ -23,14 +23,14 @@ const InfoForHome = () => {
 
 
     return (
-        <div className="infoForHome" style={{marginTop: "25%"}}>
-            <div className="body d-grid" style={{boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", textAlign: "center", marginBottom: "10px"}}>
+        <div className="infoForHome" style={{marginTop: "25%", backdropFilter: "blur(10px)"}}>
+            <div className="body d-grid border p-4" style={{marginBottom: "30px", borderRadius: "10px"}}>
                 <span style={{marginBottom: "10px"}}><b>{listTweet.length}</b> tweets au total !</span>
                 <span style={{marginBottom: "10px"}}><b>{listFollowing.length}</b> abonnements !</span>
-                <span style={{marginBottom: "10px"}}><b>{listFollowers.length}</b> abonné(e)s !</span>
+                <span style={{}}><b>{listFollowers.length}</b> abonné(e)s !</span>
             </div>
 
-            <div className="footer d-grid" style={{boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", marginTop: "10px"}}>
+            <div className="footer d-grid" style={{marginTop: "10px"}}>
                 <p className="text-break" style={{marginBottom: "10px"}}>À propos Aide Presse API Emplois Confidentialité Conditions Lieux Langue</p>
                 <span>© 2023 ALL BY ME</span>
             </div>

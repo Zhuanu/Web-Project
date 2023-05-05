@@ -1,61 +1,60 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../Composants/AppContext';
-import styled from "styled-components";
 
 
 import Log from '../Composants/Log/Log';
-import BasicInfo from '../Composants/Profil/BasicInfo';
 import ProfilPicture from '../Composants/Profil/ProfilPicture';
 import MyFollowers from '../Composants/Profil/MyFollowers';
 import MyFollowing from '../Composants/Profil/MyFollowing';
 import Bio from '../Composants/Profil/Bio';
 import EditProfil from '../Composants/Profil/EditProfil';
+import NavProfil from '../Composants/Profil/NavProfil';
 
-const Container = styled.div`
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 60px;
-`;
-
-const Container2 = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: 60px;
-`;
-
-const Container3 = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-top: 60px;
-    margin-bottom: 60px;
-`;
+import MyTweetsDisplay from "../Composants/Profil/MyTweetsDisplay";
+import MyCommentsDisplay from "../Composants/Profil/MyCommentsDisplay";
+import BasicInfo from "../Composants/Profil/BasicInfo";
 
 
 const Profil = () => {
     const { profil, userid } = useContext(UserContext);
     const [friend, setFriend] = useState({});
+    const [mode, setMode] = useState("tweet");
+
+    const handlePersonalInformation = () => {
+        setMode("personalInformation");
+    };
+
+    const handleTweet = () => {
+        setMode("tweet");
+    };
+
+    const handleComment = () => {
+        setMode("comment");
+    };
 
     return (
         userid 
         ? 
-        (<div className='profile-page'>
-            <h1>Profile Page</h1>
-            <Container3>
-                <ProfilPicture friend={friend} />
-                <Container2>
-                    {userid === profil ? <EditProfil /> : null}
-                    <Container>
-                        <MyFollowers setFriend={setFriend} />
-                        <MyFollowing setFriend={setFriend} />
-                    </Container>
-                </Container2>
-            </Container3>
-            <Bio friend={friend}/>
-            {userid === profil ? <BasicInfo /> : null}
+        (<div className='profile-page row justify-content-center' style={{height: "100vh", maxHeight: "100vh"}}>
+            <div className='col' style={{padding: "50px 0"}}>
+                <div className='d-flex border p-3' style={{borderRadius: "20px", marginLeft: "10%"}}>
+                    <ProfilPicture friend={friend} />
+                    <div className='d-grid'>
+                        <div className='d-flex align-items-center'>
+                            <MyFollowers setFriend={setFriend} />
+                            <MyFollowing setFriend={setFriend} />
+                            {userid === profil ? <EditProfil/> : null}
+                        </div>
+                        <Bio friend={friend}/>
+                    </div>
+                </div>
+                <NavProfil handleTweet={handleTweet} handlePersonalInformation={handlePersonalInformation} handleComment={handleComment} />
+            </div>
+            <div className='col'>
+                {mode === "tweet" && <MyTweetsDisplay />}
+                {mode === "comment" && <MyCommentsDisplay />}
+                {mode === "personalInformation" && (<BasicInfo />)}
+            </div>
         </div>)
         :
         (<div className='log-page'>

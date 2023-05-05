@@ -16,7 +16,10 @@ const deleteComment = require("./services/deleteComment.js");
 const modifyComment = require("./services/modifyComment.js");
 const getCommentsFromTweet = require("./services/getCommentsFromTweet.js");
 
+const getAllTweetsFromUserAndFirstComment = require("./services/getAllTweetsFromUserAndFirstComment.js");
+
 const { verifyToken } = require('../user/auth.js');
+const getCommentsFromUserAndTweet = require("./services/getCommentsFromUserAndTweet.js");
 
 const messages = express.Router();
 
@@ -47,6 +50,10 @@ messages
     .put("/comment", verifyToken, modifyComment)
 
     .get("/comment/:tweetid", verifyToken, getCommentsFromTweet)
+
+    .get("/get/:userid/tweet", verifyToken, getAllTweetsFromUserAndFirstComment)
+
+    .get("/get/:userid/comment", verifyToken, getCommentsFromUserAndTweet)
 
     .use((req, res) => {
         res.status(404).json({status : 404, "message": "Page not found"});

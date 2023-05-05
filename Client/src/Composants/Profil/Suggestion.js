@@ -33,7 +33,7 @@ const Suggestions = () => {
     }, [])
 
     return (
-        <div className='suggestions'>
+        <div className='suggestions border p-4' style={{borderRadius: "20px", backdropFilter: "blur(10px)"}}>
             <h3 className='text-center' style={{marginBottom: "15px"}}>Suggestions</h3>
             {isLoading ? (
                 <div>
@@ -50,7 +50,7 @@ const Suggestions = () => {
                                 <div className='d-flex justify-content-between'>
                                     <div className='d-flex align-items-center'>
                                         {user?.profil.picture ? <FriendPicture src={`/uploads/${user._id}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
-                                        <span style={{margin: "0 10px 0 10px"}}>@{user?.profil.pseudo}</span>
+                                        <span style={{margin: "0 15px"}}>@{user?.profil.pseudo}</span>
                                     </div>
 
                                     <div className="">

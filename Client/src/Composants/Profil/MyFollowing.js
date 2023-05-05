@@ -70,9 +70,11 @@ const MyFollowing = ({ setFriend }) => {
                 </div>
             ) : (
                 <div>
-                    <Button variant="primary" onClick={handleShow}>
+                    <button className="btn btn-link" onClick={handleShow}
+                        style={{cursor: "pointer", textDecoration: "none", fontSize: "20px"}}
+                    >
                         <b>{`${following.length}`}</b> following
-                    </Button>
+                    </button>
 
                     <Modal show={show} onHide={handleClose}>
                         <Modal.Header closeButton>
@@ -81,11 +83,10 @@ const MyFollowing = ({ setFriend }) => {
                         <Modal.Body>
                         <ul>
                             {following.map((f) => (
-                                <li key={f._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <Link to={`/profil/${f._id}`} style={{ display: 'flex', alignItems: 'center' }} onClick={() => { handleRedirect(f) }}>
+                                <li key={f._id} className="d-flex justify-content-between align-items-center m-2">
+                                    <Link to={`/profil/${f._id}`} style={{textDecoration: "none"}} className="d-flex align-items-center" onClick={() => { handleRedirect(f) }}>
                                         {f.profil.picture ? <FriendPicture src={`/uploads/${f._id}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
-                                        <p style={{ margin: '0 0 0 10px' }}>{f.profil.pseudo}</p>
-                                        <p>{f.isFollowed + ""}</p>
+                                        <p style={{ marginLeft: "15px" }}>@{f.profil.pseudo}</p>
                                     </Link>
 
                                         {f?.isFollowed 

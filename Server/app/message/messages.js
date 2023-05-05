@@ -15,7 +15,7 @@ async function createTweet(content, userid) {
     const docTweet = {
         content: content,
         userid: new ObjectId(userid),
-        date: new Date().toLocaleDateString() + " - " + new Date().toLocaleTimeString(),
+        date: new Date(),
     }
 
     await tweets.insertOne(docTweet);
@@ -31,7 +31,7 @@ async function modifyTweet(tweetId, content) {
     const result = await tweets.updateOne({ _id: new ObjectId(tweetId) }, { 
         $set: { 
             content: content ,
-            date: new Date().toLocaleTimeString() + " - " + new Date().toLocaleDateString(),
+            date: new Date(),
         } 
     });
     const tweet = await tweets.findOne({ _id: new ObjectId(tweetId) });
@@ -54,10 +54,21 @@ async function getAllTweets() {
 }
 
 async function getAllTweetsFromUser(userid) {
-    const objectId = new ObjectId(userid)
-    const result = await tweets.find({ userid: objectId }).toArray();
-    console.log(result)
-    return result
+    const tweetOfUser = await tweets.find({ userid: new ObjectId(userid) }).toArray();
+    const tweetOfUserFinal = [];
+
+    for (const tweet of tweetOfUser) {
+        const user = await users.findOne({ _id: new ObjectId(tweet.userid) });
+        const tweetModified = { ...tweet, pseudo: user.profil.pseudo, picture: user.profil.picture };
+        tweetOfUserFinal.unshift(tweetModified);
+    }
+
+    return tweetOfUserFinal;
+}
+
+async function getTweetsFromTweet(tweetid) {
+    const tweet = await tweets.find({ _id: new ObjectId(tweetid) }).toArray();
+    return tweet;
 }
 
 
@@ -113,7 +124,10 @@ async function getLikesFromComment(commentid) {
 
 
 async function getTweetById(tweetId) {
-    return await tweets.findOne({ _id: new ObjectId(tweetId) });
+    const tweet = await tweets.findOne({ _id: new ObjectId(tweetId) });
+    const user = await users.findOne({ _id: new ObjectId(tweet.userid) });
+    const tweetModified = { ...tweet, pseudo: user.profil.pseudo, picture: user.profil.picture };
+    return tweetModified;
 }
 
 
@@ -123,7 +137,7 @@ async function createComment(tweetId, text, userid) {
         tweetid: new ObjectId(tweetId),
         text: text,
         userid: new ObjectId(userid),
-        date: new Date().toLocaleDateString() + " - " + new Date().toLocaleTimeString(),
+        date: new Date(),
     }
 
     await comments.insertOne(docComment);
@@ -138,7 +152,7 @@ async function modifyComment(commentid, text) {
     await comments.updateOne({ _id: new ObjectId(commentid) }, {
         $set: {
             text: text,
-            date: new Date().toLocaleTimeString() + " - " + new Date().toLocaleDateString(),
+            date: new Date(),
         }
     });
     const comment = await comments.findOne({ _id: new ObjectId(commentid) });
@@ -159,6 +173,19 @@ async function getCommentsFromTweet(tweetid) {
 
     return commentsFinal;
 }
+
+async function getCommentsFromUser(userid) {
+    const commentaires = await comments.find({ userid: new ObjectId(userid) }).toArray();
+    const commentsFinal = [];
+
+    for (const comment of commentaires) {
+        const user = await users.findOne({ _id: new ObjectId(comment.userid) });
+        const commentModified = { ...comment, pseudo: user.profil.pseudo, picture: user.profil.picture };
+        commentsFinal.unshift(commentModified);
+    }
+
+    return commentsFinal;
+ }
   
 
 module.exports = {
@@ -167,6 +194,7 @@ module.exports = {
     modifyTweet,
     getAllTweets,
     getAllTweetsFromUser,
+    getTweetsFromTweet,
 
     likeTweet,
     unlikeTweet,
@@ -181,4 +209,5 @@ module.exports = {
     deleteComment,
     modifyComment,
     getCommentsFromTweet,
+    getCommentsFromUser
 }

@@ -5,8 +5,8 @@ import { UserContext } from '../AppContext';
 export const DescriptionContainer = styled.div`
   display: flex;
   flex-direction: column;
-//   align-items: center;
-  margin-bottom: 20px;
+  color: white;
+  padding: 0 1rem;
 `;
 
 const Bio = ({ friend }) => {
@@ -14,14 +14,13 @@ const Bio = ({ friend }) => {
     return (
         userid === profil ? (
           <DescriptionContainer>
-
-              <p>Member since {user?.profil?.creationDate}</p>
-              <p>Bio: {user?.profil?.bio}</p>
+              <p>Member since <span>{user?.profil?.creationDate}</span></p>
+              <p>{user?.profil?.bio}</p>
           </DescriptionContainer>
         ) : (
           <DescriptionContainer>
-              <p>Member since {friend?.profil.creationDate}</p>
-              <p>Bio: {friend?.profil?.bio}</p>
+              <p>Member since <span>{friend?.profil?.creationDate}</span></p>
+              <p>{friend?.profil?.bio}</p>
           </DescriptionContainer>
         )
     );

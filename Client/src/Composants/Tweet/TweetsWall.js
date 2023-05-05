@@ -7,7 +7,7 @@ const TweetsWall = () => {
     const { listTweet } = useContext(TweetContext);
 
     return (
-        <div className="tweets-wall" style={{maxHeight: "calc(80vh - 90px)", overflowY: "auto"}}>
+        <div className="tweets-wall" style={{maxHeight: "37vh", overflowY: "auto", marginTop: "4%"}}>
             {listTweet.map((tweet) => (
                 <Tweet key={tweet._id} tweet={tweet} />
             ))}

@@ -36,9 +36,9 @@ const Home = () => {
             isListTweetInitialised ? (
 
                 <TweetContext.Provider value={{ listTweet, setListTweet }}>
-                    <div className='main-page' style={{display: "flex", flexDirection: "column", alignItems: "center", height: "100vh"}}>
-                        <h1 className='text-center'>Home Page</h1>
-                        <div style={{display: "flex", width: "80%"}}>
+                    <div className='main-page' 
+                    style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                        <div style={{display: "flex", width: "80%", marginTop: "3%"}}>
                             <div style={{flex: "2", marginRight: "10px", paddingRight: "10%"}}>
                                 <div style={{width: "100%", marginBottom: "20px"}}>
                                     <TweetForm isInitialised={isListTweetInitialised}/>

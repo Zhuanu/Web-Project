@@ -1,7 +1,6 @@
 const utils = require('../users');
 
 const sessionExpired = async (req, res) => {
-    console.log("req.cookies.id", req.cookies.id)
     await utils.updateConnected(req.cookies.id);
 
     // supprime le cookie accessToken au moment de la deconnexion
@@ -9,7 +8,7 @@ const sessionExpired = async (req, res) => {
     res.clearCookie('refreshToken');
     res.clearCookie('id');
 
-    res.status(200).json({status : 200, message: "OK : User logged out"});
+    res.status(200).json({status : 200, message: "OK : User logged out after session expired"});
 };
 
 module.exports = sessionExpired;

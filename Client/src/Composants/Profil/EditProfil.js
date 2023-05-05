@@ -59,7 +59,7 @@ const EditProfil = () => {
 
     return (
     <>
-        <Button variant="primary" onClick={handleShow}>
+        <Button variant="primary" style={{padding: ""}} onClick={handleShow}>
             Edit Profil
         </Button>
 

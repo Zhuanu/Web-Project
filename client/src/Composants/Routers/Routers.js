@@ -13,7 +13,7 @@ const Routers = () => {
     return (
         <div className=''>
             <Navbar />
-            <div className="main-content">
+            <div className="main-content text-white" style={{height: "100vh", maxHeight: "100vh"}}>
                 <Router>
                     <Routes>
                         <Route path="/" element={<Home/>} />

@@ -9,6 +9,7 @@ import EditTweetButton from "./ModifyTweetButton"
 import FollowButton from "../Profil/FollowButton"
 import UnfollowButton from "../Profil/UnfollowButton"
 import CommentTweetButton from "./CommentTweetButton";
+import { CustomDate } from "../Profil/MyTweetsDisplay";
 
 const ProfilPicture = styled.img`
     border-radius: 50%;
@@ -47,12 +48,12 @@ const Tweet = ({tweet}) => {
 
     return (
         <CommentContext.Provider value={{listComments, setListComments}}>
-            <div className='card' style={{borderRadius: "40px 0px 0px 40px", margin: "10px 0 10px 0px"}}>
+            <div className='card' style={{borderRadius: "40px 40px 40px 40px", margin: "10px 0 10px 0px", opacity: "0.9"}}>
 
                 <div className='card-header d-flex'>
                     <div className="left">
                         {myTweet.picture ? (<ProfilPicture src={`/uploads/${myTweet.userid}.jpg`} alt='pp'/>) : (<ProfilPicture src="/uploads/default.jpg" alt='pp'/>)}
-                        <span style={{ marginLeft: "5px" }}>@{myTweet.pseudo}</span>
+                        <span style={{ marginLeft: "15px" }}>@{myTweet.pseudo}</span>
                     </div>
                     <div style={{marginTop: "5px", marginLeft: "auto" }}>
                         {userid.toString() === myTweet.userid.toString() 
@@ -64,14 +65,15 @@ const Tweet = ({tweet}) => {
                 </div>
 
                 <div className='card-body'>
-                    <p className='card-text' style={{boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", borderRadius: "10px", border: "border: 3px inset rgba(28,110,164,0.74)", padding: "0 5px 0 5px"}}>{myTweet.content}</p>
-                    <div style={{borderTop: "1px solid #ccc", borderBottom: "1px solid #ccc"}}>
-                        <p style={{margin: "0"}}>
-                            Last edited {myTweet.date.slice(0, 10)} at {myTweet.date.slice(11, 16)}
-                        </p>
-                        <div className="d-flex justify-content-between">
-                            <span><b>{myTweet?.likers?.length}</b> likes</span>
-                            <span><b>{listComments.length}</b> comments</span>
+                    <p className='card-text' 
+                        style={{borderRadius: "10px", border: "border: 3px inset rgba(28,110,164,0.74)", padding: "0 40px", fontSize: "1.15rem"}}
+                    >{myTweet.content}</p>
+
+                    <div style={{ marginLeft: "15px"}}>
+                        <div className="d-grid">
+                            <p className="align-self-center" style={{marginRight: "5px", marginBottom: "0"}}>Last edited the <CustomDate customDate={myTweet.date} /></p>
+                            <span><b>{myTweet?.likers?.length}</b> Likes</span>
+                            <span><b>{listComments.length}</b> Comments</span>
                         </div>
                     </div>
 
