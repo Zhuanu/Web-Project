@@ -33,7 +33,7 @@ export const TweetDisplay = ({ tweet }) => {
 
     return (
         <div>
-            <div className='card' style={{borderRadius: "40px 40px 40px 40px", margin: "10px auto", width: "80%"}}>
+            <div className='card' style={{borderRadius: "40px 40px 40px 40px", margin: "10px auto", width: "80%", opacity: "0.9"}}>
                 <div className='card-header d-flex justify-content-between align-items-center'>
                     <div className="left align-items-center">
                         {tweet.picture ? (<TweetPicture src={`/uploads/${tweet.userid}.jpg`} alt='pp'/>) : (<TweetPicture src="/uploads/default.jpg" alt='pp'/>)}

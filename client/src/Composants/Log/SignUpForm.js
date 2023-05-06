@@ -69,9 +69,7 @@ const SignUpForm = () => {
     }
 
     function resetForm() {
-        // Parcours de tous les éléments du formulaire
         myForm.querySelectorAll('input').forEach((el) => {
-          // Réinitialisation de la valeur à vide
           el.value = '';
         });
         setIsReset(true);
@@ -100,60 +98,59 @@ const SignUpForm = () => {
             </>)
             :
             (<div className="signin">
-                <p id="header-error" className="form-text"></p>
-                <h1>Register Account</h1>
+                <p id="header-error" style={{color: "red"}} className="form-text"></p>
+                <h2 style={{fontSize: "2.2rem"}}>Create Your Account</h2>
 
                 <form method="POST" action="" onSubmit={submitForm} id='myForm'>
-                    <label htmlFor="identifiant">Login</label>
-                    <br/>
-                    <input type="text" name="identifiant" id="identifiant" value={id} 
-                        onChange={e => {setId(e.target.value)}}/>
-                    <p className="form-text" id="login-error"></p>
-                    <br/>
 
-                    <label htmlFor="password">Mot de passe</label>
-                    <br/>
-                    <input type="password" name="password" id="password" value={mdp} 
-                        onChange={e => {setMdp(e.target.value)}}/>
-                    <br/>
-                    <label htmlFor="confirm">Confirm mot de passe</label>
-                    <br/>
-                    <input type="password" name="confirm" id="confirm" value={confirm} 
-                        onChange={e=>{setConfirm(e.target.value)}}/>
-                    <br/>
-                    <br/>
-
-                    <label htmlFor="pseudo">Pseudo</label>
-                    <br/>
-                    <input type="text" name="pseudo" id="pseudo" value={pseudo} 
-                        onChange={e => {setPseudo(e.target.value)}}/>
-                    <br/>
-
-                    <label htmlFor="email">Email</label>
-                    <br/>
-                    <input type="text" name="email" id="email" value={email} 
-                        onChange={e => {setEmail(e.target.value)}}/>
-                    <br/>
-                    <p className="form-text" id="email-error"></p>
-                    <br/>
-                    <br/>
-
-                    <label htmlFor="birthday">Date de naissance :</label>
-                    <br/>
-                    <div className="scroll-container">
-                        <select id="birthday-day" onChange={(e) => {setJour(e.target.value);}}>
-                            {tabJour}
-                        </select>
-                        <select id="birthday-month" onChange={(e) => {setMois(e.target.value);}}>
-                            {tabMois}
-                        </select>
-                        <select id="birthday-year" onChange={(e) => {setAnnee(e.target.value);}}>
-                            {tabAnnee}
-                        </select>
+                    <div className="mb-3">
+                        <label htmlFor="identifiant" className="form-label">Login</label>
+                        <input type="text" className="form-control" name="identifiant" id="identifiant" value={id} onChange={e => {setId(e.target.value)}}/>
+                        <p className="form-text" style={{color: "red"}} id="login-error"></p>
                     </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="password" className="form-label">Password</label>
+                        <input type="password" className="form-control" name="password" id="password" value={mdp} onChange={e => {setMdp(e.target.value)}}/>
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="confirm" className="form-label">Confirm Password</label>
+                        <input type="password" className="form-control" name="confirm" id="confirm" value={confirm} onChange={e => {setConfirm(e.target.value)}}/>
+                    </div>
+
                     <br/>
-                    <button>Register</button>
+
+                    <div className="mb-3">
+                        <label htmlFor="pseudo" className='form-label'>Pseudo</label>
+                        <input type="text" className='form-control' name="pseudo" id="pseudo" value={pseudo} onChange={e => {setPseudo(e.target.value)}}/>
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="email" className='form-label'>Email</label>
+                        <input type="text" className='form-control' name="email" id="email" value={email} onChange={e => {setEmail(e.target.value)}}/>
+                        <p className="form-text" style={{color: "red"}} id="email-error"></p>
+                    </div>
+
                     <br/>
+
+                    <div className="mb-3">
+                        <label htmlFor="birthday" className='form-label'>Date de naissance</label>
+                        <div className="d-flex">
+                            <select className='form-select' id="birthday-day" onChange={(e) => {setJour(e.target.value);}}>
+                                {tabJour}
+                            </select>
+                            <select className='form-select' id="birthday-month" onChange={(e) => {setMois(e.target.value);}}>
+                                {tabMois}
+                            </select>
+                            <select className='form-select' id="birthday-year" onChange={(e) => {setAnnee(e.target.value);}}>
+                                {tabAnnee}
+                            </select>
+                        </div>
+                    </div>
+                    <div className="d-flex justify-content-end">
+                        <button type="submit" style={{borderRadius: "10px", height: "40px", width: "140px", fontSize: "1.1rem"}} className="btn btn-primary">Register</button>
+                    </div>
                 </form>
             </div>)
     );

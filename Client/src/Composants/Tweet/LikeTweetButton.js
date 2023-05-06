@@ -19,7 +19,6 @@ const LikeTweetButton = ({ myTweet, setMyTweet, myComment, setMyComment }) => {
             withCredentials: true,
         })
         .then((res) => {
-            console.log(res.data)
             setLikers(res.data.listUsers);
             myTweet ? (setMyTweet({...thing, likers: res.data.listUsers})) : (setMyComment({...thing, likers: res.data.listUsers}))
         })

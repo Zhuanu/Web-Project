@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext, CommentContext } from "../AppContext";
 import styled from "styled-components";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 import LikeTweetButton from "./LikeTweetButton";
 import DeleteTweetButton from "./DeleteTweetButton";
@@ -19,7 +20,7 @@ const ProfilPicture = styled.img`
 
 const Tweet = ({tweet}) => {
     const [myTweet , setMyTweet] = useState(tweet)
-    const { listFollowing, setlistFollowing, userid } = useContext(UserContext);
+    const { listFollowing, setlistFollowing, userid, setProfil, setFriend } = useContext(UserContext);
     const [listComments, setListComments] = useState([])
 
     useEffect(() => {
@@ -38,7 +39,6 @@ const Tweet = ({tweet}) => {
             withCredentials: true,
         })
         .then((res) => {
-            console.log(res.data)
             setListComments(res.data.commentsFromTweet)
         })
         .catch((err) => {
@@ -46,15 +46,30 @@ const Tweet = ({tweet}) => {
         });
     }, [myTweet._id])
 
+    const handleRedirect = (userid) => {
+        setProfil(userid);
+        axios({
+            method: 'GET',
+            url: `http://localhost:8000/api/user/get/${userid}`,
+            withCredentials: true,
+        })
+        .then((res) => {
+            setFriend(res.data)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    };
+
     return (
         <CommentContext.Provider value={{listComments, setListComments}}>
             <div className='card' style={{borderRadius: "40px 40px 40px 40px", margin: "10px 0 10px 0px", opacity: "0.9"}}>
 
                 <div className='card-header d-flex'>
-                    <div className="left">
+                    <Link to={`/profil/${myTweet.userid}`} style={{textDecoration: "none"}} className="d-flex align-items-center" onClick={() => { handleRedirect(myTweet.userid) }}>
                         {myTweet.picture ? (<ProfilPicture src={`/uploads/${myTweet.userid}.jpg`} alt='pp'/>) : (<ProfilPicture src="/uploads/default.jpg" alt='pp'/>)}
                         <span style={{ marginLeft: "15px" }}>@{myTweet.pseudo}</span>
-                    </div>
+                    </Link>
                     <div style={{marginTop: "5px", marginLeft: "auto" }}>
                         {userid.toString() === myTweet.userid.toString() 
                             ? (null) 

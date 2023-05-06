@@ -1,11 +1,8 @@
 const getter = require('../../getter');
 
-const getUser = async (req, res) => {
-    let userid = req.userid
+const getUserFromParams = async (req, res) => {
+    let userid = req.params.userid
 
-    if (req.params.userid !== undefined) {
-        userid = req.params.userid;
-    }
     try {
 
         if (userid === undefined) {
@@ -23,4 +20,4 @@ const getUser = async (req, res) => {
     }
 };
 
-module.exports = getUser;
+module.exports = getUserFromParams;

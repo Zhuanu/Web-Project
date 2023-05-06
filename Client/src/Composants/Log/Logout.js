@@ -19,16 +19,12 @@ const Logout = () => {
             method: "GET",
             url: "http://localhost:8000/api/user/logout",
             withCredentials: true,
-            // credentials: "include",
         })
         .then((res) => {
-            console.log("data dans logout", res.data);
-            console.log("cookie dans logout", cookie.get("accessToken"));
             removeCookie("accessToken");
             removeCookie("refreshToken");
             removeCookie("id");
             handleLogout();
-            window.location.href = "http://localhost:3000/profil";
         })
         .catch(err => {
             console.log(err)

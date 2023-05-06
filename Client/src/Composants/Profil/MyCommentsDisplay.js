@@ -1,9 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../AppContext";
 import axios from "axios";
-import styled from "styled-components";
 
-import { TweetDisplay, CommentDisplay, TweetPicture, CommentPicture } from "./MyTweetsDisplay";
+import { TweetDisplay } from "./MyTweetsDisplay";
 
 
 const MyCommentsDisplay = () => {

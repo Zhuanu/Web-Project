@@ -8,8 +8,9 @@ require('bootstrap/dist/css/bootstrap.min.css')
 
 function App() {
     const [userid, setUserid] = useState(null);
-    const [profil, setProfil] = useState(null);
     const [user, setUser] = useState(null);
+    const [profil, setProfil] = useState(null);
+    const [friend, setFriend] = useState(null);
     const [listFollowing, setlistFollowing] = useState([]);
 
     useEffect(() => {
@@ -27,6 +28,7 @@ function App() {
             })
             .then((res) => {
                 setUser(res.data)
+                setFriend(res.data)
             })
             .catch((err) => {
                 console.log(err)
@@ -63,7 +65,8 @@ function App() {
         <UserContext.Provider value={{handleLogin, handleLogout, userid, 
                                         listFollowing, setlistFollowing,
                                         profil, setProfil, 
-                                        user, setUser}}>
+                                        user, setUser,
+                                        friend, setFriend}}>
             <Routes />
         </UserContext.Provider>
     );

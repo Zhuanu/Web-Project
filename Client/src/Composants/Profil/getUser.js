@@ -1,9 +1,11 @@
 import { PersonCircle } from 'react-bootstrap-icons';
+import { useContext } from 'react';
+import { UserContext } from '../AppContext';
 
 const GetUser = () => {
-    
+    const { userid } = useContext(UserContext);
     const getuser = () => {
-        window.location.href = "http://localhost:3000/profil";
+        window.location.href = "http://localhost:3000/profil/";
     }
 
     return <div onClick={getuser} className='d-flex justify-content-center'>

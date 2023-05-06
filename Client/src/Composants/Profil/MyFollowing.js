@@ -83,7 +83,7 @@ const MyFollowing = ({ setFriend }) => {
                         <Modal.Body>
                         <ul>
                             {following.map((f) => (
-                                <li key={f._id} className="d-flex justify-content-between align-items-center m-2">
+                                <li key={f._id} className="d-flex justify-content-between align-items-center m-3">
                                     <Link to={`/profil/${f._id}`} style={{textDecoration: "none"}} className="d-flex align-items-center" onClick={() => { handleRedirect(f) }}>
                                         {f.profil.picture ? <FriendPicture src={`/uploads/${f._id}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
                                         <p style={{ marginLeft: "15px" }}>@{f.profil.pseudo}</p>

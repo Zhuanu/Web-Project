@@ -3,6 +3,7 @@ import { UserContext } from "../AppContext";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from "axios";
+import { PencilSquare } from "react-bootstrap-icons";
 
 const EditProfil = () => {
     const [show, setShow] = useState(false);
@@ -59,8 +60,11 @@ const EditProfil = () => {
 
     return (
     <>
-        <Button variant="primary" style={{padding: ""}} onClick={handleShow}>
-            Edit Profil
+        <Button variant="primary" 
+            className="btn btn-primary d-flex align-items-center justify-content-center"
+            style={{ borderRadius: "10px", height: "40px", width: "120px", fontSize: "1.1rem" }} onClick={handleShow}
+        >
+            <PencilSquare size={22} style={{marginRight: "7px"}}/><span>Profil</span>
         </Button>
 
         <Modal show={show} onHide={handleClose}>
@@ -132,7 +136,8 @@ const EditProfil = () => {
                 </Button>
             </Modal.Footer>
         </Modal>
-    </>);
+    </>
+    );
 }
 
 export default EditProfil;

@@ -18,7 +18,7 @@ const CommentsWall = ({ myTweet }) => {
         .catch((err) => {
             console.log(err);
         });
-    }, [myTweet]);
+    }, [myTweet, setListComments]);
 
     return (
         <div className="comments-wall" style={{maxHeight: "55vh", overflowY: "auto", borderRadius: "10px"}}>

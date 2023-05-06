@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../AppContext";
+import styled from "styled-components";
 
+const Logo = styled.img`
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+`;
 
 const SignInForm = () => {
     const [id, setId] = useState("");
@@ -29,7 +35,6 @@ const SignInForm = () => {
             method: "POST",
             url: "http://localhost:8000/api/user/login",
             withCredentials: true,
-            // credentials: "include",
             data: {
                 login: id, 
                 password: mdp
@@ -37,7 +42,6 @@ const SignInForm = () => {
         })
         .then(res => {
             handleLogin(res.data.userid);
-            console.log(res.cookies)
             localStorage.setItem("userid", JSON.stringify(res.data.userid));
         })
         .catch(err => {
@@ -57,9 +61,7 @@ const SignInForm = () => {
     }
 
     function resetForm() {
-        // Parcours de tous les éléments du formulaire
         myForm.querySelectorAll('input').forEach((el) => {
-          // Réinitialisation de la valeur à vide
           el.value = '';
         });
         setIsReset(true);
@@ -76,30 +78,31 @@ const SignInForm = () => {
 
 
     return (
-        <div className="login">
-            <p id="header-error" className="form-text"></p>
-            <h1>Ouvrir une session</h1>
-
+        <div className="login d-flex" style={{flexDirection: "column"}}>
+            <p id="header-error" style={{color: "red"}} className="form-text"></p>
+            <div className="d-flex justify-content-center">
+                <Logo src="/uploads/default.jpg" alt="logo" className="mb-3"/>
+            </div>
+            <h2 style={{fontSize: "2.5rem"}}>Welcome to Prism</h2>
+            
             <form method="POST" action="" onSubmit={submitForm} id="myForm">
-                <label htmlFor="username" className="form-label">Login</label>
-                <br/>
-                <input type="text" name="username" id="username" value={id} 
-                    onChange={e => {setId(e.target.value)}}/>
-                <br/>
-                <p className="form-text" id="login-error"></p>
-
-                <label htmlFor="password">Mot de passe</label>
-                <br/>
-                <input type="password" name="password" id="password" value={mdp} 
-                    onChange={e => {setMdp(e.target.value)}}/>
-                <br/>
-                <p className="form-text" id="mdp-error"></p>
-                <br/>
-
-                <button>Se Connecter</button>
-                <br/>
+                <div className="mb-3">
+                    <label htmlFor="username" className="form-label">Login</label>
+                    <input type="text" className="form-control" name="username" id="username" value={id} onChange={e => {setId(e.target.value)}}/>
+                </div>
+                <p className="form-text" style={{color: "red"}} id="login-error"></p>
+                <div className="mb-3">
+                    <label htmlFor="password" className="form-label">Password</label>
+                    <input type="password" className="form-control" name="password" id="password" value={mdp} onChange={e => {setMdp(e.target.value)}}/>
+                </div>
+                <p className="form-text" style={{color: "red"}} id="mdp-error"></p>
+                <div className="d-flex justify-content-end">
+                    <button type="submit" style={{borderRadius: "10px", height: "40px", width: "140px", fontSize: "1.1rem"}} className="btn btn-primary">Submit</button>
+                </div>
             </form>
-        </div>);
+        </div>
+    );
+
 };
 
 export default SignInForm;

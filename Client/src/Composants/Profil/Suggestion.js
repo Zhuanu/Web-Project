@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { UserContext } from '../AppContext';
 import axios from 'axios';
 import styled from 'styled-components';
 import FollowButton from './FollowButton';
 import UnfollowButton from './UnfollowButton';
+import { Link } from 'react-router-dom';
 
 const FriendPicture = styled.img`
     border-radius: 50%;
@@ -14,12 +16,13 @@ const FriendPicture = styled.img`
 const Suggestions = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [listSuggestion, setlistSuggestion] = useState([]);
+    const { setProfil, setFriend } = useContext(UserContext);
 
     useEffect(() => {
         setIsLoading(false);
         axios({
             method: 'GET',
-            url: 'http://localhost:8000/api/user/infos',
+            url: 'http://localhost:8000/api/user/nonFollowing',
             withCredentials: true,
         })
         .then((res) => {
@@ -31,6 +34,11 @@ const Suggestions = () => {
             console.log(err)
         })
     }, [])
+
+    const handleRedirect = (user) => {
+        setProfil(user._id);
+        setFriend(user)
+    };
 
     return (
         <div className='suggestions border p-4' style={{borderRadius: "20px", backdropFilter: "blur(10px)"}}>
@@ -46,12 +54,12 @@ const Suggestions = () => {
                 <ul className='list-unstyled'>
                     {listSuggestion && listSuggestion.slice(0, 4).map((user) => {
                         return (
-                            <li key={user?._id} style={{margin: "10px 0 10px 0"}}>
+                            <li key={user?._id} className='' style={{margin: "10px 0"}}>
                                 <div className='d-flex justify-content-between'>
-                                    <div className='d-flex align-items-center'>
+                                    <Link to={`/profil/${user?._id}`} style={{textDecoration: "none"}} className="d-flex align-items-center" onClick={() => { handleRedirect(user) }}>
                                         {user?.profil.picture ? <FriendPicture src={`/uploads/${user._id}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
                                         <span style={{margin: "0 15px"}}>@{user?.profil.pseudo}</span>
-                                    </div>
+                                    </Link>
 
                                     <div className="">
                                         {user?.isFollowed ? (

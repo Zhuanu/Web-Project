@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../Composants/AppContext';
 
 
@@ -13,12 +13,22 @@ import NavProfil from '../Composants/Profil/NavProfil';
 import MyTweetsDisplay from "../Composants/Profil/MyTweetsDisplay";
 import MyCommentsDisplay from "../Composants/Profil/MyCommentsDisplay";
 import BasicInfo from "../Composants/Profil/BasicInfo";
+import UnfollowButton from '../Composants/Profil/UnfollowButton';
+import FollowButton from '../Composants/Profil/FollowButton';
 
 
 const Profil = () => {
-    const { profil, userid } = useContext(UserContext);
-    const [friend, setFriend] = useState({});
+    const { profil, userid, listFollowing, friend, setFriend } = useContext(UserContext);
     const [mode, setMode] = useState("tweet");
+
+    useEffect(() => {
+        const myFollowing = [];
+        for (const follow of listFollowing) {
+            myFollowing.push(follow._id);
+        }
+        const isFollowed = myFollowing.includes(profil)
+        setFriend({...friend, isFollowed: isFollowed})
+    }, [profil, listFollowing])
 
     const handlePersonalInformation = () => {
         setMode("personalInformation");
@@ -35,22 +45,22 @@ const Profil = () => {
     return (
         userid 
         ? 
-        (<div className='profile-page row justify-content-center' style={{height: "100vh", maxHeight: "100vh"}}>
-            <div className='col' style={{padding: "50px 0"}}>
-                <div className='d-flex border p-3' style={{borderRadius: "20px", marginLeft: "10%"}}>
+        (<div className='profile-page row'>
+            <div className='col-5 justify-content-center' style={{margin: "8% 0 0 8%"}}>
+                <div className='d-flex border' style={{borderRadius: "20px"}}>
                     <ProfilPicture friend={friend} />
-                    <div className='d-grid'>
-                        <div className='d-flex align-items-center'>
+                    <div className='d-flex' style={{flexDirection: "column"}}>
+                        <div className='flex-row d-flex p-4'>
                             <MyFollowers setFriend={setFriend} />
                             <MyFollowing setFriend={setFriend} />
-                            {userid === profil ? <EditProfil/> : null}
+                            <div className='ms-auto align-self-center'>{userid === profil ? <EditProfil/> : (friend.isFollowed ? <UnfollowButton userId={profil} friend={friend}/> : <FollowButton userId={profil} friend={friend}/>)}</div>
                         </div>
                         <Bio friend={friend}/>
                     </div>
                 </div>
                 <NavProfil handleTweet={handleTweet} handlePersonalInformation={handlePersonalInformation} handleComment={handleComment} />
             </div>
-            <div className='col'>
+            <div className='col-5'>
                 {mode === "tweet" && <MyTweetsDisplay />}
                 {mode === "comment" && <MyCommentsDisplay />}
                 {mode === "personalInformation" && (<BasicInfo />)}

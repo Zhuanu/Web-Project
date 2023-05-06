@@ -1,7 +1,7 @@
 const { nbUsers, getUsers } = require('../users');
 const { getUserById } = require('../../getter');
 
-const getUserInfo = async (req, res) => {
+const getNonFollowing = async (req, res) => {
         try {
             const user = await getUserById(req.userid);
             const count = await nbUsers();
@@ -26,4 +26,4 @@ const getUserInfo = async (req, res) => {
         }    
 }
 
-module.exports = getUserInfo;
+module.exports = getNonFollowing;

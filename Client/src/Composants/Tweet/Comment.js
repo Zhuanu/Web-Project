@@ -1,6 +1,8 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../AppContext";
 import styled from "styled-components";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 import ModifyTweetButton from "./ModifyTweetButton";
 import DeleteTweetButton from "./DeleteTweetButton";
@@ -15,18 +17,32 @@ const CommentPicture = styled.img`
 
 const Comment = ({comment, setMyComments }) => {
     const [myComment , setMyComment] = useState(comment)
-    const { userid } = useContext(UserContext);
+    const { userid, setFriend, setProfil } = useContext(UserContext);
 
-      
+
+const handleRedirect = (userid) => {
+    setProfil(userid);
+    axios({
+        method: 'GET',
+        url: `http://localhost:8000/api/user/get/${userid}`,
+        withCredentials: true,
+    })
+    .then((res) => {
+        setFriend(res.data)
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+};
       
     return (
         <div className='border-bottom border-top' style={{margin: "10px", borderRadius: "10px"}}>
 
                 <div className='header d-flex justify-content-between' style={{padding: "0"}}>
-                    <div className="left" style={{margin: "5px", paddingLeft: "15px"}}>
+                    <Link to={`/profil/${comment.userid}`} style={{textDecoration: "none"}} className="d-flex align-items-center" onClick={() => { handleRedirect(comment.userid) }}>
                         {myComment.picture ? (<CommentPicture src={`/uploads/${myComment.userid}.jpg`} alt='pp'/>) : (<CommentPicture src="/uploads/default.jpg" alt='pp'/>)}
                         <span style={{ marginLeft: "15px" }}>@{myComment.pseudo}</span>
-                    </div>
+                    </Link>
 
                     <div className="buttonGroup d-flex">
                         {myComment.userid === userid ? (

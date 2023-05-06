@@ -6,7 +6,7 @@ export const DescriptionContainer = styled.div`
   display: flex;
   flex-direction: column;
   color: white;
-  padding: 0 1rem;
+  padding: 1rem;
 `;
 
 const Bio = ({ friend }) => {
@@ -14,7 +14,7 @@ const Bio = ({ friend }) => {
     return (
         userid === profil ? (
           <DescriptionContainer>
-              <p>Member since <span>{user?.profil?.creationDate}</span></p>
+              <p>Member since <span className='text-break'>{user?.profil?.creationDate}</span></p>
               <p>{user?.profil?.bio}</p>
           </DescriptionContainer>
         ) : (

@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "../../Pages/Home";
-// import ProfilFriend from "../../Pages/ProfilFriend";
 import Profil from "../../Pages/Profil";
 import Navbar from "../Navbar";
 import { UserContext } from "../AppContext";
