@@ -87,7 +87,7 @@ const MyFollowers = ({ setFriend }) => {
                 </div>  
             ) : (
                 <div className="followersWindow">
-                    <button className="btn btn-link" onClick={handleShow} 
+                    <button className="btn btn-link text-info" onClick={handleShow} 
                         style={{cursor: "pointer", textDecoration: "none", fontSize: "20px"}}>
                         <b>{`${followers.length}`}</b> followers
                     </button>

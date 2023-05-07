@@ -8,7 +8,7 @@ const GetUser = () => {
         window.location.href = "http://localhost:3000/profil/";
     }
 
-    return <div onClick={getuser} className='d-flex justify-content-center'>
+    return <div onClick={getuser} className='d-flex'>
         <PersonCircle className='icon' size={30} />
         <p className="flex-grow-0" style={{margin:"0 0 0 10px"}}>Profil</p>
     </div>

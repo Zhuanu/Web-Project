@@ -16,7 +16,7 @@ const Logout = () => {
 
     const logout = async () => {
         await axios({
-            method: "GET",
+            method: "DELETE",
             url: "http://localhost:8000/api/user/logout",
             withCredentials: true,
         })
@@ -33,7 +33,7 @@ const Logout = () => {
     
     return <div className="d-flex justify-content-end" onClick={logout}>
                 <BoxArrowLeft className="icon" size={30} />
-                <p className="flex-grow-0" style={{margin:"0 0 0 10px"}}>Log out</p>
+                <p className="" style={{margin:"0 0 0 10px"}}>Logout</p>
             </div>
   
 }

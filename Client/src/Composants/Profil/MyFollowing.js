@@ -70,7 +70,7 @@ const MyFollowing = ({ setFriend }) => {
                 </div>
             ) : (
                 <div>
-                    <button className="btn btn-link" onClick={handleShow}
+                    <button className="btn btn-link text-info" onClick={handleShow}
                         style={{cursor: "pointer", textDecoration: "none", fontSize: "20px"}}
                     >
                         <b>{`${following.length}`}</b> following

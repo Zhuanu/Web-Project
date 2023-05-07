@@ -2,10 +2,6 @@ const getter = require('../../getter');
 
 const getUser = async (req, res) => {
     let userid = req.userid
-
-    if (req.params.userid !== undefined) {
-        userid = req.params.userid;
-    }
     try {
 
         if (userid === undefined) {

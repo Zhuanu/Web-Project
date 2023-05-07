@@ -10,6 +10,7 @@ const {upload, updatePicture } = require("./services/updatePicture.js");
 const editProfil = require("./services/editProfil.js");
 const sessionExpired = require("./services/sessionExpired.js");
 const getUserFromParams = require("./services/getUserFromParams.js");
+const search = require("./services/search.js");
 
 const { verifyToken } = require('./auth.js');
 
@@ -28,11 +29,13 @@ user
 
     .get('/nonFollowing', verifyToken, getNonFollowing)
 
-    .get('/logout', verifyToken, logout)
+    .delete('/logout', verifyToken, logout)
 
     .get('/get', verifyToken, getUser)
 
     .get('/get/:userid', verifyToken, getUserFromParams)
+
+    .get('/search', verifyToken, search)
 
     .get('/sessionExpired', sessionExpired)
 

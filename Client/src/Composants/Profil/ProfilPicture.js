@@ -56,12 +56,12 @@ const ProfilPicture = ({ friend }) => {
                     <input {...getInputProps()} name="picture" />
                     {user?.profil?.picture ? <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/> : <ProfilPictureCss src={`/uploads/default.jpg`} alt="pp"/>}
                 </DropZoneWrapper>
-                <p style={{fontSize: "20px", margin: "10px 0 0 0", color: "whitesmoke"}}>@{user?.profil?.pseudo}</p>
+                <p className="text-info" style={{fontSize: "20px", margin: "10px 0 0 0", color: "whitesmoke"}}>@{user?.profil?.pseudo}</p>
             </div>
         ) : (
             <div className="d-flex align-items-center" style={{flexDirection: "column", margin: "20px"}}>
                 {friend?.profil?.picture ? <ProfilPictureCss src={`/uploads/${profil}.jpg`} alt="pp"/> : <ProfilPictureCss src={`/uploads/default.jpg`} alt="pp"/>}
-                <p style={{fontSize: "20px", margin: "10px 0 0 0", color: "whitesmoke"}}>@{friend?.profil?.pseudo}</p>
+                <p className="text-info" style={{fontSize: "20px", margin: "10px 0 0 0", color: "whitesmoke"}}>@{friend?.profil?.pseudo}</p>
             </div>
         )
 

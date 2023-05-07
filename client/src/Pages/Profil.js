@@ -28,7 +28,7 @@ const Profil = () => {
         }
         const isFollowed = myFollowing.includes(profil)
         setFriend({...friend, isFollowed: isFollowed})
-    }, [profil, listFollowing])
+    }, [profil, listFollowing, userid])
 
     const handlePersonalInformation = () => {
         setMode("personalInformation");
@@ -53,7 +53,7 @@ const Profil = () => {
                         <div className='flex-row d-flex p-4'>
                             <MyFollowers setFriend={setFriend} />
                             <MyFollowing setFriend={setFriend} />
-                            <div className='ms-auto align-self-center'>{userid === profil ? <EditProfil/> : (friend.isFollowed ? <UnfollowButton userId={profil} friend={friend}/> : <FollowButton userId={profil} friend={friend}/>)}</div>
+                            <div className='ms-auto align-self-center'>{userid === profil ? <EditProfil/> : (friend?.isFollowed ? <UnfollowButton userId={profil} friend={friend}/> : <FollowButton userId={profil} friend={friend}/>)}</div>
                         </div>
                         <Bio friend={friend}/>
                     </div>

@@ -8,10 +8,10 @@ const NavProfil = ({handleComment, handlePersonalInformation, handleTweet}) => {
         <div className="" style={{marginTop: "10%"}}>
             <ul className="container-fluid list-unstyled nav nav-tabs d-flex">
                 {userid === profil ? (
-                    <button className="nav-link flex-grow-1 text-light" onClick={handlePersonalInformation}>Personal Information</button>
+                    <button className="nav-link flex-grow-1 text-warning" onClick={handlePersonalInformation}>Personal Information</button>
                 ) : null}
-                <button className="nav-link flex-grow-1 text-light" onClick={handleTweet}>Tweet</button>
-                <button className="nav-link flex-grow-1 text-light" onClick={handleComment}>Comment</button>
+                <button className="nav-link flex-grow-1 text-warning" onClick={handleTweet}>Tweet</button>
+                <button className="nav-link flex-grow-1 text-warning" onClick={handleComment}>Comment</button>
             </ul>
         </div>
     );

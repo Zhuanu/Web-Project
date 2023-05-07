@@ -33,14 +33,14 @@ export const TweetDisplay = ({ tweet }) => {
 
     return (
         <div>
-            <div className='card' style={{borderRadius: "40px 40px 40px 40px", margin: "10px auto", width: "80%", opacity: "0.9"}}>
+            <div className='card' style={{borderRadius: "15px", margin: "10px auto", width: "80%", opacity: "0.9"}}>
                 <div className='card-header d-flex justify-content-between align-items-center'>
                     <div className="left align-items-center">
                         {tweet.picture ? (<TweetPicture src={`/uploads/${tweet.userid}.jpg`} alt='pp'/>) : (<TweetPicture src="/uploads/default.jpg" alt='pp'/>)}
-                        <span style={{ margin: "0 20px 0 10px" }}>@{tweet.pseudo}</span>
+                        <span className="text-info" style={{ margin: "0 20px 0 10px" }}>@{tweet.pseudo}</span>
                     </div>
                     <div className="right">
-                        <span style={{ marginLeft: "5px" }}><CustomDate customDate={tweet.date}/></span>
+                        <span className="text-warning" style={{ marginLeft: "5px" }}><CustomDate customDate={tweet.date}/></span>
                     </div>
                 </div>
                 <div className='card-body d-flex justify-content-between'>
@@ -69,14 +69,14 @@ export const CommentDisplay = ({ comment }) => {
 
     return (
         <div className="border-top border-bottom" style={{borderRadius: "10px", margin: "10px 0"}}>
-            <div className="left" style={{margin: "5px", paddingLeft: "15px"}}>
+            <div className="left text-info" style={{margin: "5px", paddingLeft: "15px"}}>
                 {comment.picture ? (<CommentPicture src={`/uploads/${comment.userid}.jpg`} alt='pp'/>) : (<CommentPicture src="/uploads/default.jpg" alt='pp'/>)}
                 <span style={{ marginLeft: "15px" }}>@{comment.pseudo}</span>
             </div>
 
-            <div style={{margin: "0 20px 0 70px"}}>
+            <div className='' style={{margin: "0 20px 0 70px"}}>
                 <p className='card-text d-grid' style={{boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", borderRadius: "10px", padding: "4px"}}>{comment.text}</p>
-                <p className="align-self-center" style={{marginRight: "20px", marginBottom: "0"}}>Last edited the <CustomDate customDate={comment.date} /></p>
+                <p className="align-self-center text-warning" style={{marginRight: "20px", marginBottom: "0"}}>Last edited the <CustomDate customDate={comment.date} /></p>
             </div>
         </div>
     );

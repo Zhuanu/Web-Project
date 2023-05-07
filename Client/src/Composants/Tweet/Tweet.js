@@ -20,7 +20,7 @@ const ProfilPicture = styled.img`
 
 const Tweet = ({tweet}) => {
     const [myTweet , setMyTweet] = useState(tweet)
-    const { listFollowing, setlistFollowing, userid, setProfil, setFriend } = useContext(UserContext);
+    const { listFollowing, setlistFollowing, userid, setProfil, setFriend, profil } = useContext(UserContext);
     const [listComments, setListComments] = useState([])
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const Tweet = ({tweet}) => {
         }
         const isFollowed = myFollowing.includes(myTweet.userid)
         setMyTweet({...myTweet, isFollowed: isFollowed})
-    }, [myTweet._id, listFollowing])
+    }, [profil, userid, listFollowing, myTweet?.isFollowed])
 
     useEffect(() => {
         axios({
@@ -63,17 +63,17 @@ const Tweet = ({tweet}) => {
 
     return (
         <CommentContext.Provider value={{listComments, setListComments}}>
-            <div className='card' style={{borderRadius: "40px 40px 40px 40px", margin: "10px 0 10px 0px", opacity: "0.9"}}>
+            <div className='card' style={{borderRadius: "15px", margin: "10px 0 10px 0px", opacity: "0.9"}}>
 
                 <div className='card-header d-flex'>
                     <Link to={`/profil/${myTweet.userid}`} style={{textDecoration: "none"}} className="d-flex align-items-center" onClick={() => { handleRedirect(myTweet.userid) }}>
                         {myTweet.picture ? (<ProfilPicture src={`/uploads/${myTweet.userid}.jpg`} alt='pp'/>) : (<ProfilPicture src="/uploads/default.jpg" alt='pp'/>)}
-                        <span style={{ marginLeft: "15px" }}>@{myTweet.pseudo}</span>
+                        <span className="text-info" style={{ marginLeft: "15px" }}>@{myTweet.pseudo}</span>
                     </Link>
                     <div style={{marginTop: "5px", marginLeft: "auto" }}>
                         {userid.toString() === myTweet.userid.toString() 
                             ? (null) 
-                            : myTweet.isFollowed  
+                            : myTweet?.isFollowed  
                                 ? <UnfollowButton userId={myTweet.userid} list={listFollowing} setList={setlistFollowing} tweet={myTweet}/>
                                 : <FollowButton userId={myTweet.userid} list={listFollowing} setList={setlistFollowing} tweet={myTweet}/>}
                     </div>
@@ -84,7 +84,7 @@ const Tweet = ({tweet}) => {
                         style={{borderRadius: "10px", border: "border: 3px inset rgba(28,110,164,0.74)", padding: "0 40px", fontSize: "1.15rem"}}
                     >{myTweet.content}</p>
 
-                    <div style={{ marginLeft: "15px"}}>
+                    <div className="text-info" style={{ marginLeft: "15px"}}>
                         <div className="d-grid">
                             <p className="align-self-center" style={{marginRight: "5px", marginBottom: "0"}}>Last edited the <CustomDate customDate={myTweet.date} /></p>
                             <span><b>{myTweet?.likers?.length}</b> Likes</span>

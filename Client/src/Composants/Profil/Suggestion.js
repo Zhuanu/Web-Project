@@ -42,7 +42,7 @@ const Suggestions = () => {
 
     return (
         <div className='suggestions border p-4' style={{borderRadius: "20px", backdropFilter: "blur(10px)"}}>
-            <h3 className='text-center' style={{marginBottom: "15px"}}>Suggestions</h3>
+            <h3 className='text-center text-warning' style={{marginBottom: "15px"}}>Suggestions</h3>
             {isLoading ? (
                 <div>
                     <div className="d-flex align-items-center justify-content-center">
@@ -58,7 +58,7 @@ const Suggestions = () => {
                                 <div className='d-flex justify-content-between'>
                                     <Link to={`/profil/${user?._id}`} style={{textDecoration: "none"}} className="d-flex align-items-center" onClick={() => { handleRedirect(user) }}>
                                         {user?.profil.picture ? <FriendPicture src={`/uploads/${user._id}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
-                                        <span style={{margin: "0 15px"}}>@{user?.profil.pseudo}</span>
+                                        <span className='text-info' style={{margin: "0 15px"}}>@{user?.profil.pseudo}</span>
                                     </Link>
 
                                     <div className="">

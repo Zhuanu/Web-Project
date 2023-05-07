@@ -16,6 +16,7 @@ const Home = () => {
     const [isListTweetInitialised, setIsListTweetInitialised] = useState(false);
 
     useEffect(() => {
+        if (!userid) return;
         axios({
             method: 'GET',
             url: 'http://localhost:8000/api/messages',
@@ -28,7 +29,7 @@ const Home = () => {
         .catch((err) => {
             console.log(err)
         })
-    }, []);
+    }, [userid]);
 
     return (
         userid ? (

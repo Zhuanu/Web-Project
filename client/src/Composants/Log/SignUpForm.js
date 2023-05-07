@@ -93,7 +93,7 @@ const SignUpForm = () => {
         isSubmit 
             ? 
             (<>
-                <h3 className="form-text">User successfully created, Welcome, You can now Log In</h3>
+                <h3 className="form-text text-light">User successfully created, Welcome, You can now Log In</h3>
                 <SignInForm /> 
             </>)
             :

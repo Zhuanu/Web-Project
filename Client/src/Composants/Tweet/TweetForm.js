@@ -74,17 +74,17 @@ const TweetForm = ({isInitialised}) => {
 
                 {
                     message ? (
-                        <div className='card' style={{borderRadius: "20px 0px 20px 20px", margin: "10px 0 10px 0px"}}>
+                        <div className='card' style={{borderRadius: "15px 0px 15px 15px", margin: "10px 0 10px 0px"}}>
                             <div className='card-header'>
                                 {user?.profil.picture ? <FriendPicture src={`/uploads/${user?._id}.jpg`} alt="pp"/> : <FriendPicture src={`/uploads/default.jpg`} alt="pp"/>}
-                                <span style={{ marginLeft: "5px" }}>@{user?.profil.pseudo}</span>
+                                <span className="text-info" style={{ marginLeft: "15px" }}>@{user?.profil.pseudo}</span>
                             </div>
                             <div className='card-body'>
                                 <p className='card-text' 
                                     style={{borderRadius: "10px", border: "border: 3px inset rgba(28,110,164,0.74)", padding: "0 40px", fontSize: "1.15rem"}}
                                 >{message}</p>
-                                <div className="d-flex" style={{ marginLeft: "15px"}}>
-                                    <p className="" style={{marginRight: "5px"}}>Last edited the</p>
+                                <div className="d-flex text-info" style={{ marginLeft: "15px"}}>
+                                    <p style={{marginRight: "5px"}}>Last edited the</p>
                                     <CustomDate customDate={new Date()} />
                                 </div>
                             </div>

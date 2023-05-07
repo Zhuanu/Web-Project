@@ -23,7 +23,7 @@ const InfoForHome = () => {
 
 
     return (
-        <div className="infoForHome" style={{marginTop: "25%", backdropFilter: "blur(10px)"}}>
+        <div className="infoForHome text-warning" style={{marginTop: "25%", backdropFilter: "blur(10px)"}}>
             <div className="body d-grid border p-4" style={{marginBottom: "30px", borderRadius: "10px"}}>
                 <span style={{marginBottom: "10px"}}><b>{listTweet.length}</b> tweets au total !</span>
                 <span style={{marginBottom: "10px"}}><b>{listFollowing.length}</b> abonnements !</span>

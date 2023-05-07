@@ -26,6 +26,10 @@ async function getUserByLogin(login) {
     }
 }
 
+async function getUsersByPseudo(regex) {
+    return await users.find({"profil.pseudo": regex}).toArray();
+}
+
 async function getObjectID(userid) {
     try {
         return new ObjectId(userid);
@@ -39,5 +43,6 @@ module.exports = {
     getUserById,
     getObjectID,
     getUserByLogin,
+    getUsersByPseudo
 }
 

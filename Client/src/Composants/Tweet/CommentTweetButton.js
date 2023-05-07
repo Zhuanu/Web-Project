@@ -50,12 +50,12 @@ const CommentTweetButton = ({ myTweet, setMyTweet }) => {
 
     const TweetDisplay = () => {
         return (
-            <div className='card' style={{borderRadius: "40px"}}>
+            <div className='card' style={{borderRadius: "15px"}}>
 
                 <div className='card-header d-flex'>
                     <div className="left">
                         {myTweet.picture ? (<ProfilPicture src={`/uploads/${myTweet.userid}.jpg`} alt='pp'/>) : (<ProfilPicture src="/uploads/default.jpg" alt='pp'/>)}
-                        <span style={{ marginLeft: "15px" }}>@{myTweet.pseudo}</span>
+                        <span className="text-info" style={{ marginLeft: "15px" }}>@{myTweet.pseudo}</span>
                     </div>
                 </div>
 
@@ -63,11 +63,11 @@ const CommentTweetButton = ({ myTweet, setMyTweet }) => {
                     <p className='card-text' 
                         style={{borderRadius: "10px", padding: "0 30px", fontSize: "1.15rem"}}
                     >{myTweet.content}</p>
-                        <div className="d-flex">
+                        <div className="d-flex text-info">
                             <p className="align-self-center" style={{marginRight: "5px", marginBottom: "0"}}>Last edited the</p>
                             <CustomDate customDate={myTweet.date} />
                         </div>
-                        <div className="">
+                        <div className="text-info">
                             <p style={{marginBottom: "0"}}><b>{myTweet?.likers?.length}</b> likes</p>
                             <p style={{marginBottom: "0"}}><b>{listComments.length}</b> comments</p>
                         </div>
