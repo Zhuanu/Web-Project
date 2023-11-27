@@ -69,7 +69,7 @@ const MyFollowing = ({ setFriend }) => {
                     </div>  
                 </div>
             ) : (
-                <div>
+                <div className="col p-0 m-0">
                     <button className="btn btn-link text-info" onClick={handleShow}
                         style={{cursor: "pointer", textDecoration: "none", fontSize: "20px"}}
                     >

@@ -59,6 +59,9 @@ function App() {
         localStorage.removeItem("userid");
         setUserid(null);
         setProfil(null);
+        setFriend(null);
+        setUser(null);
+        setlistFollowing([]);
     };
     
     return (

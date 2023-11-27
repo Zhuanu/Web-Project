@@ -15,7 +15,6 @@ const Routers = () => {
                 {userid ? <Navbar /> : null}
                 <div className="main-content text-white" style={{height: "100vh", maxHeight: "100vh"}}>
                     <Routes>
-
                         <Route path="/" element={<Home/>} />
                         <Route path="/profil" element={<Profil/>} />
                         <Route path={`/profil/${profil}`} element={<Profil/>} />

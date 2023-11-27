@@ -79,14 +79,14 @@ const MyFollowers = ({ setFriend }) => {
     }
 
     return (
-        <div className="MyFollowers">
+        <div className="MyFollowers col p-0">
             {isLoading ? (
                 <div className="d-flex align-items-center justify-content-center">
                     <strong>Loading...</strong>
                     <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
                 </div>  
             ) : (
-                <div className="followersWindow">
+                <div className="followersWindow p-0 m-0">
                     <button className="btn btn-link text-info" onClick={handleShow} 
                         style={{cursor: "pointer", textDecoration: "none", fontSize: "20px"}}>
                         <b>{`${followers.length}`}</b> followers

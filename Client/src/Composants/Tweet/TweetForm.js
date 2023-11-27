@@ -83,7 +83,7 @@ const TweetForm = ({isInitialised}) => {
                                 <p className='card-text' 
                                     style={{borderRadius: "10px", border: "border: 3px inset rgba(28,110,164,0.74)", padding: "0 40px", fontSize: "1.15rem"}}
                                 >{message}</p>
-                                <div className="d-flex text-info" style={{ marginLeft: "15px"}}>
+                                <div className="d-flex text-secondary" style={{ marginLeft: "15px"}}>
                                     <p style={{marginRight: "5px"}}>Last edited the</p>
                                     <CustomDate customDate={new Date()} />
                                 </div>

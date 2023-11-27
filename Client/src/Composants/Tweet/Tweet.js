@@ -84,7 +84,7 @@ const Tweet = ({tweet}) => {
                         style={{borderRadius: "10px", border: "border: 3px inset rgba(28,110,164,0.74)", padding: "0 40px", fontSize: "1.15rem"}}
                     >{myTweet.content}</p>
 
-                    <div className="text-info" style={{ marginLeft: "15px"}}>
+                    <div className="text-secondary" style={{ marginLeft: "15px"}}>
                         <div className="d-grid">
                             <p className="align-self-center" style={{marginRight: "5px", marginBottom: "0"}}>Last edited the <CustomDate customDate={myTweet.date} /></p>
                             <span><b>{myTweet?.likers?.length}</b> Likes</span>

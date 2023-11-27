@@ -63,11 +63,11 @@ const CommentTweetButton = ({ myTweet, setMyTweet }) => {
                     <p className='card-text' 
                         style={{borderRadius: "10px", padding: "0 30px", fontSize: "1.15rem"}}
                     >{myTweet.content}</p>
-                        <div className="d-flex text-info">
+                        <div className="d-flex text-secondary">
                             <p className="align-self-center" style={{marginRight: "5px", marginBottom: "0"}}>Last edited the</p>
                             <CustomDate customDate={myTweet.date} />
                         </div>
-                        <div className="text-info">
+                        <div className="text-secondary">
                             <p style={{marginBottom: "0"}}><b>{myTweet?.likers?.length}</b> likes</p>
                             <p style={{marginBottom: "0"}}><b>{listComments.length}</b> comments</p>
                         </div>

@@ -40,7 +40,7 @@ export const TweetDisplay = ({ tweet }) => {
                         <span className="text-info" style={{ margin: "0 20px 0 10px" }}>@{tweet.pseudo}</span>
                     </div>
                     <div className="right">
-                        <span className="text-warning" style={{ marginLeft: "5px" }}><CustomDate customDate={tweet.date}/></span>
+                        <span className="text-secondary" style={{ marginLeft: "5px" }}><CustomDate customDate={tweet.date}/></span>
                     </div>
                 </div>
                 <div className='card-body d-flex justify-content-between'>

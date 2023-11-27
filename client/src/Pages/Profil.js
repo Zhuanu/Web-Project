@@ -47,17 +47,18 @@ const Profil = () => {
         ? 
         (<div className='profile-page row'>
             <div className='col-5 justify-content-center' style={{margin: "8% 0 0 8%"}}>
-                <div className='d-flex border' style={{borderRadius: "20px"}}>
+                <div className='d-inline border d-flex' style={{borderRadius: "20px"}}>
                     <ProfilPicture friend={friend} />
-                    <div className='d-flex' style={{flexDirection: "column"}}>
-                        <div className='flex-row d-flex p-4'>
+                    <div className='d-flex-column border-start'>
+                        <div className='row row-cols-auto p-4'>
                             <MyFollowers setFriend={setFriend} />
                             <MyFollowing setFriend={setFriend} />
-                            <div className='ms-auto align-self-center'>{userid === profil ? <EditProfil/> : (friend?.isFollowed ? <UnfollowButton userId={profil} friend={friend}/> : <FollowButton userId={profil} friend={friend}/>)}</div>
+                            <div className='align-self-center p-0'>{userid === profil ? <EditProfil/> : (friend?.isFollowed ? <UnfollowButton userId={profil} friend={friend}/> : <FollowButton userId={profil} friend={friend}/>)}</div>
                         </div>
                         <Bio friend={friend}/>
                     </div>
                 </div>
+
                 <NavProfil handleTweet={handleTweet} handlePersonalInformation={handlePersonalInformation} handleComment={handleComment} />
             </div>
             <div className='col-5'>
