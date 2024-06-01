@@ -21,6 +21,7 @@ async function createUser(info) {
                 pseudo: pseudo, 
                 followers: [], 
                 following: [], 
+                posts: [], 
                 picture: false,
                 creationDate: new Date().toDateString()
             },
@@ -28,7 +29,9 @@ async function createUser(info) {
                 password: mdp, 
                 login: login, 
                 connected: false,
+                refreshToken: ""
             },
+            privateMess: []
         };
 
         const result = await users.insertOne(docUsers);

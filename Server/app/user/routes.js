@@ -36,11 +36,10 @@ user
     .get('/get/:userid', verifyToken, getUserFromParams)
 
     .get('/search', verifyToken, search)
-    // renvoie tous les utilisateurs matché par ce que l'utilisateur a tapé dans la barre de recherche
 
     .get('/sessionExpired', sessionExpired)
 
-    .delete('/', verifyToken, deleteUser)
+    .delete('/', deleteUser)
 
     .use((req, res) => {
         res.status(404).json({status : 404, "message": "Page not found"});

@@ -51,11 +51,9 @@ messages
 
     .get("/comment/:tweetid", verifyToken, getCommentsFromTweet)
 
-    .get("/get/:userid/tweet", verifyToken, getAllTweetsFromUserAndFirstComment) 
-    // récupérer tous les tweets d'un utilisateur et les commentaires associés
+    .get("/get/:userid/tweet", verifyToken, getAllTweetsFromUserAndFirstComment)
 
     .get("/get/:userid/comment", verifyToken, getCommentsFromUserAndTweet)
-    // récupérer tous les commentaires d'un utilisateur et les tweets associés aux commentaires
 
     .use((req, res) => {
         res.status(404).json({status : 404, "message": "Page not found"});

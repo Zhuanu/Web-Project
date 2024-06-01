@@ -1,0 +1,164 @@
+{
+	"info": {
+		"_postman_id": "88ef1578-ad90-4eb8-af09-2c742d6cc574",
+		"name": "Friend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26757565"
+	},
+	"item": [
+		{
+			"name": "deleteFollower",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/friend/64374edb06011c691c9604ed/followers/64374eec06011c691c9604f2",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"friend",
+						"64374edb06011c691c9604ed",
+						"followers",
+						"64374eec06011c691c9604f2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addFollowing",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/friend/6445b3c4e43706993b6dcaf7/following/644be6060baf19f267e22e8b",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"friend",
+						"6445b3c4e43706993b6dcaf7",
+						"following",
+						"644be6060baf19f267e22e8b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteFollowing",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/friend/64374edb06011c691c9604ed/following/64374eec06011c691c9604f2",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"friend",
+						"64374edb06011c691c9604ed",
+						"following",
+						"64374eec06011c691c9604f2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getListFollowers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/friend/64374eec06011c691c9604f3/followers/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"friend",
+						"64374eec06011c691c9604f3",
+						"followers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getListFollowing",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/friend/64374eec06011c691c9604f3/following/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"friend",
+						"64374eec06011c691c9604f3",
+						"following",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "friendListFollowers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/friend/64374edb06011c691c9604ed/followers/64374eda06011c691c9604ec",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"friend",
+						"64374edb06011c691c9604ed",
+						"followers",
+						"64374eda06011c691c9604ec"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "friendListFollowing",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/friend/64374edb06011c691c9604ed/following/64374eec06011c691c9604f2",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"friend",
+						"64374edb06011c691c9604ed",
+						"following",
+						"64374eec06011c691c9604f2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
